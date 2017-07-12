@@ -1,0 +1,9 @@
+[user]
+	name = Johannes
+	email = johannes.wikner@gmail.com
+[push]
+	default = matching
+[core]
+	editor = vim
+[github]
+	user = sktt

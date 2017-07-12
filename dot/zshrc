@@ -1,0 +1,35 @@
+ZSH_THEME="clean"
+plugins=(git osx zsh-syntax-highlighting)
+source $ZSH/oh-my-zsh.sh
+
+BASE16_SHELL=$HOME/.config/base16-shell/
+[ -n "$PS1" ] && [ -s $BASE16_SHELL/profile_helper.sh ] && eval "$($BASE16_SHELL/profile_helper.sh)"
+
+HISTFILE=~/.histfile
+HISTSIZE=1000
+SAVEHIST=1000
+setopt autocd
+bindkey -e
+
+# End of lines configured by zsh-newuser-install
+# The following lines were added by compinstall
+zstyle :compinstall filename '/home/jnes/.zshrc'
+
+autoload -Uz compinit
+compinit
+# End of lines added by compinstall
+
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+
+RPS1='%(?..%{$fg_no_bold[red]%}%? ↵%{$reset_color%})'
+
+alias gst="git status --short"
+
+#unset ctrl-s
+stty -ixon
+
+#if which rbenv > /dev/null; then eval "$(rbenv init - zsh)"; fi
+#export PATH="$HOME/.rbenv/bin:$PATH"
+
+# run tmux if not already running, try attach to existing
+if ! [ -n "$TMUX" ]; then tmux a || tmux; fi

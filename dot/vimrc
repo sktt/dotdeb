@@ -1,0 +1,260 @@
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin('~/.vim/bundle')
+  Plugin 'gmarik/Vundle.vim'
+  Plugin 'tpope/vim-fugitive'
+  Plugin 'junegunn/goyo.vim'
+  Plugin 'mattn/webapi-vim'
+  Plugin 'mattn/gist-vim'
+  Plugin 'mileszs/ack.vim'
+
+  " Navigation
+  Plugin 'christoomey/vim-tmux-navigator'
+  Plugin 'ctrlpvim/ctrlp.vim'
+  Plugin 'Valloric/YouCompleteMe'
+
+  " Formating and editing
+  Plugin 'tpope/vim-surround'
+  Plugin 'tpope/vim-repeat'
+  Plugin 'scrooloose/nerdcommenter'
+  Plugin 'godlygeek/tabular'
+  Plugin 'editorconfig/editorconfig-vim'
+  Plugin 'millermedeiros/vim-esformatter'
+  Plugin 'Raimondi/delimitMate'
+  Plugin 'mattn/emmet-vim'
+
+  " Linting
+  Plugin 'w0rp/ale'
+  "
+  " UI Plugins
+  Plugin 'vim-airline/vim-airline'
+  Plugin 'vim-airline/vim-airline-themes'
+  Plugin 'altercation/vim-colors-solarized'
+  Plugin 'chriskempson/base16-vim'
+  Plugin 'scrooloose/nerdtree'
+  " Syntax highlighting
+
+  Plugin 'sheerun/vim-polyglot'
+  Plugin 'ElmCast/elm-vim'
+  " Plugin 'wakatime/vim-wakatime'
+  "Plugin 'pangloss/vim-javascript'
+  "Plugin 'mxw/vim-jsx'
+  "Plugin 'Yggdroot/indentLine'
+  "Plugin 'bitc/vim-hdevtools'
+call vundle#end()
+
+let g:ycm_semantic_triggers = {
+     \ 'elm' : ['.'],
+     \}
+let g:polyglot_disabled = ['elm']
+autocmd BufWinEnter quickfix set nowrap!
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => General
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Sets how many lines of history VIM has to remember
+set history=700
+
+" Enable filetype plugins
+filetype plugin indent on
+
+" Set to auto read when a file is changed from the outside
+set autoread
+autocmd FocusGained,BufEnter * silent! checktime
+
+" Dont put temp junk in the file directory
+set backupdir=~/.vim/backup,~/.vim/tmp
+set directory=~/.vim/backup,~/.vim/tmp
+
+" Enable mouse scrolling, clicks etc
+set mouse=a
+
+" Leader key mapping and timeout
+nnoremap <Space> <Nop>
+set timeoutlen=400
+set ttimeoutlen=400
+let mapleader = " "
+
+set relativenumber
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Editing text
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Backspace removes everything on the line.
+set backspace=eol,indent,start
+
+" Linebreak on 120 characters
+set lbr
+set textwidth=80
+
+" format paragraph
+nnoremap <Leader>q gqap
+
+" Default indention style
+set tabstop=4
+set softtabstop=2
+set shiftwidth=2
+set expandtab "tab -> spaces. `C-V <Tab>` for normal tab
+set shiftround "Round indent to nearest shiftwidth multiple
+
+" Makefiles need tabs
+autocmd FileType make setlocal noexpandtab
+
+" Tabularize macros
+nmap <Leader>a= :Tabularize /=<CR>
+vmap <Leader>a= :Tabularize /=<CR>
+nmap <Leader>a: :Tabularize /:\zs<CR>
+vmap <Leader>a: :Tabularize /:\zs<CR>
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => User interface
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Search while typing
+set incsearch
+
+" Open folded lines when searching
+"set foldopen
+
+" Toggle highlight search results
+nnoremap <Leader>h :set hlsearch!<CR>
+
+" Set 7 lines to the cursor - when moving vertically using j/k
+set so=7
+
+if filereadable(expand("~/.vimrc_background"))
+  let base16colorspace=256
+  source ~/.vimrc_background
+endif
+
+"hi Normal ctermbg=none
+
+" show row numbers
+set number
+
+" Don't wrap lines
+set nowrap
+
+" Use syntax highlighting
+syntax on
+
+" Show guide lines
+autocmd WinLeave * set nocursorline nocursorcolumn
+autocmd WinEnter * set cursorline cursorcolumn
+set cursorline cursorcolumn
+
+" No annoying sound on errors
+set noerrorbells
+set novisualbell!
+set t_vb=
+set tm=500
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Plugin configuration
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" -> indentLine
+"let g:indentLine_char = '¦'
+"let g:indentLine_color_term = 234
+
+" -> ctrlp.vim
+" Set ignore patterns
+let g:ctrlp_custom_ignore = 'node_modules\|DS_Store\'
+
+" Use command-t mapping
+let g:ctrlp_map = '<Leader>t'
+
+" -> vim-coffe-script
+" Treat litcoffee as coffee
+autocmd FileType litcoffee runtime ftplugin/coffee.vim
+
+" -> vim-airline
+" Enable tab bar
+let g:airline#extensions#tabline#enabled = 1
+
+" Enable powerline fonts
+let g:airline_powerline_fonts = 1
+
+" Show status bar
+set laststatus=2
+
+" -> NERDTree / NERDTreeTabs
+" Open NERDTree in all tabs
+nnoremap <Leader>n :NERDTreeToggle<CR>
+
+" -> goyo.vim
+" adjust magrins
+let g:goyo_width = 80
+let g:goyo_margin_top = 0
+let g:goyo_margin_bottom = 0
+
+" -> vim-gist
+let g:gist_detect_filetype = 1
+let g:gist_open_browser_after_post = 1
+let g:gist_post_private = 1
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Navigation and window management
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Resize split
+nnoremap <silent> <Leader>+ :exe "resize " . (winheight(0) * 3/2)<CR>
+nnoremap <silent> <Leader>- :exe "resize " . (winheight(0) * 2/3)<CR>
+
+" Equal split size
+nnoremap <leader>= <c-W>=
+
+" Navigation to splits
+nnoremap <c-j> <c-W>j
+nnoremap <c-k> <c-W>k
+nnoremap <c-h> <c-W>h
+nnoremap <c-l> <c-W>l
+
+" neovim ^H fix.
+" https://github.com/neovim/neovim/issues/2048
+if has('nvim')
+  nmap <BS> <C-W>h
+endif
+
+" Open new tab
+map <leader>ot :tabnew<cr>
+
+" Switch CWD to the directory of the open buffer
+map <leader>cd :cd %:p:h<cr>:pwd<cr>
+
+" Return to last edit position when opening files
+autocmd BufReadPost *
+     \ if line("'\"") > 0 && line("'\"") <= line("$") |
+     \   exe "normal! g`\"" |
+     \ endif
+
+" Remember info about open buffers on close
+set viminfo^=%
+
+" Open vimgrep and put the cursor in the right position
+map <leader>g :vimgrep // **<left><left><left><left>
+
+" Next/prev result
+nnoremap ]q :cnext<cr>
+nnoremap [q :cprevious<cr>
+
+" Autoclose preview scratch
+autocmd CompleteDone * pclose
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Misc, marcros etc
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Disable Ex mode
+map Q <Nop>
+
+" Reload vim config on save
+autocmd! bufwritepost $MYVIMRC source %
+
+" Save as root. crashes neovim
+command! W execute ':silent w !sudo tee % > /dev/null' | edit! %
+
+" Treat :Q as :q
+command! Q q
+
+" Quickly open config file
+nmap <leader>v :tabedit $MYVIMRC<CR>
+
+" Search for visual selected section
+vnoremap // "y/<C-R>"<CR>
+
