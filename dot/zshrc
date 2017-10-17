@@ -28,8 +28,11 @@ alias gst="git status --short"
 #unset ctrl-s
 stty -ixon
 
+if [ -e /home/jnes/.nix-profile/etc/profile.d/nix.sh ]; then . /home/jnes/.nix-profile/etc/profile.d/nix.sh; fi # added by Nix installer
+
+. /usr/share/autojump/autojump.sh
 #if which rbenv > /dev/null; then eval "$(rbenv init - zsh)"; fi
 #export PATH="$HOME/.rbenv/bin:$PATH"
 
 # run tmux if not already running, try attach to existing
-if ! [ -n "$TMUX" ]; then tmux a || tmux; fi
+# if ! [ -n "$TMUX" ]; then tmux a || tmux; fi

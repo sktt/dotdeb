@@ -10,7 +10,9 @@ call vundle#begin('~/.vim/bundle')
   " Navigation
   Plugin 'christoomey/vim-tmux-navigator'
   Plugin 'ctrlpvim/ctrlp.vim'
+
   Plugin 'Valloric/YouCompleteMe'
+  Plugin 'rdnetto/YCM-Generator'
 
   " Formating and editing
   Plugin 'tpope/vim-surround'
@@ -21,6 +23,9 @@ call vundle#begin('~/.vim/bundle')
   Plugin 'millermedeiros/vim-esformatter'
   Plugin 'Raimondi/delimitMate'
   Plugin 'mattn/emmet-vim'
+  " Snipps
+  Plugin 'epilande/vim-es2015-snippets'
+  Plugin 'SirVer/ultisnips'
 
   " Linting
   Plugin 'w0rp/ale'
@@ -28,7 +33,7 @@ call vundle#begin('~/.vim/bundle')
   " UI Plugins
   Plugin 'vim-airline/vim-airline'
   Plugin 'vim-airline/vim-airline-themes'
-  Plugin 'altercation/vim-colors-solarized'
+  " Plugin 'altercation/vim-colors-solarized'
   Plugin 'chriskempson/base16-vim'
   Plugin 'scrooloose/nerdtree'
   " Syntax highlighting
@@ -42,9 +47,15 @@ call vundle#begin('~/.vim/bundle')
   "Plugin 'bitc/vim-hdevtools'
 call vundle#end()
 
-let g:ycm_semantic_triggers = {
-     \ 'elm' : ['.'],
-     \}
+" Set tmux window name to the current file edited!
+autocmd BufReadPost,FileReadPost,BufNewFile * call system("tmux rename-window " . expand("%"))
+
+" let g:ycm_semantic_triggers = {
+"      \ 'elm' : ['.'],
+"      \}
+
+" let g:ycm_global_ycm_extra_conf = '~/.vim/bundle/YouCompleteMe/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py'
+let g:ycm_confirm_extra_conf = '0'
 let g:polyglot_disabled = ['elm']
 autocmd BufWinEnter quickfix set nowrap!
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -94,6 +105,7 @@ set softtabstop=2
 set shiftwidth=2
 set expandtab "tab -> spaces. `C-V <Tab>` for normal tab
 set shiftround "Round indent to nearest shiftwidth multiple
+set foldmethod=syntax
 
 " Makefiles need tabs
 autocmd FileType make setlocal noexpandtab
@@ -103,6 +115,7 @@ nmap <Leader>a= :Tabularize /=<CR>
 vmap <Leader>a= :Tabularize /=<CR>
 nmap <Leader>a: :Tabularize /:\zs<CR>
 vmap <Leader>a: :Tabularize /:\zs<CR>
+
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => User interface
@@ -153,13 +166,21 @@ set tm=500
 " -> indentLine
 "let g:indentLine_char = '¦'
 "let g:indentLine_color_term = 234
+"let g:ale_fixers = {
+"\   'javascript': [
+"\       'eslint',
+"\   ],
+"\}
 
+" let g:ale_linters = {'c': 'gcc'}
 " -> ctrlp.vim
 " Set ignore patterns
 let g:ctrlp_custom_ignore = 'node_modules\|DS_Store\'
 
 " Use command-t mapping
 let g:ctrlp_map = '<Leader>t'
+
+let g:EditorConfig_core_mode = "external_command"
 
 " -> vim-coffe-script
 " Treat litcoffee as coffee
@@ -189,6 +210,14 @@ let g:goyo_margin_bottom = 0
 let g:gist_detect_filetype = 1
 let g:gist_open_browser_after_post = 1
 let g:gist_post_private = 1
+
+let g:UltiSnipsExpandTrigger="<c-x>"
+let g:UltiSnipsJumpForwardTrigger="<c-j>"
+let g:UltiSnipsJumpBackwardTrigger="<c-k>"
+let g:UltiSnipsSnippetsDir="~/.vim/UltiSnips"
+
+let g:NERDSpaceDelims = 1
+let g:NERDDefaultAlign = 'left'
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Navigation and window management
