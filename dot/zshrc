@@ -36,3 +36,5 @@ if [ -e /home/jnes/.nix-profile/etc/profile.d/nix.sh ]; then . /home/jnes/.nix-p
 
 # run tmux if not already running, try attach to existing
 # if ! [ -n "$TMUX" ]; then tmux a || tmux; fi
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
