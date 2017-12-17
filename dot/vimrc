@@ -185,6 +185,7 @@ let g:EditorConfig_core_mode = "external_command"
 " -> vim-coffe-script
 " Treat litcoffee as coffee
 autocmd FileType litcoffee runtime ftplugin/coffee.vim
+autocmd FileType sh set tw=0
 
 " -> vim-airline
 " Enable tab bar
