@@ -1,5 +1,5 @@
 ZSH_THEME="clean"
-plugins=(git osx zsh-syntax-highlighting)
+plugins=(git osx zsh-syntax-highlighting zsh-autosuggestions)
 source $ZSH/oh-my-zsh.sh
 
 BASE16_SHELL=$HOME/.config/base16-shell/
@@ -24,6 +24,7 @@ compinit
 RPS1='%(?..%{$fg_no_bold[red]%}%? ↵%{$reset_color%})'
 
 alias gst="git status --short"
+alias xo="xdg-open"
 
 #unset ctrl-s
 stty -ixon

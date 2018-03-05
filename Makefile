@@ -4,7 +4,7 @@ symlinks:
 	@for f in $(DOTFILES); do \
 	 	ln -fs `pwd`/$$f ~/`echo $$f | sed s/dot\\\//./`; \
 	done;
-	@ls -lG `find ~ -maxdepth 1 -type l -print` 
+	@ls -lG `find ~ -maxdepth 1 -type l -print`
 
 .PHONY: packages
 packages: PACKAGES := $(shell cat ./packages/apt.list)
