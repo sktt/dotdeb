@@ -36,9 +36,14 @@ call vundle#begin('~/.vim/bundle')
   " Plugin 'altercation/vim-colors-solarized'
   Plugin 'chriskempson/base16-vim'
   Plugin 'scrooloose/nerdtree'
+  Plugin 'ryanoasis/vim-devicons'
+  Plugin 'tiagofumo/vim-nerdtree-syntax-highlight'
+
+
   " Syntax highlighting
 
   Plugin 'sheerun/vim-polyglot'
+  Plugin 'bohlender/vim-smt2'
   Plugin 'ElmCast/elm-vim'
   " Plugin 'wakatime/vim-wakatime'
   "Plugin 'pangloss/vim-javascript'
@@ -122,6 +127,8 @@ vmap <Leader>a: :Tabularize /:\zs<CR>
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Search while typing
 set incsearch
+
+noremap <Leader>l :set list!<CR> " Toggle invisible chars$"
 
 " Open folded lines when searching
 "set foldopen
@@ -287,4 +294,3 @@ nmap <leader>v :tabedit $MYVIMRC<CR>
 
 " Search for visual selected section
 vnoremap // "y/<C-R>"<CR>
-

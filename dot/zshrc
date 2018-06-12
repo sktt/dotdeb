@@ -25,6 +25,12 @@ RPS1='%(?..%{$fg_no_bold[red]%}%? ↵%{$reset_color%})'
 
 alias gst="git status --short"
 alias xo="xdg-open"
+alias clip="xclip -sel clipboard"
+
+function hex () {
+  echo -n 0x
+  echo "obase=16; $1" | bc
+}
 
 #unset ctrl-s
 stty -ixon
