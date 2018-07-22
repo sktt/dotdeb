@@ -1,6 +1,7 @@
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin('~/.vim/bundle')
   Plugin 'gmarik/Vundle.vim'
+  Plugin 'tmux-plugins/vim-tmux-focus-events'
   Plugin 'tpope/vim-fugitive'
   Plugin 'junegunn/goyo.vim'
   Plugin 'mattn/webapi-vim'
