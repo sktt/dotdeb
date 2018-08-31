@@ -33,13 +33,17 @@ call vundle#begin('~/.vim/bundle')
   Plugin 'w0rp/ale'
   "
   " UI Plugins
-  Plugin 'vim-airline/vim-airline'
-  Plugin 'vim-airline/vim-airline-themes'
+  " Plugin 'vim-airline/vim-airline'
+  " Plugin 'vim-airline/vim-airline-themes'
   " Plugin 'altercation/vim-colors-solarized'
   Plugin 'chriskempson/base16-vim'
+  Plugin 'jdkanani/vim-material-theme'
+  Plugin 'airblade/vim-gitgutter'
+
   Plugin 'scrooloose/nerdtree'
   Plugin 'ryanoasis/vim-devicons'
   Plugin 'tiagofumo/vim-nerdtree-syntax-highlight'
+
 
 
   " Syntax highlighting
@@ -92,6 +96,29 @@ set ttimeoutlen=400
 let mapleader = " "
 
 set relativenumber
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Buffers
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" This allows buffers to be hidden if you've modified a buffer.
+" This is almost a must if you wish to use buffers in this way.
+set hidden
+
+" To open a new empty buffer
+nmap <leader>bb :enew<cr>
+
+" Move to the next buffer
+nmap ' :bnext<CR>
+
+" Move to the previous buffer
+nmap ; :bprevious<CR>
+
+" Close the current buffer and move to the previous one
+" This replicates the idea of closing a tab
+nmap <leader>bq :bd<CR>
+
+" Show all open buffers and their status
+nnoremap gb :ls<CR>:buffer<Space>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Editing text
@@ -189,8 +216,13 @@ set tm=500
 "\       'eslint',
 "\   ],
 "\}
+let g:ale_fixers = {}
+let g:ale_fixers['javascript'] = ['standard']
 
 " let g:ale_linters = {'c': 'gcc'}
+let g:ale_linters = {
+\   'javascript': ['standard'],
+\}
 " -> ctrlp.vim
 " Set ignore patterns
 let g:ctrlp_custom_ignore = 'node_modules\|DS_Store\'
@@ -207,13 +239,16 @@ autocmd FileType sh set tw=0
 
 " -> vim-airline
 "
-let g:airline_theme='hybrid'
+" let g:airline_theme='hybrid'
 
 " Enable tab bar
-let g:airline#extensions#tabline#enabled = 1
+" let g:airline#extensions#tabline#enabled = 1
+
+" Show just the filename
+" let g:airline#extensions#tabline#fnamemod = ':t'
 
 " Enable powerline fonts
-let g:airline_powerline_fonts = 1
+" let g:airline_powerline_fonts = 1
 
 " Show status bar
 set laststatus=2
@@ -308,3 +343,8 @@ nmap <leader>v :tabedit $MYVIMRC<CR>
 
 " Search for visual selected section
 vnoremap // "y/<C-R>"<CR>
+
+" enable italic
+set t_ZH=[3m
+set t_ZR=[23m
+highlight Comment cterm=italic
