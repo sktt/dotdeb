@@ -58,6 +58,9 @@ call vundle#begin('~/.vim/bundle')
   "Plugin 'bitc/vim-hdevtools'
 call vundle#end()
 
+" CTags search parent directories
+set tags=tags;/
+
 " Set tmux window name to the current file edited!
 autocmd BufReadPost,FileReadPost,BufNewFile * call system("tmux rename-window " . expand("%"))
 
@@ -108,14 +111,33 @@ set hidden
 nmap <leader>bb :enew<cr>
 
 " Move to the next buffer
-nmap ' :bnext<CR>
+nmap <M-Right> :bnext<CR>
 
 " Move to the previous buffer
-nmap ; :bprevious<CR>
+nmap <M-Left> :bprevious<CR>
+
+execute "set <M-1>=1"
+execute "set <M-2>=2"
+execute "set <M-3>=3"
+execute "set <M-4>=4"
+execute "set <M-5>=5"
+execute "set <M-6>=6"
+execute "set <M-7>=7"
+execute "set <M-8>=8"
+execute "set <M-9>=9"
+noremap <M-1> :b1<CR>
+noremap <M-2> :b2<CR>
+noremap <M-3> :b3<CR>
+noremap <M-4> :b4<CR>
+noremap <M-5> :b5<CR>
+noremap <M-6> :b6<CR>
+noremap <M-7> :b7<CR>
+noremap <M-8> :b8<CR>
+noremap <M-9> :b9<CR>
 
 " Close the current buffer and move to the previous one
 " This replicates the idea of closing a tab
-nmap <leader>bq :bd<CR>
+nmap <leader>x :bd<CR>
 
 " Show all open buffers and their status
 nnoremap gb :ls<CR>:buffer<Space>
