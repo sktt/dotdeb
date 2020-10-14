@@ -1,0 +1,11 @@
+set history save
+set auto-load safe-path .
+set auto-load local-gdbinit
+set disassemble-next-line on
+add-auto-load-safe-path ~/misc/firefox/mozilla-unified
+
+add-auto-load-safe-path /usr/share/gdb/auto-load
+add-auto-load-safe-path /home/jnes/.rustup/toolchains
+# break main
+# source /home/jnes/.local/lib/python3.7/site-packages/voltron/entry.py
+# __libc_start_main
