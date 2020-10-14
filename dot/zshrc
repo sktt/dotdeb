@@ -1,5 +1,5 @@
-ZSH_THEME="clean"
-plugins=(last-working-dir git osx zsh-syntax-highlighting zsh-autosuggestions)
+ZSH_THEME="minimal"
+plugins=(last-working-dir git zsh-syntax-highlighting zsh-autosuggestions)
 source $ZSH/oh-my-zsh.sh
 
 # BASE16_SHELL=$HOME/.config/base16-shell/
@@ -27,9 +27,17 @@ alias gst="git status --short"
 alias xo="xdg-open"
 alias clip="xclip -sel clipboard"
 
+function gcco {
+  gcc ${@:2} -o ${1/.c/} $1
+}
+
 function hex () {
   echo -n 0x
   echo "obase=16; $1" | bc
+}
+
+function _latest () {
+  echo "$1/$(ls -t $1 | head -n1)"
 }
 
 #unset ctrl-s
@@ -45,3 +53,40 @@ if [ -e /home/jnes/.nix-profile/etc/profile.d/nix.sh ]; then . /home/jnes/.nix-p
 # if ! [ -n "$TMUX" ]; then tmux a || tmux; fi
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+
+#. /home/jnes/torch/install/bin/torch-activate
+
+PATH="/home/jnes/perl5/bin${PATH:+:${PATH}}"; export PATH;
+PERL5LIB="/home/jnes/perl5/lib/perl5${PERL5LIB:+:${PERL5LIB}}"; export PERL5LIB;
+PERL_LOCAL_LIB_ROOT="/home/jnes/perl5${PERL_LOCAL_LIB_ROOT:+:${PERL_LOCAL_LIB_ROOT}}"; export PERL_LOCAL_LIB_ROOT;
+PERL_MB_OPT="--install_base \"/home/jnes/perl5\""; export PERL_MB_OPT;
+PERL_MM_OPT="INSTALL_BASE=/home/jnes/perl5"; export PERL_MM_OPT;
+
+function hex2dec() {
+  python3 -c "print(int('$1', 16))"
+}
+
+function hex2bin() {
+  python3 -c "print(bin(int('$1', 16)))"
+}
+
+function bin2hex() {
+  python3 -c "print(hex(int('$1', 2)))"
+}
+
+function bin2dec() {
+  python3 -c "print(int('$1', 2))"
+}
+
+function dec2hex() {
+  python3 -c "print('0x{:02x}'.format($1))"
+}
+
+function dec2bin() {
+  python3 -c "print(bin($1))"
+}
+
+# Wasmer
+export WASMER_DIR="/home/jnes/.wasmer"
+[ -s "$WASMER_DIR/wasmer.sh" ] && source "$WASMER_DIR/wasmer.sh"

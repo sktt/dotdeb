@@ -1,20 +1,32 @@
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin('~/.vim/bundle')
-  Plugin 'gmarik/Vundle.vim'
-  Plugin 'tmux-plugins/vim-tmux-focus-events'
+
+  Plugin 'VundleVim/Vundle.vim'
+  " Plugin 'tmux-plugins/vim-tmux-focus-events'
   Plugin 'tpope/vim-fugitive'
   Plugin 'junegunn/goyo.vim'
   Plugin 'mattn/webapi-vim'
   Plugin 'mattn/gist-vim'
-  Plugin 'mileszs/ack.vim'
+  " Plugin 'mileszs/ack.vim'
   Plugin 'tpope/vim-obsession'
+  Plugin 'tpope/vim-vividchalk'
+  Plugin 'artanikin/vim-synthwave84'
+  Plugin 'NLKNguyen/papercolor-theme'
+  Plugin 'nanotech/jellybeans.vim'
+  Plugin 'sainnhe/sonokai'
+  Plugin 'sickill/vim-monokai'
 
   " Navigation
   Plugin 'christoomey/vim-tmux-navigator'
   Plugin 'ctrlpvim/ctrlp.vim'
 
-  Plugin 'Valloric/YouCompleteMe'
+  " ./install.py --clangd-completer --rust-completer --go-completer --ts-completer
+  Plugin 'ycm-core/YouCompleteMe'
+  Plugin 'vim-scripts/gtags.vim'
   Plugin 'rdnetto/YCM-Generator'
+
+  " Plugin 'GNOME/devhelp', {'rtp': 'plugins/'}
+  " Plugin 'tpope/vim-unimpaired'
 
   " Formating and editing
   Plugin 'tpope/vim-surround'
@@ -22,15 +34,20 @@ call vundle#begin('~/.vim/bundle')
   Plugin 'scrooloose/nerdcommenter'
   Plugin 'godlygeek/tabular'
   Plugin 'editorconfig/editorconfig-vim'
-  Plugin 'millermedeiros/vim-esformatter'
-  Plugin 'Raimondi/delimitMate'
+  " Plugin 'Raimondi/delimitMate'
+
   Plugin 'mattn/emmet-vim'
+  Plugin 'embear/vim-localvimrc'
+
+  " Plugin 'lervag/vimtex'
+
+  " Plugin 'Rip-Rip/clang_complete'
   " Snipps
-  Plugin 'epilande/vim-es2015-snippets'
+  " Plugin 'epilande/vim-es2015-snippets'
   Plugin 'SirVer/ultisnips'
 
   " Linting
-  Plugin 'w0rp/ale'
+  Plugin 'dense-analysis/ale'
   "
   " UI Plugins
   " Plugin 'vim-airline/vim-airline'
@@ -40,29 +57,47 @@ call vundle#begin('~/.vim/bundle')
   Plugin 'jdkanani/vim-material-theme'
   Plugin 'airblade/vim-gitgutter'
 
-  Plugin 'scrooloose/nerdtree'
+  Plugin 'preservim/nerdtree'
   Plugin 'ryanoasis/vim-devicons'
-  Plugin 'tiagofumo/vim-nerdtree-syntax-highlight'
-
+  " Plugin 'tiagofumo/vim-nerdtree-syntax-highlight'
+  Plugin 'majutsushi/tagbar'
+  Plugin 'Shirk/vim-gas'
 
 
   " Syntax highlighting
 
-  Plugin 'sheerun/vim-polyglot'
-  Plugin 'bohlender/vim-smt2'
-  Plugin 'ElmCast/elm-vim'
+  " Plugin 'bohlender/vim-smt2'
+  " Plugin 'ElmCast/elm-vim'
+  " Plugin 'rhysd/vim-llvm'
+  " Plugin 'Shouqun/chromium-vim'
   " Plugin 'wakatime/vim-wakatime'
-  "Plugin 'pangloss/vim-javascript'
+  " Plugin 'pangloss/vim-javascript'
+  " Plugin 'maxmellon/vim-jsx-pretty'
+  " Plugin 'styled-components/vim-styled-components'
+  Plugin 'sheerun/vim-polyglot'
   "Plugin 'mxw/vim-jsx'
   "Plugin 'Yggdroot/indentLine'
   "Plugin 'bitc/vim-hdevtools'
 call vundle#end()
 
+set timeoutlen=1000 ttimeoutlen=0
+
+" read inline per file config
+set modeline
+
+let g:devhelpSearch=1
+let g:devhelpAssistant=1
+
+
+let delimitMate_jump_expansion = 1
+
+let g:localvimrc_ask = 0
+
 " CTags search parent directories
-set tags=tags;/
+" set tags=tags;/
 
 " Set tmux window name to the current file edited!
-autocmd BufReadPost,FileReadPost,BufNewFile * call system("tmux rename-window " . expand("%"))
+" autocmd BufReadPost,FileReadPost,BufNewFile * call system("tmux rename-window " . expand("%"))
 
 " let g:ycm_semantic_triggers = {
 "      \ 'elm' : ['.'],
@@ -70,13 +105,24 @@ autocmd BufReadPost,FileReadPost,BufNewFile * call system("tmux rename-window " 
 
 " let g:ycm_global_ycm_extra_conf = '~/.vim/bundle/YouCompleteMe/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py'
 let g:ycm_confirm_extra_conf = '0'
-let g:polyglot_disabled = ['elm']
+" let g:ycm_min_num_of_chars_for_completion = 1337
+let g:ycm_min_num_of_chars_for_completion = 4
+" let g:ycm_filter_diagnostics = { 'javascript': { 'regex': [ '.*' ] } }
+" let g:polyglot_disabled = ['elm', 'latex']
+" let g:polyglot_disabled = ['elm', 'js', 'jsx']
+let g:yats_host_keyword = 1
 autocmd BufWinEnter quickfix set nowrap!
+
+let g:clang_library_path='/usr/lib/llvm-7/lib'
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => General
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Sets how many lines of history VIM has to remember
 set history=700
+
+" Opening a new split will make all open splits equal w/h
+set equalalways
 
 " Enable filetype plugins
 filetype plugin indent on
@@ -94,9 +140,12 @@ set mouse=a
 
 " Leader key mapping and timeout
 nnoremap <Space> <Nop>
+nnoremap j gj
+nnoremap k gk
 set timeoutlen=400
 set ttimeoutlen=400
 let mapleader = " "
+nnoremap <Leader>e :e %:h/%:t:r.
 
 set relativenumber
 
@@ -108,13 +157,18 @@ set relativenumber
 set hidden
 
 " To open a new empty buffer
-nmap <leader>bb :enew<cr>
+" nmap <Leader>bb :enew<cr>
 
+" nmap <M-j> <Plug>(ale_next_wrap)
+" nmap <M-k> <Plug>(ale_previous_wrap)
+
+" execute "set <M-h>=h"
+" execute "set <M-l>=l"
 " Move to the next buffer
-nmap <M-Right> :bnext<CR>
+nmap <S-l> :bnext<CR>
 
 " Move to the previous buffer
-nmap <M-Left> :bprevious<CR>
+nmap <S-h> :bprevious<CR>
 
 execute "set <M-1>=1"
 execute "set <M-2>=2"
@@ -135,9 +189,12 @@ noremap <M-7> :b7<CR>
 noremap <M-8> :b8<CR>
 noremap <M-9> :b9<CR>
 
+execute "set <M-r>=r"
+nmap <M-r> :!gcc -o tmp.out % && ./tmp.out; echo "exit code: $?" && rm tmp.out<CR>
+
 " Close the current buffer and move to the previous one
 " This replicates the idea of closing a tab
-nmap <leader>x :bd<CR>
+nmap <Leader>x :bd<CR>
 
 " Show all open buffers and their status
 nnoremap gb :ls<CR>:buffer<Space>
@@ -155,14 +212,26 @@ set textwidth=80
 " format paragraph
 nnoremap <Leader>q gqap
 
+" quickfix window
+nnoremap <Leader>qo :copen 4<CR>
+nnoremap <Leader>qc :cclose <CR>
+nnoremap <Leader>] :cn<CR>
+nnoremap <Leader>[ :cp<CR>
+
 " Default indention style
 set tabstop=4
 set softtabstop=2
 set shiftwidth=2
 set expandtab "tab -> spaces. `C-V <Tab>` for normal tab
 set shiftround "Round indent to nearest shiftwidth multiple
-set foldmethod=syntax
+" set foldmethod=syntax
 
+" nnoremap <leader>jd :ALEGoToDefinition<CR>
+" nnoremap <leader>jr :ALEFindReferences<CR>
+
+nnoremap <leader>jd :YcmCompleter GoTo<CR>
+nnoremap <leader>jr :YcmCompleter GoToReferences<CR>
+nnoremap <leader>fi :YcmCompleter FixIt<CR>
 " Makefiles need tabs
 autocmd FileType make setlocal noexpandtab
 
@@ -190,6 +259,7 @@ nnoremap <Leader>h :set hlsearch!<CR>
 " Set 7 lines to the cursor - when moving vertically using j/k
 set so=7
 
+
 if exists('+termguicolors')
   let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
   let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
@@ -202,7 +272,11 @@ endif
 
 " set t_Co=256
 set background=dark
-colorscheme material-theme
+" colorscheme material-theme
+" colorscheme vividchalk
+" colorscheme synthwave84
+" colorscheme PaperColor
+colorscheme jellybeans
 
 "hi Normal ctermbg=none
 
@@ -218,7 +292,7 @@ syntax on
 " Show guide lines
 autocmd WinLeave * set nocursorline nocursorcolumn
 autocmd WinEnter * set cursorline cursorcolumn
-set cursorline cursorcolumn
+" set cursorline cursorcolumn
 
 " No annoying sound on errors
 set noerrorbells
@@ -239,25 +313,49 @@ set tm=500
 "\   ],
 "\}
 let g:ale_fixers = {}
-let g:ale_fixers['javascript'] = ['standard']
+let g:ale_fixers['javascript'] = ['prettier']
+let g:ale_fixers['typescript'] = ['prettier']
+let g:ale_lint_on_text_changed = 'never'
+let g:ale_lint_on_insert_leave = 0
+let g:ale_lint_on_enter = 0
 
+" let g:ale_completion_enabled = 1
+" set omnifunc=ale#completion#OmniFunc
 " let g:ale_linters = {'c': 'gcc'}
-let g:ale_linters = {
-\   'javascript': ['standard'],
-\}
+" let g:ale_linters = {
+" \   'javascript': ['eslint'],
+" \}
+let g:ale_javascript_eslint_executable='npx eslint'
+let g:ale_fix_on_save = 1
+
+let g:javascript_conceal_function             = "ƒ"
+let g:javascript_conceal_null                 = "ø"
+let g:javascript_conceal_this                 = "@"
+let g:javascript_conceal_return               = "⇚"
+let g:javascript_conceal_undefined            = "¿"
+let g:javascript_conceal_NaN                  = "ℕ"
+let g:javascript_conceal_prototype            = "¶"
+let g:javascript_conceal_static               = "•"
+let g:javascript_conceal_super                = "Ω"
+let g:javascript_conceal_arrow_function       = "⇒"
+let g:javascript_conceal_noarg_arrow_function = "🞅"
+let g:javascript_conceal_underscore_arrow_function = "🞅"
+set conceallevel=1
+let g:javascript_plugin_jsdoc = 1
 " -> ctrlp.vim
 " Set ignore patterns
 let g:ctrlp_custom_ignore = 'node_modules\|DS_Store\'
 
 " Use command-t mapping
 let g:ctrlp_map = '<Leader>t'
-
-let g:EditorConfig_core_mode = "external_command"
+nnoremap <Leader>b :CtrlPBuffer<CR>
 
 " -> vim-coffe-script
 " Treat litcoffee as coffee
 autocmd FileType litcoffee runtime ftplugin/coffee.vim
 autocmd FileType sh set tw=0
+" autocmd FileType ts   setfiletype typescript
+autocmd BufNewFile,BufRead *.ts setlocal filetype=typescript
 
 " -> vim-airline
 "
@@ -275,8 +373,11 @@ autocmd FileType sh set tw=0
 " Show status bar
 set laststatus=2
 
+:set ttymouse=xterm2
+
 " -> NERDTree / NERDTreeTabs
 " Open NERDTree in all tabs
+let NERDTreeMinimalUI=1
 nnoremap <Leader>n :NERDTreeToggle<CR>
 
 " -> goyo.vim
@@ -295,8 +396,14 @@ let g:UltiSnipsJumpForwardTrigger="<c-j>"
 let g:UltiSnipsJumpBackwardTrigger="<c-k>"
 let g:UltiSnipsSnippetsDir="~/.vim/UltiSnips"
 
+let g:NERDTrimTrailingWhitespace = 1
+let g:NERDUsePlaceHolders = 0
 let g:NERDSpaceDelims = 1
-let g:NERDDefaultAlign = 'left'
+let g:NERDDefaultAlign = 'both'
+let g:NERDCustomDelimiters = {
+      \ 'wast': {'left': ';;', 'rightAlt': ';)', 'leftAlt': '(;'}
+      \ }
+
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Navigation and window management
@@ -306,7 +413,7 @@ nnoremap <silent> <Leader>+ :exe "resize " . (winheight(0) * 3/2)<CR>
 nnoremap <silent> <Leader>- :exe "resize " . (winheight(0) * 2/3)<CR>
 
 " Equal split size
-nnoremap <leader>= <c-W>=
+nnoremap <Leader>= <c-W>=
 
 " Navigation to splits
 nnoremap <c-j> <c-W>j
@@ -320,11 +427,8 @@ if has('nvim')
   nmap <BS> <C-W>h
 endif
 
-" Open new tab
-map <leader>ot :tabnew<cr>
-
 " Switch CWD to the directory of the open buffer
-map <leader>cd :cd %:p:h<cr>:pwd<cr>
+map <Leader>cd :cd %:p:h<cr>:pwd<cr>
 
 " Return to last edit position when opening files
 autocmd BufReadPost *
@@ -335,8 +439,19 @@ autocmd BufReadPost *
 " Remember info about open buffers on close
 set viminfo^=%
 
+nmap <F8> <Plug>(ale_detail)
+nmap <F7> :YcmCompleter GetDoc<cr>
+nmap <leader>f <plug>(YCMHover)
+" execute "set <M-j>=j"
+" execute "set <M-k>=k"
+nmap <silent> <Leader>k <Plug>(ale_previous)
+nmap <silent> <Leader>j <Plug>(ale_next)
+
+autocmd WinEnter * if &previewwindow | set nowrap! | endif
+
 " Open vimgrep and put the cursor in the right position
-map <leader>g :vimgrep // **<left><left><left><left>
+map <Leader>g :vimgrep // **<left><left><left><left>
+" set wildignore=
 
 " Next/prev result
 nnoremap ]q :cnext<cr>
@@ -355,13 +470,13 @@ map Q <Nop>
 autocmd! bufwritepost $MYVIMRC source %
 
 " Save as root. crashes neovim
-command! W execute ':silent w !sudo tee % > /dev/null' | edit! %
+" command! WW execute ':silent w !sudo tee % > /dev/null' | edit! %
 
 " Treat :Q as :q
 command! Q q
 
 " Quickly open config file
-nmap <leader>v :tabedit $MYVIMRC<CR>
+nmap <Leader>v :tabedit $MYVIMRC<CR>
 
 " Search for visual selected section
 vnoremap // "y/<C-R>"<CR>
@@ -370,3 +485,9 @@ vnoremap // "y/<C-R>"<CR>
 set t_ZH=[3m
 set t_ZR=[23m
 highlight Comment cterm=italic
+" highlight SpellBad cterm=underline guifg=red
+" highlight SpellLocal cterm=underline guifg=orange
+highlight SpellCap cterm=underline guifg=yellow
+highlight SpellRare cterm=underline guifg=yellow
+
+autocmd VimLeave * call system("xclip -o | xclip -selection c")
