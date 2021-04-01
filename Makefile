@@ -16,7 +16,7 @@ packages:
 node: packages
 node: NVM := /usr/local/opt/nvm/nvm.sh
 node:
-	curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.2/install.sh | bash
+	curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
 	$(NVM) install stable
 	$(NVM) alias default stable
 
