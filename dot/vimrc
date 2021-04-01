@@ -80,6 +80,8 @@ call vundle#begin('~/.vim/bundle')
   "Plugin 'bitc/vim-hdevtools'
 call vundle#end()
 
+set clipboard=unnamedplus
+" noremap x "1x but im using x+p alot so..
 set timeoutlen=1000 ttimeoutlen=0
 
 " read inline per file config
@@ -99,12 +101,14 @@ let g:localvimrc_ask = 0
 " Set tmux window name to the current file edited!
 " autocmd BufReadPost,FileReadPost,BufNewFile * call system("tmux rename-window " . expand("%"))
 
+
 " let g:ycm_semantic_triggers = {
 "      \ 'elm' : ['.'],
 "      \}
 
-" let g:ycm_global_ycm_extra_conf = '~/.vim/bundle/YouCompleteMe/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py'
+" let g:ycm_global_ycm_extra_conf = '~/.vim/bundle/YouCompleteMe/third_party/ycmd/.ycm_extra_conf.py'
 let g:ycm_confirm_extra_conf = '0'
+" let g:ycm_clangd_binary_path = '/usr/bin/clangd'
 " let g:ycm_min_num_of_chars_for_completion = 1337
 let g:ycm_min_num_of_chars_for_completion = 4
 " let g:ycm_filter_diagnostics = { 'javascript': { 'regex': [ '.*' ] } }
@@ -227,9 +231,10 @@ set shiftround "Round indent to nearest shiftwidth multiple
 " set foldmethod=syntax
 
 " nnoremap <leader>jd :ALEGoToDefinition<CR>
-" nnoremap <leader>jr :ALEFindReferences<CR>
+" nnoremap <leader>jf :ALEFindReferences<CR>
 
 nnoremap <leader>jd :YcmCompleter GoTo<CR>
+nnoremap <leader>jt :YcmCompleter GoToDeclaration<CR>
 nnoremap <leader>jr :YcmCompleter GoToReferences<CR>
 nnoremap <leader>fi :YcmCompleter FixIt<CR>
 " Makefiles need tabs
@@ -319,9 +324,12 @@ let g:ale_lint_on_text_changed = 'never'
 let g:ale_lint_on_insert_leave = 0
 let g:ale_lint_on_enter = 0
 
+let g:ale_linters = {'c': [] }
+let g:ale_linters = {'cpp': [] }
+
 " let g:ale_completion_enabled = 1
 " set omnifunc=ale#completion#OmniFunc
-" let g:ale_linters = {'c': 'gcc'}
+" let g:e_linters = {'c': 'gcc'}
 " let g:ale_linters = {
 " \   'javascript': ['eslint'],
 " \}

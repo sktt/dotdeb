@@ -44,10 +44,11 @@ function _latest () {
 stty -ixon
 
 if [ -e /home/jnes/.nix-profile/etc/profile.d/nix.sh ]; then . /home/jnes/.nix-profile/etc/profile.d/nix.sh; fi # added by Nix installer
+export PATH="$PATH:$NIX_PATH"
 
 . /usr/share/autojump/autojump.sh
-#if which rbenv > /dev/null; then eval "$(rbenv init - zsh)"; fi
-#export PATH="$HOME/.rbenv/bin:$PATH"
+if which rbenv > /dev/null; then eval "$(rbenv init - zsh)"; fi
+export PATH="$HOME/.rbenv/bin:$PATH"
 
 # run tmux if not already running, try attach to existing
 # if ! [ -n "$TMUX" ]; then tmux a || tmux; fi
@@ -90,3 +91,5 @@ function dec2bin() {
 # Wasmer
 export WASMER_DIR="/home/jnes/.wasmer"
 [ -s "$WASMER_DIR/wasmer.sh" ] && source "$WASMER_DIR/wasmer.sh"
+
+function 2hex { node -e "console.log('$1 ->','0x'+'$1'.charCodeAt(0).toString(16))" }
