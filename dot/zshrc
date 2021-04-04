@@ -1,3 +1,4 @@
+PAGER=most
 ZSH_THEME="minimal"
 plugins=(last-working-dir git zsh-syntax-highlighting zsh-autosuggestions)
 source $ZSH/oh-my-zsh.sh
