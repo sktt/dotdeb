@@ -1,0 +1,62 @@
+source ~/.mutt/jellybeans.muttrc
+
+set my_pass = "`pass mutt/kwikner`"
+set imap_user        = kwikner
+set imap_pass        = $my_pass
+
+set folder           = imaps://mail.ethz.ch/
+
+set spoolfile        = "+inbox"
+set record           = "+sent"
+set trash            = "+trash"
+set postponed        = "~/Mail/Drafts"
+
+set smtp_url         = "smtp://kwikner@mail.ethz.ch:587"
+set smtp_pass        = $my_pass
+set ssl_starttls     = yes
+set ssl_force_tls    = yes
+set smtp_authenticators = 'gssapi:login'
+
+set mail_check       = 300
+set imap_keepalive   = 600
+
+set sort             = reverse-date
+set sort_aux         = last-date-received
+
+set header_cache     = ~/.mutt/headercache
+set message_cachedir = ~/.mutt/messagecache
+
+set from             = 'kwikner@ethz.ch'
+set realname         = 'Johannes Wikner'
+unset signature
+set hostname         = ethz.ch
+
+set crypt_use_gpgme=yes
+set crypt_autosign=yes
+set crypt_verify_sig=yes
+set crypt_replysign=yes
+set crypt_replyencrypt=yes
+set crypt_replysignencrypted=yes
+set crypt_autoencrypt = no
+set pgp_default_key="3ABD921A452FE3A410C5AC57BE39C1C922C09AF1"
+set pgp_check_gpg_decrypt_status_fd
+set pgp_use_gpg_agent = yes
+set pgp_self_encrypt = yes
+
+set sidebar_visible = yes
+set sidebar_format = "%B%* %n"
+set mail_check_stats
+set sidebar_new_mail_only = no
+set sidebar_width = 15
+set sidebar_short_path = yes
+
+mailboxes +Inbox +Sent +Trash ~/Mail/Drafts
+
+set menu_scroll
+set editor = 'vim -c "set spell spelllang=en"'
+
+unset mbox
+
+set implicit_autoview
+alternative_order text/plain text/enriched text/html
+auto_view text/html
