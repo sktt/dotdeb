@@ -27,6 +27,7 @@ RPS1='%(?..%{$fg_no_bold[red]%}%? ↵%{$reset_color%})'
 alias gst="git status --short"
 alias xo="xdg-open"
 alias clip="xclip -sel clipboard"
+alias mutt=neomutt
 
 function gcco {
   gcc ${@:2} -o ${1/.c/} $1
