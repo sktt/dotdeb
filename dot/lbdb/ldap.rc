@@ -1,0 +1,5 @@
+%ldap_server_db = (
+  'ethz' => ['ldap.ethz.ch', 'o=ethz,c=ch',
+            'givenname sn cn mail', 'givenname cn sn mail o',
+            '${mail}', '${givenname} ${sn}', '${o}' ]
+);

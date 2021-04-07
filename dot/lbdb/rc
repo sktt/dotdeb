@@ -1,0 +1,2 @@
+METHODS="m_inmail m_passwd m_finger m_ldap"
+LDAP_NICKS="ethz"

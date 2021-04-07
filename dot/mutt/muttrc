@@ -30,6 +30,7 @@ set from             = 'kwikner@ethz.ch'
 set realname         = 'Johannes Wikner'
 unset signature
 set hostname         = ethz.ch
+set query_command    = "lbdbq '%s'"
 
 set crypt_use_gpgme=yes
 set crypt_autosign=yes

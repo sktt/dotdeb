@@ -37,5 +37,5 @@ shell:
 	chsh -s `which zsh`
 
 .PHONY: all
-.DEFAULT: all
+.DEFAULT: symlinks
 all: packages node ruby shell symlinks
