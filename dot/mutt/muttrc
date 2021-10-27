@@ -20,8 +20,16 @@ set smtp_authenticators = 'gssapi:login'
 set mail_check       = 300
 set imap_keepalive   = 600
 
+# include copy of original message in reply
+set include=yes
+
+bind index G imap-fetch-mail
+
 set sort             = reverse-date
 set sort_aux         = last-date-received
+
+# instead of weird ^G
+set abort_key = "<Esc>"
 
 set header_cache     = ~/.mutt/headercache
 set message_cachedir = ~/.mutt/messagecache
@@ -31,6 +39,14 @@ set realname         = 'Johannes Wikner'
 unset signature
 set hostname         = ethz.ch
 set query_command    = "lbdbq '%s'"
+
+set smime_keys="~/.smime/keys"
+set smime_certificates="~/.smime/certificates"
+# set smime_verify_command="openssl smime -verify -inform DER -in %s %C -content %f"
+
+
+set crypt_autosmime=no # i dont have smime..
+set crypt_autopgp=yes
 
 set crypt_use_gpgme=yes
 set crypt_autosign=yes

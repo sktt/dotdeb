@@ -1,119 +1,62 @@
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin('~/.vim/bundle')
+call plug#begin('~/.vim/plugged')
+  Plug 'tpope/vim-fugitive'
+  Plug 'junegunn/goyo.vim'
+  Plug 'mattn/webapi-vim'
+  Plug 'mattn/gist-vim'
+  Plug 'tpope/vim-obsession'
 
-  Plugin 'VundleVim/Vundle.vim'
-  " Plugin 'tmux-plugins/vim-tmux-focus-events'
-  Plugin 'tpope/vim-fugitive'
-  Plugin 'junegunn/goyo.vim'
-  Plugin 'mattn/webapi-vim'
-  Plugin 'mattn/gist-vim'
-  " Plugin 'mileszs/ack.vim'
-  Plugin 'tpope/vim-obsession'
-  Plugin 'tpope/vim-vividchalk'
-  Plugin 'artanikin/vim-synthwave84'
-  Plugin 'NLKNguyen/papercolor-theme'
-  Plugin 'nanotech/jellybeans.vim'
-  Plugin 'sainnhe/sonokai'
-  Plugin 'sickill/vim-monokai'
+  Plug 'nanotech/jellybeans.vim'
 
   " Navigation
-  Plugin 'christoomey/vim-tmux-navigator'
-  Plugin 'ctrlpvim/ctrlp.vim'
+  Plug 'jlanzarotta/bufexplorer'
+  Plug 'christoomey/vim-tmux-navigator'
+  Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 
   " ./install.py --clangd-completer --rust-completer --go-completer --ts-completer
-  Plugin 'ycm-core/YouCompleteMe'
-  Plugin 'vim-scripts/gtags.vim'
-  Plugin 'rdnetto/YCM-Generator'
-
-  " Plugin 'GNOME/devhelp', {'rtp': 'plugins/'}
-  " Plugin 'tpope/vim-unimpaired'
-
+  Plug 'ycm-core/YouCompleteMe', { 'do': './install.py --go-completer --clangd-completer --clang-tidy --ts-completer --ninja' }
   " Formating and editing
-  Plugin 'tpope/vim-surround'
-  Plugin 'tpope/vim-repeat'
-  Plugin 'scrooloose/nerdcommenter'
-  Plugin 'godlygeek/tabular'
-  Plugin 'editorconfig/editorconfig-vim'
-  " Plugin 'Raimondi/delimitMate'
-
-  Plugin 'mattn/emmet-vim'
-  Plugin 'embear/vim-localvimrc'
-
-  " Plugin 'lervag/vimtex'
-
-  " Plugin 'Rip-Rip/clang_complete'
-  " Snipps
-  " Plugin 'epilande/vim-es2015-snippets'
-  Plugin 'SirVer/ultisnips'
+  Plug 'tpope/vim-surround'
+  Plug 'tpope/vim-repeat'
+  Plug 'scrooloose/nerdcommenter'
+  Plug 'godlygeek/tabular'
+  Plug 'editorconfig/editorconfig-vim'
+  Plug 'embear/vim-localvimrc'
+  " Plug 'lervag/vimtex'
+  Plug 'SirVer/ultisnips'
+  Plug 'honza/vim-snippets'
+  Plug 'mileszs/ack.vim'
 
   " Linting
-  Plugin 'dense-analysis/ale'
-  "
+  Plug 'dense-analysis/ale'
   " UI Plugins
-  " Plugin 'vim-airline/vim-airline'
-  " Plugin 'vim-airline/vim-airline-themes'
-  " Plugin 'altercation/vim-colors-solarized'
-  Plugin 'chriskempson/base16-vim'
-  Plugin 'jdkanani/vim-material-theme'
-  Plugin 'airblade/vim-gitgutter'
-
-  Plugin 'preservim/nerdtree'
-  Plugin 'ryanoasis/vim-devicons'
-  " Plugin 'tiagofumo/vim-nerdtree-syntax-highlight'
-  Plugin 'majutsushi/tagbar'
-  Plugin 'Shirk/vim-gas'
-
+  Plug 'preservim/nerdtree'
+  Plug 'ryanoasis/vim-devicons'
 
   " Syntax highlighting
+  Plug 'Shirk/vim-gas'
+  Plug 'sheerun/vim-polyglot'
 
-  " Plugin 'bohlender/vim-smt2'
-  " Plugin 'ElmCast/elm-vim'
-  " Plugin 'rhysd/vim-llvm'
-  " Plugin 'Shouqun/chromium-vim'
-  " Plugin 'wakatime/vim-wakatime'
-  " Plugin 'pangloss/vim-javascript'
-  " Plugin 'maxmellon/vim-jsx-pretty'
-  " Plugin 'styled-components/vim-styled-components'
-  Plugin 'sheerun/vim-polyglot'
-  "Plugin 'mxw/vim-jsx'
-  "Plugin 'Yggdroot/indentLine'
-  "Plugin 'bitc/vim-hdevtools'
-call vundle#end()
+  Plug 'vhda/verilog_systemverilog.vim'
+
+call plug#end()
+
+set rtp+=/usr/bin/fzf
 
 set clipboard=unnamedplus
 " noremap x "1x but im using x+p alot so..
-set timeoutlen=1000 ttimeoutlen=0
+set timeoutlen=100 ttimeoutlen=0
 
 " read inline per file config
 set modeline
 
-let g:devhelpSearch=1
-let g:devhelpAssistant=1
-
-
-let delimitMate_jump_expansion = 1
+" let g:spellfile_URL='http://ftp.vim.org/vim/runtime/spell'
 
 let g:localvimrc_ask = 0
-
-" CTags search parent directories
-" set tags=tags;/
-
-" Set tmux window name to the current file edited!
-" autocmd BufReadPost,FileReadPost,BufNewFile * call system("tmux rename-window " . expand("%"))
-
-
-" let g:ycm_semantic_triggers = {
-"      \ 'elm' : ['.'],
-"      \}
-
-" let g:ycm_global_ycm_extra_conf = '~/.vim/bundle/YouCompleteMe/third_party/ycmd/.ycm_extra_conf.py'
+let g:github_user = 'sktt'
+let g:gist_token = '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'
 let g:ycm_confirm_extra_conf = '0'
-" let g:ycm_clangd_binary_path = '/usr/bin/clangd'
-" let g:ycm_min_num_of_chars_for_completion = 1337
+let g:ycm_clangd_args = ['-log=verbose', '-pretty']
 let g:ycm_min_num_of_chars_for_completion = 4
-" let g:ycm_filter_diagnostics = { 'javascript': { 'regex': [ '.*' ] } }
-" let g:polyglot_disabled = ['elm', 'latex']
-" let g:polyglot_disabled = ['elm', 'js', 'jsx']
 let g:yats_host_keyword = 1
 autocmd BufWinEnter quickfix set nowrap!
 
@@ -143,7 +86,10 @@ set directory=~/.vim/backup,~/.vim/tmp
 set mouse=a
 
 " Leader key mapping and timeout
+nnoremap <c-s> :w<CR>
 nnoremap <Space> <Nop>
+nnoremap <F5> "=strftime('%F')<cr>p
+inoremap <F5> <c-o>"=strftime('%F')<cr>p
 nnoremap j gj
 nnoremap k gk
 set timeoutlen=400
@@ -193,15 +139,13 @@ noremap <M-7> :b7<CR>
 noremap <M-8> :b8<CR>
 noremap <M-9> :b9<CR>
 
-execute "set <M-r>=r"
-nmap <M-r> :!gcc -o tmp.out % && ./tmp.out; echo "exit code: $?" && rm tmp.out<CR>
-
 " Close the current buffer and move to the previous one
 " This replicates the idea of closing a tab
 nmap <Leader>x :bd<CR>
 
 " Show all open buffers and their status
-nnoremap gb :ls<CR>:buffer<Space>
+" nnoremap gb :ls<CR>:buffer<Space>
+nnoremap gb :BufExplorer<cr>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Editing text
@@ -217,8 +161,9 @@ set textwidth=80
 nnoremap <Leader>q gqap
 
 " quickfix window
-nnoremap <Leader>qo :copen 4<CR>
-nnoremap <Leader>qc :cclose <CR>
+nnoremap <Leader>co :copen 4<CR>
+nnoremap <Leader>d :cclose <CR>
+
 nnoremap <Leader>] :cn<CR>
 nnoremap <Leader>[ :cp<CR>
 
@@ -230,15 +175,23 @@ set expandtab "tab -> spaces. `C-V <Tab>` for normal tab
 set shiftround "Round indent to nearest shiftwidth multiple
 " set foldmethod=syntax
 
+nnoremap <Leader>bl :BufExplorer<CR>
+let g:bufExplorerDefaultHelp=0       " Do not show default help.
 " nnoremap <leader>jd :ALEGoToDefinition<CR>
 " nnoremap <leader>jf :ALEFindReferences<CR>
 
 nnoremap <leader>jd :YcmCompleter GoTo<CR>
+nnoremap <leader>ji :YcmCompleter GoToImplementation<CR>
 nnoremap <leader>jt :YcmCompleter GoToDeclaration<CR>
 nnoremap <leader>jr :YcmCompleter GoToReferences<CR>
 nnoremap <leader>fi :YcmCompleter FixIt<CR>
+
 " Makefiles need tabs
 autocmd FileType make setlocal noexpandtab
+
+" Textfiles dont need newlines.
+autocmd FileType markdown set nowrap!
+autocmd FileType latex set nowrap!
 
 " Tabularize macros
 nmap <Leader>a= :Tabularize /=<CR>
@@ -324,8 +277,9 @@ let g:ale_lint_on_text_changed = 'never'
 let g:ale_lint_on_insert_leave = 0
 let g:ale_lint_on_enter = 0
 
-let g:ale_linters = {'c': [] }
-let g:ale_linters = {'cpp': [] }
+" let g:ale_linters = {'c': [exepath('clang-tidy')], 'cpp': []  }
+let g:ale_linters = {'c': [], 'cpp': []  }
+
 
 " let g:ale_completion_enabled = 1
 " set omnifunc=ale#completion#OmniFunc
@@ -348,15 +302,17 @@ let g:javascript_conceal_super                = "Ω"
 let g:javascript_conceal_arrow_function       = "⇒"
 let g:javascript_conceal_noarg_arrow_function = "🞅"
 let g:javascript_conceal_underscore_arrow_function = "🞅"
-set conceallevel=1
+set conceallevel=2
 let g:javascript_plugin_jsdoc = 1
 " -> ctrlp.vim
+"
 " Set ignore patterns
-let g:ctrlp_custom_ignore = 'node_modules\|DS_Store\'
-
+" let g:ctrlp_custom_ignore = 'node_modules\|DS_Store\'
+nnoremap <C-p> :<C-u>FZF<CR>
 " Use command-t mapping
-let g:ctrlp_map = '<Leader>t'
-nnoremap <Leader>b :CtrlPBuffer<CR>
+nnoremap <Leader>t :<C-u>FZF<CR>
+
+nnoremap <Leader>o :BufExplorer<CR>
 
 " -> vim-coffe-script
 " Treat litcoffee as coffee
@@ -364,6 +320,17 @@ autocmd FileType litcoffee runtime ftplugin/coffee.vim
 autocmd FileType sh set tw=0
 " autocmd FileType ts   setfiletype typescript
 autocmd BufNewFile,BufRead *.ts setlocal filetype=typescript
+
+augroup Binary
+  au!
+  au BufReadPre  *.bin let &bin=1
+  au BufReadPost *.bin if &bin | %!xxd
+  au BufReadPost *.bin set ft=xxd | endif
+  au BufWritePre *.bin if &bin | %!xxd -r
+  au BufWritePre *.bin endif
+  au BufWritePost *.bin if &bin | %!xxd
+  au BufWritePost *.bin set nomod | endif
+augroup END
 
 " -> vim-airline
 "
@@ -457,8 +424,6 @@ nmap <silent> <Leader>j <Plug>(ale_next)
 
 autocmd WinEnter * if &previewwindow | set nowrap! | endif
 
-" Open vimgrep and put the cursor in the right position
-map <Leader>g :vimgrep // **<left><left><left><left>
 " set wildignore=
 
 " Next/prev result
@@ -493,9 +458,17 @@ vnoremap // "y/<C-R>"<CR>
 set t_ZH=[3m
 set t_ZR=[23m
 highlight Comment cterm=italic
+
 " highlight SpellBad cterm=underline guifg=red
 " highlight SpellLocal cterm=underline guifg=orange
 highlight SpellCap cterm=underline guifg=yellow
 highlight SpellRare cterm=underline guifg=yellow
 
 autocmd VimLeave * call system("xclip -o | xclip -selection c")
+
+let g:ackprg = 'rg --vimgrep --type-not sql --smart-case'
+let g:ack_autoclose = 1
+let g:ack_use_cword_for_empty_search = 1
+cnoreabbrev Ack Ack!
+nnoremap <Leader>g :Ack!<Space>
+
