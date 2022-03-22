@@ -1,15 +1,18 @@
 source ~/.mutt/jellybeans.muttrc
 
 set my_pass = "`pass mutt/kwikner`"
-set imap_user        = kwikner
-set imap_pass        = $my_pass
+# set imap_user        = kwikner
+# set imap_pass        = $my_pass
 
-set folder           = imaps://mail.ethz.ch/
+set mbox_type = Maildir
+#set folder           = imaps://mail.ethz.ch/
+set folder           =  ~/Mail
 
-set spoolfile        = "+inbox"
-set record           = "+sent"
-set trash            = "+trash"
-set postponed        = "~/Mail/Drafts"
+set spoolfile        = +INBOX
+set record           = +Sent
+set trash            = +Trash
+set postponed        = +Drafts
+mailboxes =INBOX =Sent =Trash =Drafts
 
 set smtp_url         = "smtp://kwikner@mail.ethz.ch:587"
 set smtp_pass        = $my_pass
@@ -23,7 +26,17 @@ set imap_keepalive   = 600
 # include copy of original message in reply
 set include=yes
 
-bind index G imap-fetch-mail
+
+# Move the highlight to the previous mailbox
+bind index,pager \Cp sidebar-prev
+
+# Move the highlight to the next mailbox
+bind index,pager \Cn sidebar-next
+
+# Open the highlighted mailbox
+bind index,pager \Co sidebar-open
+
+bind index <Enter> display-message
 
 set sort             = reverse-date
 set sort_aux         = last-date-received
@@ -40,15 +53,23 @@ unset signature
 set hostname         = ethz.ch
 set query_command    = "lbdbq '%s'"
 
-set smime_keys="~/.smime/keys"
-set smime_certificates="~/.smime/certificates"
+# set smime_sign_as="0xA9379EF1"
+# set smime_default_key="0xA9379EF1"
+
+# set smime_sign_as="9e2d6ec9.0"
+# set smime_default_key="9e2d6ec9.0"
+# set smime_ca_location="~/.smime/ca-certificates.crt"
+# set smime_keys="~/.smime/keys"
+# set smime_certificates="~/.smime/certificates"
 # set smime_verify_command="openssl smime -verify -inform DER -in %s %C -content %f"
 
 
-set crypt_autosmime=no # i dont have smime..
-set crypt_autopgp=yes
+set crypt_autosmime=yes # i dont have smime..
+set crypt_autopgp=no
 
+#  this breaks SMIME
 set crypt_use_gpgme=yes
+#unset crypt_use_gpgme
 set crypt_autosign=yes
 set crypt_verify_sig=yes
 set crypt_replysign=yes
@@ -67,13 +88,22 @@ set sidebar_new_mail_only = no
 set sidebar_width = 15
 set sidebar_short_path = yes
 
-mailboxes +Inbox +Sent +Trash ~/Mail/Drafts
 
 set menu_scroll
 set editor = 'vim -c "set spell spelllang=en"'
 
-unset mbox
+#unset mbox
 
 set implicit_autoview
 alternative_order text/plain text/enriched text/html
 auto_view text/html
+
+source ~/.mutt/vim-keys.muttrc
+
+#//bind index,pager g noop
+macro index,pager gi "<change-folder>=INBOX<enter>" "go to inbox"
+macro index,pager gs "<change-folder>=Sent<enter>" "go to sent"
+macro index,pager gd "<change-folder>=Drafts<enter>" "go to drafts"
+macro index,pager gt "<change-folder>=Trash<enter>" "go to trash"
+
+macro index \CG "<shell-escape>mbsync -V kwikner<enter>" "sync email"
