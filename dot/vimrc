@@ -40,22 +40,26 @@ call plug#begin('~/.vim/plugged')
 
 call plug#end()
 
+" remove all gui stuff from gvim
+set go=
+set guifont=PragmataPro\ Liga\ 14
+
 set rtp+=/usr/bin/fzf
 
 set clipboard=unnamedplus
 " noremap x "1x but im using x+p alot so..
 set timeoutlen=100 ttimeoutlen=0
 
+
 " read inline per file config
 set modeline
 
 " let g:spellfile_URL='http://ftp.vim.org/vim/runtime/spell'
-
+let g:tex_comment_nospell = 1
 let g:localvimrc_ask = 0
 let g:github_user = 'sktt'
-let g:gist_token = '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'
 let g:ycm_confirm_extra_conf = '0'
-let g:ycm_clangd_args = ['-log=verbose', '-pretty']
+let g:ycm_clangd_args = ['-log=verbose', '-pretty', '-enable-config']
 let g:ycm_min_num_of_chars_for_completion = 4
 let g:yats_host_keyword = 1
 autocmd BufWinEnter quickfix set nowrap!
@@ -188,10 +192,16 @@ nnoremap <leader>fi :YcmCompleter FixIt<CR>
 
 " Makefiles need tabs
 autocmd FileType make setlocal noexpandtab
+autocmd FileType tex setlocal spell spelllang=en_us
+autocmd FileType plaintex setlocal spell spelllang=en_us
+
+" show vertical marker at textwidth+1
+set colorcolumn=+1
+highlight ColorColumn guibg=#303030
 
 " Textfiles dont need newlines.
 autocmd FileType markdown set nowrap!
-autocmd FileType latex set nowrap!
+autocmd FileType tex set nowrap!
 
 " Tabularize macros
 nmap <Leader>a= :Tabularize /=<CR>
@@ -278,7 +288,7 @@ let g:ale_lint_on_insert_leave = 0
 let g:ale_lint_on_enter = 0
 
 " let g:ale_linters = {'c': [exepath('clang-tidy')], 'cpp': []  }
-let g:ale_linters = {'c': [], 'cpp': []  }
+let g:ale_linters = {'c': [], 'cpp': [], 'python': ['pyflakes']  }
 
 
 " let g:ale_completion_enabled = 1
@@ -348,7 +358,7 @@ augroup END
 " Show status bar
 set laststatus=2
 
-:set ttymouse=xterm2
+set ttymouse=xterm2
 
 " -> NERDTree / NERDTreeTabs
 " Open NERDTree in all tabs
@@ -467,8 +477,9 @@ highlight SpellRare cterm=underline guifg=yellow
 autocmd VimLeave * call system("xclip -o | xclip -selection c")
 
 let g:ackprg = 'rg --vimgrep --type-not sql --smart-case'
-let g:ack_autoclose = 1
+"let g:ack_autoclose = 1
 let g:ack_use_cword_for_empty_search = 1
 cnoreabbrev Ack Ack!
 nnoremap <Leader>g :Ack!<Space>
 
+syn region texComment   start="\\begin{comment}"    end="\\end{comment}"
