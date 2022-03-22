@@ -16,3 +16,5 @@ source "$HOME/.cargo/env"
 export ANDROID_SDK_ROOT=/home/jnes/android/android-sdk/sdk_root
 export PATH="$PATH:$ANDROID_SDK_ROOT/platform-tools"
 export ANDROID_AVD_HOME=/home/jnes/.android/avd
+
+export GPG_TTY=$(tty)
