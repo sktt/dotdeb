@@ -1,5 +1,9 @@
 source ~/.mutt/jellybeans.muttrc
 
+source ~/.mutt/monokai.muttrc
+
+# vim: syntax=neomuttrc
+
 set my_pass = "`pass mutt/kwikner`"
 # set imap_user        = kwikner
 # set imap_pass        = $my_pass
@@ -38,8 +42,11 @@ bind index,pager \Co sidebar-open
 
 bind index <Enter> display-message
 
-set sort             = reverse-date
-set sort_aux         = last-date-received
+set sort             = threads
+set sort_aux         = reverse-last-date-received
+set date_format      = "%d %b %R"
+#set index_format="%4C %Z %D %-55.55L (%?l?%4l&%4c?) %s"
+set index_format="%Z %D %-55.55L (%?l?%4l&%4c?) %s"
 
 # instead of weird ^G
 set abort_key = "<Esc>"
@@ -64,7 +71,7 @@ set query_command    = "lbdbq '%s'"
 # set smime_verify_command="openssl smime -verify -inform DER -in %s %C -content %f"
 
 
-set crypt_autosmime=yes # i dont have smime..
+set crypt_autosmime=yes
 set crypt_autopgp=no
 
 #  this breaks SMIME
@@ -82,7 +89,7 @@ set pgp_use_gpg_agent = yes
 set pgp_self_encrypt = yes
 
 set sidebar_visible = yes
-set sidebar_format = "%B%* %n"
+set sidebar_format = "%B%* %N"
 set mail_check_stats
 set sidebar_new_mail_only = no
 set sidebar_width = 15
@@ -95,6 +102,8 @@ set editor = 'vim -c "set spell spelllang=en"'
 #unset mbox
 
 set implicit_autoview
+set pager_index_lines = 10
+
 alternative_order text/plain text/enriched text/html
 auto_view text/html
 
@@ -106,4 +115,9 @@ macro index,pager gs "<change-folder>=Sent<enter>" "go to sent"
 macro index,pager gd "<change-folder>=Drafts<enter>" "go to drafts"
 macro index,pager gt "<change-folder>=Trash<enter>" "go to trash"
 
-macro index \CG "<shell-escape>mbsync -V kwikner<enter>" "sync email"
+
+
+#macro index \CG "<shell-escape>mbsync -V kwikner && notmuch new<enter>" "sync email"
+macro index \CG "<sync-mailbox><enter-command>unset wait_key<enter><shell-escape>mailsync<enter><enter-command>set wait_key<enter>" "sync email"
+
+macro index \Cf "<enter-command>unset wait_key<enter><shell-escape>read -p 'Enter a search term to find with notmuch: ' x; echo \$x >~/.cache/mutt_terms<enter><limit>~i \"\`notmuch search --output=messages \$(cat ~/.cache/mutt_terms) | head -n 600 | perl -le '@a=<>;s/\^id:// for@a;$,=\"|\";print@a' | perl -le '@a=<>; chomp@a; s/\\+/\\\\+/ for@a;print@a' \`\"<enter>" "show only messages matching a notmuch pattern"

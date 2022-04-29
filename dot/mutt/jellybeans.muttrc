@@ -36,6 +36,7 @@ color index red default ~D
 color index yellow default '.*'
 color index_author blue default '.*'
 color index_number blue default
+# bright black is really really dark
 color index_subject brightblack default '.*'
 
 # New mail is boldened:

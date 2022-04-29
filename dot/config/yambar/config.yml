@@ -1,0 +1,370 @@
+# Typical laptop setup, with wifi, brightness, battery etc, for
+# i3/Sway.
+
+# For X11/i3, you'll want to replace calls to swaymsg with i3-msg, and
+# the sway-xkb module with the xkb module.
+
+# fonts we'll be re-using here and there
+awesome: &awesome FontAwesome:style=Regular:pixelsize=14
+awesome_brands: &awesome_brands FontAwesome:style=Regular:pixelsize=14
+calendar: &calendar gnome-calendar
+#awesome6 : &awesome6 Font Awesome 6 Free:style=Regular:pixelsize=14
+
+#std_underline: &std_underline {underline: { size: 2, color: ff0000ff}}
+std_underline: &std_underline {underline: { size: 3, color: ab4542ff}}
+
+
+# This is THE bar configuration
+bar:
+  height: 26
+  location: top
+  spacing: 5
+  margin: 7
+
+  # Default font
+  font: PragmataPro Mono:style=Regular:pixelsize=13
+
+  foreground: d8d8d8ff
+  background: 181818f2
+
+  border:
+    width: 0
+    color: 18181800
+    margin: 0
+    top-margin: 0
+    left-margin: 0
+
+  left:
+    - i3:
+        anchors: # Not used (directly) by f00bar; used here to avoid duplication
+          - string: &i3_common {margin: 5, on-click: "swaymsg --quiet workspace {name}"}
+          - string: &default {<<: *i3_common, text: " {name}"}
+          - string: &main    {<<: *i3_common, text: , font: *awesome}
+          - string: &surfing {<<: *i3_common, text: , font: *awesome_brands}
+          - string: &misc    {<<: *i3_common, text: , font: *awesome}
+          - string: &mail    {<<: *i3_common, text: , font: *awesome}
+          - string: &music   {<<: *i3_common, text: , font: *awesome}
+          - string: &chat    {<<: *i3_common, text: , font: *awesome}
+          - empty: &empty
+              foreground: 000000ff
+              deco: {stack: [background: {color: bc2b3fff}, <<: *std_underline]}
+          - focused: &focused
+              deco: {stack: [background: {color: ab46424c}, <<: *std_underline]}
+          - resize: &resize
+              deco: {stack: [background: {color: a1b56c7c}, <<: *std_underline]}
+          - invisible: &invisible {foreground: ffffff55}
+          - urgent: &urgent
+              foreground: 000000ff
+              deco: {stack: [background: {color: bc2b3fff}, <<: *std_underline]}
+        persistent:
+          - 1:main
+          - 2:surfing
+          - 3:misc
+          - 4:mail
+          - 5:music
+          - 6:chat
+        content:
+          "":
+            map:
+              conditions:
+                state == focused:   {string: {<<: [*default, *focused]}}
+                state == unfocused: {string: {<<: *default}}
+                state == empty: {string: {<<: *default}}
+                state == invisible: {string: {<<: [*default, *invisible]}}
+                state == urgent:    {string: {<<: [*default, *urgent]}}
+          1:main:
+            map:
+              conditions:
+                state == focused:
+                  map:
+                    conditions:
+                      mode == resize: {string: {<<: [*main, *resize]}}
+                      mode == default: {string: {<<: [*main, *focused]}}
+                state == empty:     {string: {<<: *main}}
+                state == unfocused: {string: {<<: *main}}
+                state == invisible: {string: {<<: [*main, *invisible]}}
+                state == urgent:    {string: {<<: [*main, *urgent]}}
+          2:surfing:
+            map:
+              conditions:
+                state == focused:
+                  map:
+                    conditions:
+                      mode == resize: {string: {<<: [*surfing, *resize]}}
+                      mode == default: {string: {<<: [*surfing, *focused]}}
+                state == unfocused: {string: {<<: *surfing}}
+                state == empty: {string: {<<: *surfing}}
+                state == invisible: {string: {<<: [*surfing, *invisible]}}
+                state == urgent:    {string: {<<: [*surfing, *urgent]}}
+          3:misc:
+            map:
+              conditions:
+                state == focused:
+                  map:
+                    conditions:
+                      mode == resize: {string: {<<: [*misc, *resize]}}
+                      mode == default: {string: {<<: [*misc, *focused]}}
+                state == unfocused: {string: {<<: *misc}}
+                state == empty: {string: {<<: *misc}}
+                state == invisible: {string: {<<: [*misc, *invisible]}}
+                state == urgent:    {string: {<<: [*misc, *urgent]}}
+          4:mail:
+            map:
+              conditions:
+                state == focused:
+                  map:
+                    conditions:
+                      mode == resize: {string: {<<: [*mail, *resize]}}
+                      mode == default: {string: {<<: [*mail, *focused]}}
+                state == unfocused: {string: {<<: *mail}}
+                state == empty: {string: {<<: *mail}}
+                state == invisible: {string: {<<: [*mail, *invisible]}}
+                state == urgent:    {string: {<<: [*mail, *urgent]}}
+          5:music:
+            map:
+              conditions:
+                state == focused:
+                  map:
+                    conditions:
+                      mode == resize: {string: {<<: [*music, *resize]}}
+                      mode == default: {string: {<<: [*music, *focused]}}
+                state == unfocused: {string: {<<: *music}}
+                state == empty: {string: {<<: *music}}
+                state == invisible: {string: {<<: [*music, *invisible]}}
+                state == urgent:    {string: {<<: [*music, *urgent]}}
+          6:chat:
+            map:
+              conditions:
+                state == focused:
+                  map:
+                    conditions:
+                      mode == resize: {string: {<<: [*chat, *resize]}}
+                      mode == default: {string: {<<: [*chat, *focused]}}
+                state == unfocused: {string: {<<: *chat}}
+                state == empty:  {string: {<<: *chat}}
+                state == invisible: {string: {<<: [*chat, *invisible]}}
+                state == urgent:    {string: {<<: [*chat, *urgent]}}
+
+    - foreign-toplevel:
+        content:
+          map:
+            conditions:
+              ~activated: {empty: {}}
+              activated:
+                - string: {text: "{app-id}", foreground: ffa0a0ff}
+                - string: {text: ": {title}"}
+# center:
+    #    - mpd:
+    #        host: /run/mpd/socket
+    #        anchors:
+    #          list: &artist_album_title
+    #            spacing: 0
+    #            items:
+    #              - map:
+    #                  tag: state
+    #                  values:
+    #                    playing: {string: {text: "{artist}"}}
+    #                    paused: {string: {text: "{artist}", foreground: ffffff66}}
+    #              - string: {text: " | ", foreground: ffffff66}
+    #              - map:
+    #                  tag: state
+    #                  values:
+    #                    playing: {string: {text: "{album}"}}
+    #                    paused: {string: {text: "{album}", foreground: ffffff66}}
+    #              - string: {text: " | ", foreground: ffffff66}
+    #              - map:
+    #                  tag: state
+    #                  values:
+    #                    playing: {string: {text: "{title}", foreground: ffa0a0ff}}
+    #                    paused: {string: {text: "{title}", foreground: ffffff66}}
+    #
+    #        content:
+    #          map:
+    #            margin: 10
+    #            tag: state
+    #            values:
+    #              offline: {string: {text: offline, foreground: ff0000ff}}
+    #              stopped: {string: {text: stopped}}
+    #              paused: {list: *artist_album_title}
+    #              playing: {list: *artist_album_title}
+
+  right:
+    - script:
+        path: /home/jnes/bin/mailcount
+        args: []
+        poll-interval: 3
+        content:
+          map:
+            conditions:
+              new == 0:
+                empty: {}
+            default:
+              - string: {text: " ", font: *awesome}
+              - string: {text: "{new}" }
+    - cpu:
+        content:
+          string: {text: "cpu:{cpu}%"}
+          #string: {text: " {cpu0},{cpu1},{cpu2},{cpu3},{cpu4},{cpu5},{cpu6},{cpu7},{cpu8},{cpu9},{cpu10},{cpu11},{cpu12},{cpu13},{cpu14},{cpu15}%"}
+          ###
+    - mem:
+        interval: 5000
+        content:
+          string: {text: "mem:{percent_used}%"}
+    - removables:
+        anchors:
+          drive: &drive { text: , font: *awesome}
+          optical: &optical {text: , font: *awesome}
+        spacing: 5
+        content:
+          map:
+            conditions:
+              ~mounted:
+                map:
+                  on-click: udisksctl mount -b {device}
+                  conditions:
+                    ~optical: [{string: *drive}, {string: {text: "{label}"}}]
+                    optical: [{string: *optical}, {string: {text: "{label}"}}]
+              mounted:
+                map:
+                  on-click: udisksctl unmount -b {device}
+                  conditions:
+                    ~optical:
+                      - string: {<<: *drive, deco: *std_underline}
+                      - string: {text: "{label}"}
+                    optical:
+                      - string: {<<: *optical, deco: *std_underline}
+                      - string: {text: "{label}"}
+    - sway-xkb:
+        identifiers: [1:1:AT_Translated_Set_2_keyboard]
+        content:
+          - string: {text: , font: *awesome}
+          - string: {text: "{layout}"}
+
+    - network:
+        name: enp2s0f0
+        poll-interval: 1
+        content:
+          map:
+            conditions:
+              ~carrier: {empty: {}}
+              carrier:
+                map:
+                  default: {string: {text: , font: *awesome, foreground: ffffff66}}
+                  conditions:
+                    state == up:
+                      map:
+                        default:
+                          - string: {text: , font: *awesome}
+                          - string: {text: "({ipv4}) {rx-bitrate}/{tx-bitrate} Mbps" }
+                        conditions:
+                          ipv4 == "": {string: {text: , font: *awesome, foreground: ffffff66}}
+    - network:
+        name: wlp3s0
+        poll-interval: 2
+        content:
+          map:
+            default: {string: {text: , font: *awesome, foreground: ffffff66}}
+            conditions:
+              state == down: {string: {text: , font: *awesome, foreground: ff0000ff}}
+              state == up:
+                map:
+                  default:
+                    - string: {text: , font: *awesome}
+                    - string: {text: "{ssid} {rx-bitrate}/{tx-bitrate} Mbps"}
+                  conditions:
+                    ipv4 == "":
+                      - string: {text: , font: *awesome, foreground: ffffff66}
+                      - string: {text: "{ssid}", foreground: ffffff66}
+    - alsa:
+        card: hw:1
+        mixer: Master
+        content:
+          map:
+            conditions:
+              ~online: {string: {text: , font: *awesome, foreground: ff0000ff}}
+              online:
+                map:
+                  on-click: /bin/sh -c "pactl set-sink-mute @DEFAULT_SINK@ toggle"
+                    # on-wheel-up: /bin/sh -c "pactl set-sink-volume @DEFAULT_SINK@ +5%"
+                  conditions:
+                    muted: {string: {text: , font: *awesome, foreground: ffffff66}}
+                    ~muted:
+                      ramp:
+                        tag: volume
+                        items:
+                          - string: {text: , font: *awesome}
+                          - string: {text: , font: *awesome}
+                          - string: {text: , font: *awesome}
+    - backlight:
+        name: amdgpu_bl0
+        content: [ string: {text: , font: *awesome}, string: {text: "{percent}%"}]
+    - battery:
+        name: BAT0
+        poll-interval: 30
+        anchors:
+          discharging: &discharging
+            list:
+              items:
+                - ramp:
+                    tag: capacity
+                    items:
+                      - string: {text: , foreground: ff0000ff, font: *awesome}
+                      - string: {text: , foreground: ffa600ff, font: *awesome}
+                      - string: {text: , font: *awesome}
+                      - string: {text: , font: *awesome}
+                      - string: {text: , font: *awesome}
+                      - string: {text: , font: *awesome}
+                      - string: {text: , font: *awesome}
+                      - string: {text: , font: *awesome}
+                      - string: {text: , font: *awesome}
+                      - string: {text: , foreground: a1b56cff, font: *awesome}
+                - string: {text: "{capacity}%"}
+        content:
+          map:
+            conditions:
+              state == unknown:
+                <<: *discharging
+              state == discharging:
+                <<: *discharging
+              state == charging:
+                - string: {text: , foreground: a1b56cff, font: *awesome}
+                - string: {text: "{capacity}%"}
+              state == full:
+                - string: {text: , foreground: a1b56cff, font: *awesome}
+                - string: {text: "{capacity}%"}
+              state == not charging:
+                - ramp:
+                    tag: capacity
+                    items:
+                      - string: {text:  , foreground: ff0000ff, font: *awesome}
+                      - string: {text:  , foreground: ffa600ff, font: *awesome}
+                      - string: {text:  , foreground: 00ff00ff, font: *awesome}
+                      - string: {text:  , foreground: 00ff00ff, font: *awesome}
+                      - string: {text:  , foreground: 00ff00ff, font: *awesome}
+                      - string: {text:  , foreground: 00ff00ff, font: *awesome}
+                      - string: {text:  , foreground: 00ff00ff, font: *awesome}
+                      - string: {text:  , foreground: 00ff00ff, font: *awesome}
+                      - string: {text:  , foreground: 00ff00ff, font: *awesome}
+                      - string: {text:  , foreground: 00ff00ff, font: *awesome}
+                - string: {text: "{capacity}%"}
+    - clock:
+        time-format: "%H:%M:%S"
+        date-format: "%d %b"
+        content:
+          - string: {text: " ", font: *awesome, on-click: *calendar}
+          - string: {text: "{date}", right-margin: 5, on-click: *calendar}
+          - string: {text: , font: *awesome, on-click: *calendar}
+          - string: {text: "{time}", on-click: *calendar}
+    - label:
+        content:
+          string:
+            on-click: loginctl terminate-session self
+            text: 
+            font: *awesome
+    - label:
+        content:
+          string:
+            on-click: /bin/sh -c  "echo 'HAHAHAHA' && systemctl suspend-then-hibernate"
+            text: 
+            #text: 
+            font: *awesome

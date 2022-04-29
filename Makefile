@@ -1,10 +1,16 @@
 .PHONY: symlinks
 symlinks: DOTFILES := $(wildcard dot/*)
+symlinks: DOTFILES := $(filter-out dot/config, $(DOTFILES))
+symlinks: DOTCONF := $(wildcard dot/config/*)
 symlinks:
 	@for f in $(DOTFILES); do \
 		ln -fsT `pwd`/$$f ~/`echo $$f | sed s/dot\\\//./`; \
 	done;
+	@for f in $(DOTCONF); do \
+		ln -fsT `pwd`/$$f ~/`echo $$f | sed s/dot\\\//./`; \
+	done;
 	@ls -lG `find ~ -maxdepth 1 -type l -print`
+	@ls -lG `find ~/.config -maxdepth 1 -type l -print`
 
 .PHONY: packages
 packages: PACKAGES := $(shell cat ./packages/apt.list)

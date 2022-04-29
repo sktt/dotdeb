@@ -6,8 +6,11 @@ plugins=(git zsh-syntax-highlighting)
 alias bat=batcat
 source $ZSH/oh-my-zsh.sh
 
-# BASE16_SHELL=$HOME/.config/base16-shell/
-# [ -n "$PS1" ] && [ -s $BASE16_SHELL/profile_helper.sh ] && eval "$($BASE16_SHELL/profile_helper.sh)"
+BASE16_SHELL=$HOME/.config/base16-shell/
+
+[ -n "$PS1" ] && \
+  [ -s $BASE16_SHELL/profile_helper.sh ] && \
+  eval "$($BASE16_SHELL/profile_helper.sh)"
 
 HISTFILE=~/.histfile
 HISTSIZE=10000
@@ -80,3 +83,12 @@ function dec2hex() {
 function dec2bin() {
   python3 -c "print(bin($1))"
 }
+
+function osc7 {
+    setopt localoptions extendedglob
+    input=( ${(s::)PWD} )
+    uri=${(j::)input/(#b)([^A-Za-z0-9_.\!~*\'\(\)-\/])/%${(l:2::0:)$(([##16]#match))}}
+    print -n "\e]7;file://${HOSTNAME}${uri}\e\\"
+}
+
+add-zsh-hook -Uz chpwd osc7

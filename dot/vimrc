@@ -4,8 +4,12 @@ call plug#begin('~/.vim/plugged')
   Plug 'mattn/webapi-vim'
   Plug 'mattn/gist-vim'
   Plug 'tpope/vim-obsession'
+  Plug 'felipec/notmuch-vim'
 
-  Plug 'nanotech/jellybeans.vim'
+
+
+"  Plug 'nanotech/jellybeans.vim'
+  Plug 'chriskempson/base16-vim'
 
   " Navigation
   Plug 'jlanzarotta/bufexplorer'
@@ -38,7 +42,14 @@ call plug#begin('~/.vim/plugged')
 
   Plug 'vhda/verilog_systemverilog.vim'
 
+  " clipboard wayland
+  Plug 'kana/vim-fakeclip'
+
 call plug#end()
+
+set clipboard=unnamedplus
+
+let g:fakeclip_provide_clipboard_key_mappings = 1
 
 " remove all gui stuff from gvim
 set go=
@@ -46,13 +57,13 @@ set guifont=PragmataPro\ Liga\ 14
 
 set rtp+=/usr/bin/fzf
 
-set clipboard=unnamedplus
+
 " noremap x "1x but im using x+p alot so..
 set timeoutlen=100 ttimeoutlen=0
 
 
-" read inline per file config
-set modeline
+" read inline per file config, insecure
+set nomodeline
 
 " let g:spellfile_URL='http://ftp.vim.org/vim/runtime/spell'
 let g:tex_comment_nospell = 1
@@ -64,7 +75,7 @@ let g:ycm_min_num_of_chars_for_completion = 4
 let g:yats_host_keyword = 1
 autocmd BufWinEnter quickfix set nowrap!
 
-let g:clang_library_path='/usr/lib/llvm-7/lib'
+let g:clang_library_path='/usr/lib/llvm-11/lib'
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => General
@@ -233,10 +244,12 @@ if exists('+termguicolors')
   let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
   set termguicolors
 endif
-" if filereadable(expand("~/.vimrc_background"))
-  " let base16colorspace=256
-"   source ~/.vimrc_background
-" endif
+
+if filereadable(expand("~/.vimrc_background"))
+   let base16colorspace=256
+   source ~/.vimrc_background
+endif
+
 
 " set t_Co=256
 set background=dark
@@ -244,7 +257,7 @@ set background=dark
 " colorscheme vividchalk
 " colorscheme synthwave84
 " colorscheme PaperColor
-colorscheme jellybeans
+" colorscheme jellybeans
 
 "hi Normal ctermbg=none
 
@@ -256,10 +269,11 @@ set nowrap
 
 " Use syntax highlighting
 syntax on
+if ! has("gui_running")
+  hi Normal guibg=NONE
+endif
 
 " Show guide lines
-autocmd WinLeave * set nocursorline nocursorcolumn
-autocmd WinEnter * set cursorline cursorcolumn
 " set cursorline cursorcolumn
 
 " No annoying sound on errors
@@ -330,6 +344,11 @@ autocmd FileType litcoffee runtime ftplugin/coffee.vim
 autocmd FileType sh set tw=0
 " autocmd FileType ts   setfiletype typescript
 autocmd BufNewFile,BufRead *.ts setlocal filetype=typescript
+
+autocmd BufNewFile,BufRead */.config/waybar/config setlocal filetype=json5
+
+autocmd BufNewFile,BufRead *.muttrc setlocal filetype=neomuttrc
+autocmd BufNewFile,BufRead muttrc setlocal filetype=neomuttrc
 
 augroup Binary
   au!
@@ -474,12 +493,17 @@ highlight Comment cterm=italic
 highlight SpellCap cterm=underline guifg=yellow
 highlight SpellRare cterm=underline guifg=yellow
 
-autocmd VimLeave * call system("xclip -o | xclip -selection c")
+"autocmd VimLeave * call system("xclip -o | xclip -selection c")
+"autocmd VimLeave * call system("wl-copy")
 
 let g:ackprg = 'rg --vimgrep --type-not sql --smart-case'
 "let g:ack_autoclose = 1
 let g:ack_use_cword_for_empty_search = 1
+
 cnoreabbrev Ack Ack!
 nnoremap <Leader>g :Ack!<Space>
 
 syn region texComment   start="\\begin{comment}"    end="\\end{comment}"
+autocmd WinLeave * set nocursorline nocursorcolumn
+autocmd WinEnter * set cursorline cursorcolumn
+

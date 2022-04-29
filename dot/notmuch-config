@@ -1,0 +1,23 @@
+[database]
+path=/home/jnes/.local/share/notmuch
+mail_root=/home/jnes/Mail
+
+[user]
+name=Johannes Wikner
+primary_email=kwikner@ethz.ch
+
+[new]
+tags=new
+ignore=/.*/\.mbsyncstate$/;/.*/\.uidvalidity$/
+
+[search]
+exclude_tags=deleted;spam;
+
+[maildir]
+synchronize_flags=true
+
+[crypto]
+pgp_path=gpg
+
+[index]
+decrypt=nostash
