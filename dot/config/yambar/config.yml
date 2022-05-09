@@ -242,7 +242,7 @@ bar:
 
     - network:
         name: enp2s0f0
-        poll-interval: 1
+        poll-interval: 3
         content:
           map:
             conditions:
@@ -258,9 +258,10 @@ bar:
                           - string: {text: "({ipv4}) {rx-bitrate}/{tx-bitrate} Mbps" }
                         conditions:
                           ipv4 == "": {string: {text: , font: *awesome, foreground: ffffff66}}
+
     - network:
         name: wlp3s0
-        poll-interval: 2
+        poll-interval: 3
         content:
           map:
             default: {string: {text: , font: *awesome, foreground: ffffff66}}
@@ -270,13 +271,19 @@ bar:
                 map:
                   default:
                     - string: {text: , font: *awesome}
-                    - string: {text: "{ssid} {rx-bitrate}/{tx-bitrate} Mbps"}
+                    - string: {text: "{ssid} {rx-mb/s}/{tx-mb/s} MB/s"}
                   conditions:
                     ipv4 == "":
                       - string: {text: , font: *awesome, foreground: ffffff66}
                       - string: {text: "{ssid}", foreground: ffffff66}
+    # - script:
+    #     path: /home/jnes/bin/link_stats
+    #     args: ["wlp3s0", "2000"]
+    #     content:
+    #       - string: {text: "UL {ul} MiB/s" }
+    #       - string: {text: "DL {dl} MiB/s" }
     - alsa:
-        card: hw:1
+        card: default
         mixer: Master
         content:
           map:
@@ -293,8 +300,8 @@ bar:
                         tag: volume
                         items:
                           - string: {text: , font: *awesome}
-                          - string: {text: , font: *awesome}
-                          - string: {text: , font: *awesome}
+                          - string: {text: " {percent}%"}
+                          - string: {text: " {percent}%" }
     - backlight:
         name: amdgpu_bl0
         content: [ string: {text: , font: *awesome}, string: {text: "{percent}%"}]
@@ -338,14 +345,14 @@ bar:
                     items:
                       - string: {text:  , foreground: ff0000ff, font: *awesome}
                       - string: {text:  , foreground: ffa600ff, font: *awesome}
-                      - string: {text:  , foreground: 00ff00ff, font: *awesome}
-                      - string: {text:  , foreground: 00ff00ff, font: *awesome}
-                      - string: {text:  , foreground: 00ff00ff, font: *awesome}
-                      - string: {text:  , foreground: 00ff00ff, font: *awesome}
-                      - string: {text:  , foreground: 00ff00ff, font: *awesome}
-                      - string: {text:  , foreground: 00ff00ff, font: *awesome}
-                      - string: {text:  , foreground: 00ff00ff, font: *awesome}
-                      - string: {text:  , foreground: 00ff00ff, font: *awesome}
+                      - string: {text:  , foreground: a1b56cff, font: *awesome}
+                      - string: {text:  , foreground: a1b56cff, font: *awesome}
+                      - string: {text:  , foreground: a1b56cff, font: *awesome}
+                      - string: {text:  , foreground: a1b56cff, font: *awesome}
+                      - string: {text:  , foreground: a1b56cff, font: *awesome}
+                      - string: {text:  , foreground: a1b56cff, font: *awesome}
+                      - string: {text:  , foreground: a1b56cff, font: *awesome}
+                      - string: {text:  , foreground: a1b56cff, font: *awesome}
                 - string: {text: "{capacity}%"}
     - clock:
         time-format: "%H:%M:%S"

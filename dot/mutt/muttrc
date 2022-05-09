@@ -1,6 +1,3 @@
-source ~/.mutt/jellybeans.muttrc
-
-source ~/.mutt/monokai.muttrc
 
 # vim: syntax=neomuttrc
 
@@ -8,15 +5,25 @@ set my_pass = "`pass mutt/kwikner`"
 # set imap_user        = kwikner
 # set imap_pass        = $my_pass
 
-set mbox_type = Maildir
+#set mbox_type = Maildir
+set mbox_type = mbox
 #set folder           = imaps://mail.ethz.ch/
 set folder           =  ~/Mail
-
-set spoolfile        = +INBOX
+set spoolfile        = Inbox
 set record           = +Sent
 set trash            = +Trash
 set postponed        = +Drafts
-mailboxes =INBOX =Sent =Trash =Drafts
+
+virtual-mailboxes "Inbox"    "notmuch://?query=tag:inbox and not tag:trash"
+virtual-mailboxes "Unread"   "notmuch://?query=tag:inbox and tag:unread"
+mailboxes =Sent
+virtual-mailboxes "Trash"    "notmuch://?query=tag:trash"
+mailboxes =Drafts
+
+bind index L noop
+# macro index Lp "<pipe-message>gpg -d | git am"
+set pipe_split = yes
+macro index Lp "|gpg -d | sed -n '/^^Subject:.*/,$p' | git am\n"
 
 set smtp_url         = "smtp://kwikner@mail.ethz.ch:587"
 set smtp_pass        = $my_pass
@@ -29,18 +36,14 @@ set imap_keepalive   = 600
 
 # include copy of original message in reply
 set include=yes
-
-
 # Move the highlight to the previous mailbox
 bind index,pager \Cp sidebar-prev
-
 # Move the highlight to the next mailbox
 bind index,pager \Cn sidebar-next
-
 # Open the highlighted mailbox
 bind index,pager \Co sidebar-open
 
-bind index <Enter> display-message
+bind index Enter display-message
 
 set sort             = threads
 set sort_aux         = reverse-last-date-received
@@ -60,17 +63,6 @@ unset signature
 set hostname         = ethz.ch
 set query_command    = "lbdbq '%s'"
 
-# set smime_sign_as="0xA9379EF1"
-# set smime_default_key="0xA9379EF1"
-
-# set smime_sign_as="9e2d6ec9.0"
-# set smime_default_key="9e2d6ec9.0"
-# set smime_ca_location="~/.smime/ca-certificates.crt"
-# set smime_keys="~/.smime/keys"
-# set smime_certificates="~/.smime/certificates"
-# set smime_verify_command="openssl smime -verify -inform DER -in %s %C -content %f"
-
-
 set crypt_autosmime=yes
 set crypt_autopgp=no
 
@@ -88,8 +80,8 @@ set pgp_check_gpg_decrypt_status_fd
 set pgp_use_gpg_agent = yes
 set pgp_self_encrypt = yes
 
-set sidebar_visible = yes
-set sidebar_format = "%B%* %N"
+set sidebar_visible = no
+set sidebar_format = "%D%* %N"
 set mail_check_stats
 set sidebar_new_mail_only = no
 set sidebar_width = 15
@@ -97,27 +89,51 @@ set sidebar_short_path = yes
 
 
 set menu_scroll
-set editor = 'vim -c "set spell spelllang=en"'
+set editor = 'nvim -c "set spell spelllang=en"'
 
 #unset mbox
 
 set implicit_autoview
 set pager_index_lines = 10
+set pager_stop = yes
 
 alternative_order text/plain text/enriched text/html
 auto_view text/html
 
 source ~/.mutt/vim-keys.muttrc
 
-#//bind index,pager g noop
-macro index,pager gi "<change-folder>=INBOX<enter>" "go to inbox"
-macro index,pager gs "<change-folder>=Sent<enter>" "go to sent"
+set nm_default_url = "notmuch:///home/jnes/Mail"
+set nm_record = yes
+set nm_record_tags = sent
+macro index,pager gi "<change-folder>Inbox<enter>"   "go to inbox"
+macro index,pager gs "<change-folder>=Sent<enter>"   "go to sent"
 macro index,pager gd "<change-folder>=Drafts<enter>" "go to drafts"
-macro index,pager gt "<change-folder>=Trash<enter>" "go to trash"
+macro index,pager gt "<change-folder>Trash<enter>"   "go to trash"
+macro index,pager gu "<change-folder>Unread<enter>"  "go to unread"
 
-
+bind index <Up>   previous-undeleted # Mouse wheel
+bind index <Down> next-undeleted     # Mouse wheel
+bind pager <Up>   previous-line      # Mouse wheel
+bind pager <Down> next-line          # Mouse wheel
 
 #macro index \CG "<shell-escape>mbsync -V kwikner && notmuch new<enter>" "sync email"
 macro index \CG "<sync-mailbox><enter-command>unset wait_key<enter><shell-escape>mailsync<enter><enter-command>set wait_key<enter>" "sync email"
 
 macro index \Cf "<enter-command>unset wait_key<enter><shell-escape>read -p 'Enter a search term to find with notmuch: ' x; echo \$x >~/.cache/mutt_terms<enter><limit>~i \"\`notmuch search --output=messages \$(cat ~/.cache/mutt_terms) | head -n 600 | perl -le '@a=<>;s/\^id:// for@a;$,=\"|\";print@a' | perl -le '@a=<>; chomp@a; s/\\+/\\\\+/ for@a;print@a' \`\"<enter>" "show only messages matching a notmuch pattern"
+
+source ~/.mutt/jellybeans.muttrc
+source ~/.mutt/monokai.muttrc
+#source ~/.mutt/monokai2.muttrc
+
+# Patch syntax highlighting
+color   normal  white           default
+#color   body    brightwhite     default         ^[[:space:]].*\|.*
+color   body    brightwhite     default         ^(diff).*
+color   body    white           default         ^[\-\-\-].*
+color   body    white           default         ^[\+\+\+].*
+color   body    green           default         ^[\+].*
+color   body    red             default         ^[\-].*
+color   body    brightblue      default         @@.*
+#color   body    brightwhite     default         ^(\s).*
+color   body    brightwhite     default         ^(Signed-off-by).*
+color   body    brightwhite     default         ^(Cc)

@@ -28,6 +28,9 @@ bind index                      \Cy previous-line
 
 bind pager,index                d   noop
 bind pager,index                dd  delete-message
+macro pager,index               dd  "<modify-labels-then-hide>+trash\n" "Trash"
+macro pager,index               u  "<modify-labels-then-hide>-trash\n" "Untrash"
+#bind pager,index                dd  quasi-delete
 
 # Mail & Reply
 bind index                      \Cm list-reply # Doesn't work currently

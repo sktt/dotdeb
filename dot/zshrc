@@ -4,7 +4,9 @@ ZSH_THEME="minimal"
 plugins=(git zsh-syntax-highlighting)
 # plugins=(git zsh-syntax-highlighting zsh-autosuggestions)
 alias bat=batcat
+alias vim=nvim
 source $ZSH/oh-my-zsh.sh
+
 
 BASE16_SHELL=$HOME/.config/base16-shell/
 

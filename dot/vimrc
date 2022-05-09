@@ -15,6 +15,7 @@ call plug#begin('~/.vim/plugged')
   Plug 'jlanzarotta/bufexplorer'
   Plug 'christoomey/vim-tmux-navigator'
   Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+  Plug 'junegunn/fzf.vim'
 
   " ./install.py --clangd-completer --rust-completer --go-completer --ts-completer
   Plug 'ycm-core/YouCompleteMe', { 'do': './install.py --go-completer --clangd-completer --clang-tidy --ts-completer --ninja' }
@@ -42,14 +43,9 @@ call plug#begin('~/.vim/plugged')
 
   Plug 'vhda/verilog_systemverilog.vim'
 
-  " clipboard wayland
-  Plug 'kana/vim-fakeclip'
-
 call plug#end()
 
 set clipboard=unnamedplus
-
-let g:fakeclip_provide_clipboard_key_mappings = 1
 
 " remove all gui stuff from gvim
 set go=
@@ -135,15 +131,18 @@ nmap <S-l> :bnext<CR>
 " Move to the previous buffer
 nmap <S-h> :bprevious<CR>
 
-execute "set <M-1>=1"
-execute "set <M-2>=2"
-execute "set <M-3>=3"
-execute "set <M-4>=4"
-execute "set <M-5>=5"
-execute "set <M-6>=6"
-execute "set <M-7>=7"
-execute "set <M-8>=8"
-execute "set <M-9>=9"
+if !has('nvim')
+  set ttymouse=xterm2
+  execute "set <M-1>=1"
+  execute "set <M-2>=2"
+  execute "set <M-3>=3"
+  execute "set <M-4>=4"
+  execute "set <M-5>=5"
+  execute "set <M-6>=6"
+  execute "set <M-7>=7"
+  execute "set <M-8>=8"
+  execute "set <M-9>=9"
+endif
 noremap <M-1> :b1<CR>
 noremap <M-2> :b2<CR>
 noremap <M-3> :b3<CR>
@@ -326,7 +325,7 @@ let g:javascript_conceal_super                = "Ω"
 let g:javascript_conceal_arrow_function       = "⇒"
 let g:javascript_conceal_noarg_arrow_function = "🞅"
 let g:javascript_conceal_underscore_arrow_function = "🞅"
-set conceallevel=2
+" set conceallevel=2
 let g:javascript_plugin_jsdoc = 1
 " -> ctrlp.vim
 "
@@ -342,6 +341,7 @@ nnoremap <Leader>o :BufExplorer<CR>
 " Treat litcoffee as coffee
 autocmd FileType litcoffee runtime ftplugin/coffee.vim
 autocmd FileType sh set tw=0
+autocmd FileType tex set tw=0
 " autocmd FileType ts   setfiletype typescript
 autocmd BufNewFile,BufRead *.ts setlocal filetype=typescript
 
@@ -376,8 +376,6 @@ augroup END
 
 " Show status bar
 set laststatus=2
-
-set ttymouse=xterm2
 
 " -> NERDTree / NERDTreeTabs
 " Open NERDTree in all tabs
@@ -478,7 +476,11 @@ autocmd! bufwritepost $MYVIMRC source %
 command! Q q
 
 " Quickly open config file
+if has('nvim')
+nmap <Leader>v :tabedit ~/.vimrc<CR>
+else
 nmap <Leader>v :tabedit $MYVIMRC<CR>
+endif
 
 " Search for visual selected section
 vnoremap // "y/<C-R>"<CR>

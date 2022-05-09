@@ -23,26 +23,26 @@ color underline brightmagenta default
 color error red default
 
 # Colours for items in the index
-color index white default ~A
-color index default default ~R
+# color index white default ~A
+# color index default default ~R
 #color index magenta default ~O
-color index brightgreen default ~N
-color index brightmagenta default ~F
-color index brightred default ~T
-color index brightyellow default ~U
-color index red default ~D
+# color index brightgreen default ~N
+# color index brightmagenta default ~F
+# color index brightred default ~T
+# color index brightyellow default ~U
+# color index red default ~D
 
 # Default index colors:
-color index yellow default '.*'
-color index_author blue default '.*'
-color index_number blue default
+# color index yellow default '.*'
+# color index_author blue default '.*'
+# color index_number blue default
 # bright black is really really dark
-color index_subject brightblack default '.*'
+# color index_subject brightblack default '.*'
 
 # New mail is boldened:
-color index brightyellow black "~N"
-color index_author brightred color230 "~N"
-color index_subject brightcyan color230 "~N"
+#color index brightyellow black "~N"
+# color index_author brightred color230 "~N"
+# color index_subject brightcyan color230 "~N"
 
 ## Highlights inside the body of a message.
 
@@ -98,6 +98,8 @@ color quoted9 brightcyan default
 # I can never get this fracking GPG regex's to work
 # Please fork and send a pull request
 #
+color body brightgreen default "Good signature from[^<]*"
+color body green default "PGP message successfully decrypted"
 color body green default "gpg: Good signature"
 color body red default "gpg: BAD signature"
 color body red default "gpg: Can't check signature"

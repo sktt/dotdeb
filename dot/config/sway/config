@@ -29,14 +29,6 @@ output * bg /usr/share/backgrounds/gnome/blobs-d.svg fill
 
 ### Idle configuration
 
-exec swayidle -w \
-         timeout 290 'swaymsg "output * dpms off"' resume 'swaymsg "output * dpms on"' \
-         timeout 300 'swaylock -f -c 585858' \
-         before-sleep 'swaylock -f -c 585858'
-
-
-         #timeout 295 'notify-send -a "Idle" "I will sleep soon" "Touch me" -t 5000' \
-        # timeout 600 'swaymsg "output * dpms off"' resume 'swaymsg "output * dpms on"' \
 
 ### Input configuration
 input "2:7:SynPS/2_Synaptics_TouchPad" {
@@ -61,7 +53,8 @@ set $laptop eDP-1
 
 bindswitch --reload --locked lid:on output $laptop disable
 bindswitch --reload --locked lid:off output $laptop enable
-exec_always ~/home/jnes/.config/sway/sway-lid.sh
+
+exec_always /home/jnes/.config/sway/sway-lid.sh
 
 ### Key bindings
 #
@@ -158,13 +151,13 @@ bindsym Mod1+Shift+Tab exec ~/.config/sway/swayworkspace.sh navigate previous $w
     bindsym $mod+5 workspace $ws5
     bindsym $mod+6 workspace $ws6
 
-    workspace $ws1 output "DP-5" "HDMI-A-1" "eDP-1"
-    workspace $ws2 output "DP-5" "HDMI-A-1" "eDP-1"
-    workspace $ws3 output "DP-5" "HDMI-A-1" "eDP-1"
-    workspace $ws4 output "DP-5" "HDMI-A-1" "eDP-1"
-    workspace $ws5 output "eDP-1" "DP-5" "HDMI-A-1"
-    workspace $ws6 output "DP-5" "HDMI-A-1" "eDP-1"
-    workspace 7 output "DP-4" "eDP-1"
+    workspace $ws1 output "DP-7" "HDMI-A-1" "eDP-1"
+    workspace $ws2 output "DP-7" "HDMI-A-1" "eDP-1"
+    workspace $ws3 output "DP-7" "HDMI-A-1" "eDP-1"
+    workspace $ws4 output "DP-7" "HDMI-A-1" "eDP-1"
+    workspace $ws5 output "eDP-1" "DP-6" "HDMI-A-1"
+    workspace $ws6 output "DP-7" "HDMI-A-1" "eDP-1"
+    workspace 7 output "DP-6" "eDP-1"
 
     bindsym $mod+7 workspace number 7
     bindsym $mod+8 workspace number 8
@@ -236,8 +229,10 @@ bindsym Mod1+Shift+Tab exec ~/.config/sway/swayworkspace.sh navigate previous $w
 #
 # Media keys:
 #
-    bindsym --locked XF86AudioRaiseVolume exec pactl set-sink-volume @DEFAULT_SINK@ +5%
-    bindsym --locked XF86AudioLowerVolume exec pactl set-sink-volume @DEFAULT_SINK@ -5%
+    # bindsym --locked XF86AudioRaiseVolume exec pactl set-sink-volume @DEFAULT_SINK@ +5%
+    # bindsym --locked XF86AudioLowerVolume exec pactl set-sink-volume @DEFAULT_SINK@ -5%
+    bindsym --locked XF86AudioRaiseVolume exec amixer set Master '5%+'
+    bindsym --locked XF86AudioLowerVolume exec amixer set Master '5%-'
     bindsym --locked XF86AudioMute exec pactl set-sink-mute @DEFAULT_SINK@ toggle
     bindsym --locked XF86AudioMicMute exec pactl set-source-mute @DEFAULT_SOURCE@ toggle
     bindsym --locked XF86AudioPlay exec playerctl play-pause
@@ -246,8 +241,10 @@ bindsym Mod1+Shift+Tab exec ~/.config/sway/swayworkspace.sh navigate previous $w
 
 # on my keyboard "Fn" is "Menu"
     bindsym --locked Menu+F1 exec pactl set-sink-mute @DEFAULT_SINK@ toggle
-    bindsym --locked Menu+F2 exec pactl set-sink-volume @DEFAULT_SINK@ -5%
-    bindsym --locked Menu+F3 exec pactl set-sink-volume @DEFAULT_SINK@ +5%
+    bindsym --locked Menu+F2 exec amixer set Master '5%-'
+    bindsym --locked Menu+F3 exec amixer set Master '5%+'
+    # bindsym --locked Menu+F2 exec pactl set-sink-volume @DEFAULT_SINK@ -5%
+    # bindsym --locked Menu+F3 exec pactl set-sink-volume @DEFAULT_SINK@ +5%
     bindsym --locked Menu+F4 exec pactl set-source-mute @DEFAULT_SOURCE@ toggle
     bindsym --locked Menu+F5 exec brightnessctl set 5%-
     bindsym --locked Menu+F6 exec brightnessctl set 5%+
@@ -286,13 +283,20 @@ bindsym $mod+r mode "resize"
 
 exec_always --no-startup-id ~/bin/launch.sh yambar
 #exec_always --no-startup-id ~/.config/waybar/launch.sh
-exec_always --no-startup-id ~/bin/launch.sh mako
+exec_always --no-startup-id ~/bin/launch.sh mako -c /home/jnes/dotdeb/dot/config/mako/config
+
+exec_always --no-startup-id ~/bin/launch.sh \
+    swayidle -w timeout 290 '/home/jnes/bin/fade-layer &' \
+    timeout 300 'swaylock -f -c 585858' \
+    timeout 310 'swaymsg "output * dpms off"' \
+    resume 'swaymsg "output * dpms on"' \
+    before-sleep 'swaylock -f -c 585858'
 
 # no|yes|always
 focus_follows_mouse no
 
 include /etc/sway/config.d/*
 
-smart_gaps on
+#smart_gaps on
 smart_borders on
-gaps outer 28
+gaps inner 14

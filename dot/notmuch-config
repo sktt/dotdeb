@@ -1,6 +1,5 @@
 [database]
-path=/home/jnes/.local/share/notmuch
-mail_root=/home/jnes/Mail
+path=/home/jnes/Mail
 
 [user]
 name=Johannes Wikner
@@ -11,7 +10,7 @@ tags=new
 ignore=/.*/\.mbsyncstate$/;/.*/\.uidvalidity$/
 
 [search]
-exclude_tags=deleted;spam;
+exclude_tags=deleted;trash;spam;
 
 [maildir]
 synchronize_flags=true
