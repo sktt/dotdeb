@@ -19,6 +19,7 @@ virtual-mailboxes "Unread"   "notmuch://?query=tag:inbox and tag:unread"
 mailboxes =Sent
 virtual-mailboxes "Trash"    "notmuch://?query=tag:trash"
 mailboxes =Drafts
+virtual-mailboxes "Spam"     "notmuch://?query=tag:spam"
 
 bind index L noop
 # macro index Lp "<pipe-message>gpg -d | git am"
@@ -29,7 +30,7 @@ set smtp_url         = "smtp://kwikner@mail.ethz.ch:587"
 set smtp_pass        = $my_pass
 set ssl_starttls     = yes
 set ssl_force_tls    = yes
-set smtp_authenticators = 'gssapi:login'
+set smtp_authenticators = 'login'
 
 set mail_check       = 300
 set imap_keepalive   = 600
@@ -45,6 +46,7 @@ bind index,pager \Co sidebar-open
 
 bind index Enter display-message
 
+#set collapse_all = yes
 set sort             = threads
 set sort_aux         = reverse-last-date-received
 set date_format      = "%d %b %R"
@@ -110,6 +112,7 @@ macro index,pager gs "<change-folder>=Sent<enter>"   "go to sent"
 macro index,pager gd "<change-folder>=Drafts<enter>" "go to drafts"
 macro index,pager gt "<change-folder>Trash<enter>"   "go to trash"
 macro index,pager gu "<change-folder>Unread<enter>"  "go to unread"
+macro index,pager gS "<change-folder>Spam<enter>"    "go to spam"
 
 bind index <Up>   previous-undeleted # Mouse wheel
 bind index <Down> next-undeleted     # Mouse wheel
@@ -128,7 +131,7 @@ source ~/.mutt/monokai.muttrc
 # Patch syntax highlighting
 color   normal  white           default
 #color   body    brightwhite     default         ^[[:space:]].*\|.*
-color   body    brightwhite     default         ^(diff).*
+color   body    brightwhite     default         ^(diff[[:space:]]).*
 color   body    white           default         ^[\-\-\-].*
 color   body    white           default         ^[\+\+\+].*
 color   body    green           default         ^[\+].*
@@ -136,4 +139,5 @@ color   body    red             default         ^[\-].*
 color   body    brightblue      default         @@.*
 #color   body    brightwhite     default         ^(\s).*
 color   body    brightwhite     default         ^(Signed-off-by).*
+color   body    brightwhite     default         ^(Reviewed-by).*
 color   body    brightwhite     default         ^(Cc)
