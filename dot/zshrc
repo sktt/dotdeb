@@ -1,12 +1,16 @@
 MANPAGER=most
-PAGER=most
 ZSH_THEME="minimal"
 plugins=(git zsh-syntax-highlighting)
 # plugins=(git zsh-syntax-highlighting zsh-autosuggestions)
 alias bat=batcat
 alias vim=nvim
+alias objdump="objdump --show-raw-insn --visualize-jumps=color --disassembler-color=color"
+
 source $ZSH/oh-my-zsh.sh
 
+ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern)
+ZSH_HIGHLIGHT_STYLES[comment]='fg=#585858,bold'
+# ZSH_HIGHLIGHT_STYLES[cursor]='bg=default'
 
 BASE16_SHELL=$HOME/.config/base16-shell/
 
@@ -33,7 +37,8 @@ RPS1='%(?..%{$fg_no_bold[red]%}%? ↵%{$reset_color%})'
 
 alias gst="git status --short"
 alias xo="xdg-open"
-alias clip="xclip -sel clipboard"
+#alias clip="xclip -sel clipboard"
+alias clip="wl-copy"
 alias mutt=neomutt
 
 function pub_ip {
