@@ -6,8 +6,6 @@ call plug#begin('~/.vim/plugged')
   Plug 'tpope/vim-obsession'
   Plug 'felipec/notmuch-vim'
 
-
-
 "  Plug 'nanotech/jellybeans.vim'
   Plug 'chriskempson/base16-vim'
 
@@ -17,8 +15,12 @@ call plug#begin('~/.vim/plugged')
   Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
   Plug 'junegunn/fzf.vim'
 
+"  Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug']}
+  Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': 'markdown' }
+
+
   " ./install.py --clangd-completer --rust-completer --go-completer --ts-completer
-  Plug 'ycm-core/YouCompleteMe', { 'do': './install.py --go-completer --clangd-completer --clang-tidy --ts-completer --ninja' }
+  " Plug 'ycm-core/YouCompleteMe', { 'do': './install.py --go-completer --clangd-completer --clang-tidy --ts-completer --ninja' }
   " Formating and editing
   Plug 'tpope/vim-surround'
   Plug 'tpope/vim-repeat'
@@ -33,6 +35,7 @@ call plug#begin('~/.vim/plugged')
 
   " Linting
   Plug 'dense-analysis/ale'
+  Plug 'neoclide/coc.nvim', {'branch': 'release'}
   " UI Plugins
   Plug 'preservim/nerdtree'
   Plug 'ryanoasis/vim-devicons'
@@ -45,18 +48,24 @@ call plug#begin('~/.vim/plugged')
 
 call plug#end()
 
-set clipboard=unnamedplus
+let g:coc_filetype_map = {
+      \ 'tex': 'latex',
+      \ 'plaintex': 'latex',
+      \ 'mail': 'latex'
+\}
+
+set clipboard+=unnamedplus
 
 " remove all gui stuff from gvim
 set go=
 set guifont=PragmataPro\ Liga\ 14
 
+" set shada='1000
+
 set rtp+=/usr/bin/fzf
 
-
 " noremap x "1x but im using x+p alot so..
-set timeoutlen=100 ttimeoutlen=0
-
+set timeoutlen=100 ttimeoutlen=10
 
 " read inline per file config, insecure
 set nomodeline
@@ -99,12 +108,12 @@ set mouse=a
 " Leader key mapping and timeout
 nnoremap <c-s> :w<CR>
 nnoremap <Space> <Nop>
+nnoremap <F2> :ALEDetail<CR>
 nnoremap <F5> "=strftime('%F')<cr>p
 inoremap <F5> <c-o>"=strftime('%F')<cr>p
 nnoremap j gj
 nnoremap k gk
 set timeoutlen=400
-set ttimeoutlen=400
 let mapleader = " "
 nnoremap <Leader>e :e %:h/%:t:r.
 
@@ -160,6 +169,7 @@ nmap <Leader>x :bd<CR>
 " Show all open buffers and their status
 " nnoremap gb :ls<CR>:buffer<Space>
 nnoremap gb :BufExplorer<cr>
+nnoremap <Leader>b :BufExplorer<cr>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Editing text
@@ -189,16 +199,20 @@ set expandtab "tab -> spaces. `C-V <Tab>` for normal tab
 set shiftround "Round indent to nearest shiftwidth multiple
 " set foldmethod=syntax
 
-nnoremap <Leader>bl :BufExplorer<CR>
 let g:bufExplorerDefaultHelp=0       " Do not show default help.
 " nnoremap <leader>jd :ALEGoToDefinition<CR>
 " nnoremap <leader>jf :ALEFindReferences<CR>
 
-nnoremap <leader>jd :YcmCompleter GoTo<CR>
-nnoremap <leader>ji :YcmCompleter GoToImplementation<CR>
-nnoremap <leader>jt :YcmCompleter GoToDeclaration<CR>
-nnoremap <leader>jr :YcmCompleter GoToReferences<CR>
-nnoremap <leader>fi :YcmCompleter FixIt<CR>
+" nnoremap <leader>jd :YcmCompleter GoTo<CR>
+" nnoremap <leader>ji :YcmCompleter GoToImplementation<CR>
+" nnoremap <leader>jt :YcmCompleter GoToDeclaration<CR>
+" nnoremap <leader>jr :YcmCompleter GoToReferences<CR>
+" nnoremap <leader>fi :YcmCompleter FixIt<CR>
+
+nmap <silent> <leader>jd <Plug>(coc-definition)
+nmap <silent> <leader>jt <Plug>(coc-type-definition)
+nmap <silent> <leader>ji <Plug>(coc-implementation)
+nmap <silent> <leader>jr <Plug>(coc-references)
 
 " Makefiles need tabs
 autocmd FileType make setlocal noexpandtab
@@ -288,21 +302,32 @@ set tm=500
 " -> indentLine
 "let g:indentLine_char = '¦'
 "let g:indentLine_color_term = 234
-"let g:ale_fixers = {
-"\   'javascript': [
-"\       'eslint',
-"\   ],
-"\}
-let g:ale_fixers = {}
-let g:ale_fixers['javascript'] = ['prettier']
-let g:ale_fixers['typescript'] = ['prettier']
+let g:ale_fixers = {
+\   'javascript': [ 'prettier', ],
+\   'typescript': [ 'prettier', ],
+\   'c': [ 'clang-format', ],
+\}
+
 let g:ale_lint_on_text_changed = 'never'
 let g:ale_lint_on_insert_leave = 0
 let g:ale_lint_on_enter = 0
 
 " let g:ale_linters = {'c': [exepath('clang-tidy')], 'cpp': []  }
-let g:ale_linters = {'c': [], 'cpp': [], 'python': ['pyflakes']  }
+let g:ale_linters = {
+      \ 'c': ['clangtidy'],
+      \ 'cpp': ['clangtidy'],
+      \ 'python': ['pyflakes'],
+      \ 'markdown': ['write-good'],
+      \ 'plainex': ['textchk'],
+      \ 'tex': ['texchk'],
+      \ 'text': [],
+      \}
 
+let g:ale_linters_ignore = {
+      \ 'html': ['writegood'],
+  \}
+
+let g:ale_languagetool_executable = "/home/jnes/bin/languagetool"
 
 " let g:ale_completion_enabled = 1
 " set omnifunc=ale#completion#OmniFunc
@@ -490,7 +515,7 @@ set t_ZH=[3m
 set t_ZR=[23m
 highlight Comment cterm=italic
 
-" highlight SpellBad cterm=underline guifg=red
+highlight SpellBad cterm=underline guifg=red
 " highlight SpellLocal cterm=underline guifg=orange
 highlight SpellCap cterm=underline guifg=yellow
 highlight SpellRare cterm=underline guifg=yellow
