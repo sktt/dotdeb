@@ -1,0 +1,14 @@
+{
+  "ltex.enabled": ["bibtex", "context", "context.tex", "latex", "markdown", "org", "restructuredtext", "rsweave"],
+  "ltex.language": "en-US",
+  "ltex.disabledRules": {
+    "en-US": [
+      "MORFOLOGIK_RULE_EN_US",
+      "COMMA_PARENTHESIS_WHITESPACE"
+    ]
+  },
+  // "clangd.inlayHints.enable": false,
+  "clangd.disableProgressNotifications": true,
+  "clangd.inlayHints.enable": false
+  // "signature.target": "echo"
+}
