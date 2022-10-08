@@ -255,7 +255,25 @@ bar:
                       map:
                         default:
                           - string: {text: , font: *awesome}
-                          - string: {text: "({ipv4}) {rx-bitrate}/{tx-bitrate} Mbps" }
+                          - string: {text: "({ipv4}) {dl-speed:mb}/{ul-speed:mb} Mb/s" }
+                        conditions:
+                          ipv4 == "": {string: {text: , font: *awesome, foreground: ffffff66}}
+    - network:
+        name: enp5s0
+        poll-interval: 3
+        content:
+          map:
+            conditions:
+              ~carrier: {empty: {}}
+              carrier:
+                map:
+                  default: {string: {text: , font: *awesome, foreground: ffffff66}}
+                  conditions:
+                    state == up:
+                      map:
+                        default:
+                          - string: {text: , font: *awesome}
+                          - string: {text: "({ipv4}) {dl-speed:mb}/{ul-speed:mb} Mb/s" }
                         conditions:
                           ipv4 == "": {string: {text: , font: *awesome, foreground: ffffff66}}
 
@@ -266,22 +284,17 @@ bar:
           map:
             default: {string: {text: , font: *awesome, foreground: ffffff66}}
             conditions:
-              state == down: {string: {text: , font: *awesome, foreground: ff0000ff}}
+              # state == down: {string: {text: , font: *awesome, foreground: ff0000ff}}
+              state == down: {empty: {}}
               state == up:
                 map:
                   default:
                     - string: {text: , font: *awesome}
-                    - string: {text: "{ssid} {rx-mb/s}/{tx-mb/s} MB/s"}
+                    - string: {text: "{ssid} {dl-speed:mb}/{ul-speed:mb} Mb/s" }
                   conditions:
                     ipv4 == "":
                       - string: {text: , font: *awesome, foreground: ffffff66}
                       - string: {text: "{ssid}", foreground: ffffff66}
-    # - script:
-    #     path: /home/jnes/bin/link_stats
-    #     args: ["wlp3s0", "2000"]
-    #     content:
-    #       - string: {text: "UL {ul} MiB/s" }
-    #       - string: {text: "DL {dl} MiB/s" }
     - alsa:
         card: default
         mixer: Master
@@ -299,12 +312,32 @@ bar:
                       ramp:
                         tag: volume
                         items:
-                          - string: {text: , font: *awesome}
-                          - string: {text: " {percent}%"}
-                          - string: {text: " {percent}%" }
+                          - string:
+                              text: " {percent}%"
+                              on-click:
+                                wheel-down: "amixer set Master '5%-'"
+                                wheel-up: "amixer set Master '5%+'"
+                          - string:
+                              text: " {percent}%"
+                              on-click:
+                                wheel-down: "amixer set Master '5%-'"
+                                wheel-up: "amixer set Master '5%+'"
+                          - string:
+                              text: " {percent}%"
+                              on-click:
+                                wheel-down: "amixer set Master '5%-'"
+                                wheel-up: "amixer set Master '5%+'"
     - backlight:
         name: amdgpu_bl0
-        content: [ string: {text: , font: *awesome}, string: {text: "{percent}%"}]
+        content:
+          - string:
+              text: 
+              font: *awesome
+          - string:
+              text: "{percent}%"
+              on-click:
+                wheel-down: "brightnessctl set 5%-"
+                wheel-up: "brightnessctl set 5%+"
     - battery:
         name: BAT0
         poll-interval: 30
@@ -371,7 +404,7 @@ bar:
     - label:
         content:
           string:
-            on-click: /bin/sh -c  "echo 'HAHAHAHA' && systemctl suspend-then-hibernate"
+            on-click: /bin/sh -c  "systemctl suspend"
             text: 
             #text: 
             font: *awesome

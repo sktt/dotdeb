@@ -11,7 +11,10 @@ set $term foot
 # Your preferred application launcher
 # Note: pass the final command to swaymsg so that the resulting window can be opened
 # on the original workspace that the command was run on.
-set $menu dmenu_path | grep -vE 'chrome-gnome-shell' | dmenu | xargs swaymsg exec --
+
+# set $menu dmenu_path | grep -vE 'chrome-gnome-shell' | dmenu | xargs swaymsg exec --
+set $menu tofi-run | xargs swaymsg exec --
+
 
 include /etc/sway/config-vars.d/*
 
@@ -42,9 +45,11 @@ input "2:7:SynPS/2_Synaptics_TouchPad" {
 # Read `man 5 sway-input` for more information about this section.
 
 input type:keyboard {
-    xkb_options caps:escape
+    xkb_layout us,se,de
+    xkb_options caps:escape,grp:win_space_toggle
     repeat_delay 250
     repeat_rate   30
+
 }
 
 ### Laptop lid
@@ -65,6 +70,11 @@ exec_always /home/jnes/.config/sway/sway-lid.sh
 
     # Kill focused window
     bindsym $mod+Shift+q kill
+
+    bindsym $mod+n exec chromium
+
+    # color picker..
+    bindsym $mod+Shift+w exec farge --notify
 
     # Start your launcher
     bindsym $mod+d exec $menu
@@ -123,6 +133,10 @@ for_window [app_id="^org.keepassxc.KeePassXC$"] {
     move to scratchpad
 }
 
+for_window [title="^win3$"] {
+    floating enable
+}
+
 for_window [app_id="^nm-connection-editor$"] {
     floating enable
 }
@@ -151,13 +165,13 @@ bindsym Mod1+Shift+Tab exec ~/.config/sway/swayworkspace.sh navigate previous $w
     bindsym $mod+5 workspace $ws5
     bindsym $mod+6 workspace $ws6
 
-    workspace $ws1 output "DP-7" "HDMI-A-1" "eDP-1"
-    workspace $ws2 output "DP-7" "HDMI-A-1" "eDP-1"
-    workspace $ws3 output "DP-7" "HDMI-A-1" "eDP-1"
-    workspace $ws4 output "DP-7" "HDMI-A-1" "eDP-1"
-    workspace $ws5 output "eDP-1" "DP-6" "HDMI-A-1"
-    workspace $ws6 output "DP-7" "HDMI-A-1" "eDP-1"
-    workspace 7 output "DP-6" "eDP-1"
+    workspace $ws1 output "DP-4" "DP-7" "HDMI-A-1" "eDP-1"
+    workspace $ws2 output "DP-4" "DP-7" "HDMI-A-1" "eDP-1"
+    workspace $ws3 output "DP-4" "DP-7" "HDMI-A-1" "eDP-1"
+    workspace $ws4 output "DP-4" "DP-7" "HDMI-A-1" "eDP-1"
+    workspace $ws5 output "DP-4" "DP-7" "HDMI-A-1" "eDP-1"
+    workspace $ws6 output "DP-4" "DP-7" "HDMI-A-1" "eDP-1"
+    workspace 7 output "DP-5" "DP-6" "eDP-1"
 
     bindsym $mod+7 workspace number 7
     bindsym $mod+8 workspace number 8
@@ -190,7 +204,7 @@ bindsym Mod1+Shift+Tab exec ~/.config/sway/swayworkspace.sh navigate previous $w
 #
 # Layout stuff:
 #
-    default_border pixel 2
+    default_border pixel 5
     # You can "split" the current object of your focus with
     # $mod+b or $mod+v, for horizontal and vertical splits
     # respectively.
