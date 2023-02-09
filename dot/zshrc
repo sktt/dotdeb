@@ -1,9 +1,10 @@
 MANPAGER=most
 ZSH_THEME="minimal"
-plugins=(git zsh-syntax-highlighting)
+plugins=(git zsh-syntax-highlighting systemd pip)
 # plugins=(git zsh-syntax-highlighting zsh-autosuggestions)
 alias bat=batcat
-alias vim=nvim
+alias gdb="gdb --quiet"
+# alias vim=nvim
 alias objdump="objdump --show-raw-insn --visualize-jumps=color --disassembler-color=color"
 
 source $ZSH/oh-my-zsh.sh

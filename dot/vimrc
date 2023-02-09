@@ -1,4 +1,13 @@
 call plug#begin('~/.vim/plugged')
+
+  Plug 'MunifTanjim/nui.nvim'
+  Plug 'nvim-lua/telescope.nvim'
+  Plug 'kyazdani42/nvim-web-devicons'
+  Plug 's1n7ax/nvim-window-picker', {'tag': 'v1.*'}
+  Plug 'pwntester/codeql.nvim'
+
+
+
   Plug 'tpope/vim-fugitive'
   Plug 'junegunn/goyo.vim'
   Plug 'mattn/webapi-vim'
@@ -305,7 +314,7 @@ set tm=500
 let g:ale_fixers = {
 \   'javascript': [ 'prettier', ],
 \   'typescript': [ 'prettier', ],
-\   'c': [ 'clang-format', ],
+\   'c': [  ],
 \}
 
 let g:ale_lint_on_text_changed = 'never'
@@ -317,7 +326,7 @@ let g:ale_linters = {
       \ 'c': ['clangtidy'],
       \ 'cpp': ['clangtidy'],
       \ 'python': ['pyflakes'],
-      \ 'markdown': ['write-good'],
+      \ 'markdown': [''],
       \ 'plainex': ['textchk'],
       \ 'tex': ['texchk'],
       \ 'text': [],
@@ -497,8 +506,10 @@ autocmd! bufwritepost $MYVIMRC source %
 " Save as root. crashes neovim
 " command! WW execute ':silent w !sudo tee % > /dev/null' | edit! %
 
-" Treat :Q as :q
+" Treat :Q as :q, etc.
 command! Q q
+command! E e
+command! W w
 
 " Quickly open config file
 if has('nvim')

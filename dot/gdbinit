@@ -1,4 +1,5 @@
 set history save
+set startup-quietly on
 set auto-load safe-path .
 set auto-load local-gdbinit
 set disassemble-next-line on
