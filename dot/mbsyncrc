@@ -1,0 +1,19 @@
+IMAPStore kwikner@ethz.ch-remote
+AuthMechs PLAIN
+Host imap.ethz.ch
+User kwikner
+PassCmd "pass mutt/kwikner"
+SSLType IMAPS
+
+MaildirStore kwikner@ethz.ch-local
+Path ~/Mail/
+Inbox ~/Mail/INBOX
+SubFolders Verbatim
+
+Channel kwikner
+Far :kwikner@ethz.ch-remote:
+Near :kwikner@ethz.ch-local:
+Patterns INBOX Sent Drafts Trash Sent\ Items
+Expunge Both
+Create Near
+SyncState *
