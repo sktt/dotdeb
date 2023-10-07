@@ -9,7 +9,7 @@ set my_pass = "`pass mutt/kwikner`"
 set mbox_type = mbox
 #set folder           = imaps://mail.ethz.ch/
 set folder           =  ~/Mail
-set spoolfile        = Inbox
+set spoolfile        = +Inbox
 set record           = +Sent
 set trash            = +Trash
 set postponed        = +Drafts
@@ -104,7 +104,7 @@ auto_view text/html
 
 source ~/.mutt/vim-keys.muttrc
 
-set nm_default_url = "notmuch:///home/jnes/Mail"
+set nm_default_url = "notmuch:///Users/jnes/Mail"
 set nm_record = yes
 set nm_record_tags = sent
 macro index,pager gi "<change-folder>Inbox<enter>"   "go to inbox"

@@ -1,11 +1,14 @@
+LC_CTYPE=en_US.UTF-8
+LC_ALL=en_US.UTF-8
+
 MANPAGER=most
 ZSH_THEME="minimal"
-plugins=(git zsh-syntax-highlighting systemd pip)
+source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+plugins=(git systemd pip)
 # plugins=(git zsh-syntax-highlighting zsh-autosuggestions)
 alias bat=batcat
 alias gdb="gdb --quiet"
 # alias vim=nvim
-alias objdump="objdump --show-raw-insn --visualize-jumps=color --disassembler-color=color"
 
 source $ZSH/oh-my-zsh.sh
 
@@ -27,9 +30,9 @@ export ESCDELAY=0
 setopt autocd
 bindkey -e
 
-zstyle :compinstall filename '/home/jnes/.zshrc'
+zstyle :compinstall filename "$HOME/.zshrc"
 autoload -Uz compinit
-compinit
+
 # End of lines added by compinstall
 
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
@@ -62,35 +65,13 @@ function _latest () {
 #unset ctrl-s
 stty -ixon
 
-. /usr/share/autojump/autojump.sh
+[ -f /opt/homebrew/etc/profile.d/autojump.sh ] && . /opt/homebrew/etc/profile.d/autojump.sh
+#£££££££. /usr/share/autojump/autojump.sh
+
 if which rbenv > /dev/null; then eval "$(rbenv init - zsh)"; fi
 
 export FZF_DEFAULT_COMMAND='fd --type f'
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-
-function hex2dec() {
-  python3 -c "print(int('$1', 16))"
-}
-
-function hex2bin() {
-  python3 -c "print(bin(int('$1', 16)))"
-}
-
-function bin2hex() {
-  python3 -c "print(hex(int('$1', 2)))"
-}
-
-function bin2dec() {
-  python3 -c "print(int('$1', 2))"
-}
-
-function dec2hex() {
-  python3 -c "print('0x{:02x}'.format($1))"
-}
-
-function dec2bin() {
-  python3 -c "print(bin($1))"
-}
 
 function osc7 {
     setopt localoptions extendedglob
@@ -99,4 +80,8 @@ function osc7 {
     print -n "\e]7;file://${HOSTNAME}${uri}\e\\"
 }
 
+export HOMEBREW_NO_ENV_HINTS=1
+
 add-zsh-hook -Uz chpwd osc7
+compinit
+eval "$(pyenv init -)"

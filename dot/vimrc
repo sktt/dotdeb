@@ -1,3 +1,9 @@
+let data_dir = has('nvim') ? stdpath('data') . '/site' : '~/.vim'
+if empty(glob(data_dir . '/autoload/plug.vim'))
+  silent execute '!curl -fLo '.data_dir.'/autoload/plug.vim --create-dirs  https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+endif
+
 call plug#begin('~/.vim/plugged')
 
   Plug 'MunifTanjim/nui.nvim'
@@ -38,7 +44,7 @@ call plug#begin('~/.vim/plugged')
   Plug 'editorconfig/editorconfig-vim'
   Plug 'embear/vim-localvimrc'
   " Plug 'lervag/vimtex'
-  Plug 'SirVer/ultisnips'
+  " Plug 'SirVer/ultisnips'
   Plug 'honza/vim-snippets'
   Plug 'mileszs/ack.vim'
 
@@ -63,7 +69,8 @@ let g:coc_filetype_map = {
       \ 'mail': 'latex'
 \}
 
-set clipboard+=unnamedplus
+"set clipboard+=unnamedplus
+set clipboard+=unnamed
 
 " remove all gui stuff from gvim
 set go=
@@ -77,7 +84,8 @@ set rtp+=/usr/bin/fzf
 set timeoutlen=100 ttimeoutlen=10
 
 " read inline per file config, insecure
-set nomodeline
+" set nomodeline
+set modeline
 
 " let g:spellfile_URL='http://ftp.vim.org/vim/runtime/spell'
 let g:tex_comment_nospell = 1
@@ -184,7 +192,7 @@ nnoremap <Leader>b :BufExplorer<cr>
 " => Editing text
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Backspace removes everything on the line.
-set backspace=eol,indent,start
+" set backspace=indent,eol,start
 
 " Linebreak on 120 characters
 set lbr
@@ -384,6 +392,8 @@ autocmd BufNewFile,BufRead */.config/waybar/config setlocal filetype=json5
 autocmd BufNewFile,BufRead *.muttrc setlocal filetype=neomuttrc
 autocmd BufNewFile,BufRead muttrc setlocal filetype=neomuttrc
 
+autocmd BufNewFile,BufRead theme.conf setlocal filetype=confini
+
 augroup Binary
   au!
   au BufReadPre  *.bin let &bin=1
@@ -524,7 +534,7 @@ vnoremap // "y/<C-R>"<CR>
 " enable italic
 set t_ZH=[3m
 set t_ZR=[23m
-highlight Comment cterm=italic
+"highlight Comment cterm=italic
 
 highlight SpellBad cterm=underline guifg=red
 " highlight SpellLocal cterm=underline guifg=orange
