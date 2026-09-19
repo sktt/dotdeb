@@ -1,0 +1,26 @@
+# macOS-only environment. Sourced from ~/.zshenv.
+
+# Homebrew: /opt/homebrew on Apple Silicon, /usr/local on Intel.
+# Sets HOMEBREW_PREFIX, PATH, MANPATH and INFOPATH.
+if [ -x /opt/homebrew/bin/brew ]; then
+  eval "$(/opt/homebrew/bin/brew shellenv)"
+elif [ -x /usr/local/bin/brew ]; then
+  eval "$(/usr/local/bin/brew shellenv)"
+fi
+
+# Put GNU coreutils/findutils/sed ahead of the BSD versions so ls, sed, date
+# and friends behave the way the rest of this repo expects.
+if [ -n "$HOMEBREW_PREFIX" ]; then
+  for _pkg in coreutils findutils gnu-sed; do
+    [ -d "$HOMEBREW_PREFIX/opt/$_pkg/libexec/gnubin" ] && \
+      export PATH="$HOMEBREW_PREFIX/opt/$_pkg/libexec/gnubin:$PATH"
+    [ -d "$HOMEBREW_PREFIX/opt/$_pkg/libexec/gnuman" ] && \
+      export MANPATH="$HOMEBREW_PREFIX/opt/$_pkg/libexec/gnuman:$MANPATH"
+  done
+  unset _pkg
+fi
+
+export ANDROID_SDK_ROOT="$HOME/Library/Android/sdk"
+export ANDROID_AVD_HOME="$HOME/.android/avd"
+[ -d "$ANDROID_SDK_ROOT/platform-tools" ] && \
+  export PATH="$ANDROID_SDK_ROOT/platform-tools:$PATH"

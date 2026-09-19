@@ -1,0 +1,16 @@
+# Linux-only shell bits. Sourced from ~/.zshrc.
+
+# Debian ships bat as batcat (the name `bat` belongs to another package)
+command -v batcat > /dev/null && alias bat=batcat
+
+alias xo="xdg-open"
+#alias clip="xclip -sel clipboard"
+alias clip="wl-copy"
+
+# GNU binutils
+alias objdump="objdump --show-raw-insn --visualize-jumps=color --disassembler-color=color"
+
+[ -r /usr/share/autojump/autojump.sh ] && . /usr/share/autojump/autojump.sh
+
+# Debian installs fd as fdfind
+command -v fdfind > /dev/null && export FZF_DEFAULT_COMMAND='fdfind --type f'

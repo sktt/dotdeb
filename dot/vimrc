@@ -30,13 +30,14 @@ call plug#begin('~/.vim/plugged')
 
   " ./install.py --clangd-completer --rust-completer --go-completer --ts-completer
   " Plug 'ycm-core/YouCompleteMe', { 'do': './install.py --go-completer --clangd-completer --clang-tidy --ts-completer --ninja' }
-  " Formating and editing
+  " Formatting and editing
   Plug 'tpope/vim-surround'
   Plug 'tpope/vim-repeat'
   Plug 'scrooloose/nerdcommenter'
   Plug 'godlygeek/tabular'
   Plug 'editorconfig/editorconfig-vim'
   Plug 'embear/vim-localvimrc'
+  Plug 'mechatroner/rainbow_csv'
   " Plug 'lervag/vimtex'
   Plug 'SirVer/ultisnips'
   Plug 'honza/vim-snippets'
@@ -44,7 +45,7 @@ call plug#begin('~/.vim/plugged')
 
   " Linting
   Plug 'dense-analysis/ale'
-  Plug 'neoclide/coc.nvim', {'branch': 'release'}
+  " Plug 'neoclide/coc.nvim', {'branch': 'release'}
   " UI Plugins
   Plug 'preservim/nerdtree'
   Plug 'ryanoasis/vim-devicons'
@@ -52,10 +53,20 @@ call plug#begin('~/.vim/plugged')
   " Syntax highlighting
   Plug 'Shirk/vim-gas'
   Plug 'sheerun/vim-polyglot'
+  Plug 'mmarchini/bpftrace.vim'
 
   Plug 'vhda/verilog_systemverilog.vim'
 
+
 call plug#end()
+
+let g:loaded_perl_provider = 0
+
+
+augroup qf
+    autocmd!
+    autocmd FileType qf set nobuflisted
+augroup END
 
 let g:coc_filetype_map = {
       \ 'tex': 'latex',
@@ -63,15 +74,21 @@ let g:coc_filetype_map = {
       \ 'mail': 'latex'
 \}
 
-set clipboard+=unnamedplus
+set clipboard=unnamed,unnamedplus
 
 " remove all gui stuff from gvim
 set go=
 set guifont=PragmataPro\ Liga\ 14
 
-" set shada='1000
+set shortmess-=S
 
-set rtp+=/usr/bin/fzf
+" fzf ships its vim plugin in different places per platform
+for s:fzfdir in ['/usr/share/doc/fzf', '/opt/homebrew/opt/fzf', '/usr/local/opt/fzf']
+  if isdirectory(s:fzfdir)
+    execute 'set rtp+=' . s:fzfdir
+    break
+  endif
+endfor
 
 " noremap x "1x but im using x+p alot so..
 set timeoutlen=100 ttimeoutlen=10
@@ -81,6 +98,7 @@ set nomodeline
 
 " let g:spellfile_URL='http://ftp.vim.org/vim/runtime/spell'
 let g:tex_comment_nospell = 1
+	let g:tex_nospell=1
 let g:localvimrc_ask = 0
 let g:github_user = 'sktt'
 let g:ycm_confirm_extra_conf = '0'
@@ -173,7 +191,8 @@ noremap <M-9> :b9<CR>
 
 " Close the current buffer and move to the previous one
 " This replicates the idea of closing a tab
-nmap <Leader>x :bd<CR>
+nmap <Leader>x :bp\|bd #<CR>
+
 
 " Show all open buffers and their status
 " nnoremap gb :ls<CR>:buffer<Space>
@@ -201,7 +220,7 @@ nnoremap <Leader>] :cn<CR>
 nnoremap <Leader>[ :cp<CR>
 
 " Default indention style
-set tabstop=4
+set tabstop=8
 set softtabstop=2
 set shiftwidth=2
 set expandtab "tab -> spaces. `C-V <Tab>` for normal tab
@@ -235,6 +254,7 @@ highlight ColorColumn guibg=#303030
 " Textfiles dont need newlines.
 autocmd FileType markdown set nowrap!
 autocmd FileType tex set nowrap!
+autocmd FileType plaintex set nowrap!
 
 " Tabularize macros
 nmap <Leader>a= :Tabularize /=<CR>
@@ -327,8 +347,8 @@ let g:ale_linters = {
       \ 'cpp': ['clangtidy'],
       \ 'python': ['pyflakes'],
       \ 'markdown': [''],
-      \ 'plainex': ['textchk'],
-      \ 'tex': ['texchk'],
+      \ 'plainex': ['textchk', 'vale', 'languagetool'],
+      \ 'tex': ['texchk','vale', 'languagetool'],
       \ 'text': [],
       \}
 
@@ -336,7 +356,8 @@ let g:ale_linters_ignore = {
       \ 'html': ['writegood'],
   \}
 
-let g:ale_languagetool_executable = "/home/jnes/bin/languagetool"
+let g:ale_languagetool_executable = expand("~/bin/languagetool")
+let g:ale_vale_executable = expand("~/bin/vale")
 
 " let g:ale_completion_enabled = 1
 " set omnifunc=ale#completion#OmniFunc
@@ -376,6 +397,7 @@ nnoremap <Leader>o :BufExplorer<CR>
 autocmd FileType litcoffee runtime ftplugin/coffee.vim
 autocmd FileType sh set tw=0
 autocmd FileType tex set tw=0
+autocmd FileType plaintex set tw=0
 " autocmd FileType ts   setfiletype typescript
 autocmd BufNewFile,BufRead *.ts setlocal filetype=typescript
 
@@ -545,3 +567,6 @@ syn region texComment   start="\\begin{comment}"    end="\\end{comment}"
 autocmd WinLeave * set nocursorline nocursorcolumn
 autocmd WinEnter * set cursorline cursorcolumn
 
+if filereadable(expand('~/.vimrc.lua'))
+  luafile ~/.vimrc.lua
+endif

@@ -2,3 +2,24 @@ dot/mutt/headercache
 dot/mutt/messagecache
 
 *.pid
+
+# Key material and certificates — never commit these
+*.p12
+*.pem
+*.key
+*.gpg
+
+# Editor and tooling leftovers
+*.bak
+*.old
+*.swp
+
+# Large regenerable/downloadable vim spell dictionaries.
+# The personal wordlist (spell/en.utf-8.add) is tracked on purpose.
+dot/config/nvim/spell/*.sug
+dot/config/nvim/spell/de.*
+
+# Machine-local overrides, sourced if present (see dot/zshrc)
+dot/zshrc.local
+dot/zshenv.local
+dot/gitconfig.local

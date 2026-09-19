@@ -1,0 +1,18 @@
+# macOS-only shell bits. Sourced from ~/.zshrc.
+
+alias xo="open"
+alias clip="pbcopy"
+alias pbp="pbpaste"
+
+# The system objdump is LLVM's and rejects the GNU flags. Homebrew's binutils
+# installs GNU objdump as gobjdump.
+if command -v gobjdump > /dev/null; then
+  alias objdump="gobjdump --show-raw-insn --visualize-jumps=color --disassembler-color=color"
+fi
+
+# lldb is the native debugger here; gdb needs codesigning to be useful.
+# whence -p ignores the `gdb --quiet` alias from ~/.zshrc and looks at $PATH.
+whence -p gdb > /dev/null || alias gdb="lldb"
+
+[ -r "$HOMEBREW_PREFIX/etc/profile.d/autojump.sh" ] && \
+  . "$HOMEBREW_PREFIX/etc/profile.d/autojump.sh"

@@ -1,0 +1,45 @@
+# macOS (Homebrew) counterpart to apt.list.
+# Omitted vs. apt.list: sway, foot, wl-copy, xclip (Wayland/X11 only —
+# macOS uses pbcopy/pbpaste, see dot/zshrc.Darwin).
+
+# GNU userland — macOS ships BSD variants of these
+coreutils
+findutils
+gnu-sed
+gdb
+
+# shell
+zsh
+autojump
+fzf
+fd
+ripgrep
+bat
+most
+jq
+curl
+git
+
+# editors
+neovim
+vim
+
+# terminal
+tmux
+
+# mail stack (mutt/mbsync/notmuch all read the configs in dot/)
+neomutt
+isync
+notmuch
+pass
+gnupg
+# lbdb has no formula; muttrc's query_command = lbdbq is a no-op without it
+
+# build / dev
+cmake
+rbenv
+ruby-build
+
+# misc
+syncthing
+weechat

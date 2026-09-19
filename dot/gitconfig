@@ -1,17 +1,41 @@
 [user]
-	name = Johannes
-	email = johannes.wikner@gmail.com
+	name = Johannes Wikner
+	email = johannes@jknr.me
 [pull]
 	rebase = true
 [push]
 	default = matching
 [core]
 	editor = vim
+	excludesfile = ~/.gitignore_global
 [github]
 	user = sktt
 [alias]
+	df = diff --color-words
   rl = reflog --pretty=format:\"%Cred%h%Creset %C(auto)%gd%Creset %C(auto)%gs%C(reset) %C(green)(%cr)%C(reset) %C(bold blue)<%an>%Creset\" --abbrev-commit
-  lg = log --graph --pretty=format:\"%Cred%h%Creset -%C(auto)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset\" --abbrev-commit
+  lg = log --color-words --graph --pretty=format:\"%Cred%h%Creset -%C(auto)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset\" --abbrev-commit
   sl = stash list --pretty=format:\"%C(red)%h%C(reset) - %C(dim yellow)(%C(bold magenta)%gd%C(dim yellow))%C(reset) %<(70,trunc)%s %C(green)(%cr) %C(bold blue)<%an>%C(reset)\"
 [init]
 	defaultBranch = master
+[safe]
+	# absolute, so these simply don't match on other machines
+	directory = /home/jnes/code/bpftrace/bcc
+	directory = /home/jnes/code/bpftrace/bcc/libbpf-tools/blazesym
+[diff]
+    wsErrorHighlight = all
+    wordDiff = color
+
+[log]
+  abbrevCommit = true
+
+[pager]
+    diff = less -RFX
+    show = less -RFX
+    log = less -RFX
+[am]
+	emptyPatch = drop
+
+# Machine-specific settings (extra safe.directory entries, a different
+# identity, credential helpers). Missing files are ignored silently.
+[include]
+	path = ~/.gitconfig.local

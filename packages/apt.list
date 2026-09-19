@@ -16,3 +16,15 @@ tmux
 sway
 foot
 wl-copy
+# referenced by the configs in dot/ but previously missing here
+neovim
+autojump
+fzf
+fd-find
+bat
+ripgrep
+isync
+notmuch
+pass
+gnupg
+lbdb

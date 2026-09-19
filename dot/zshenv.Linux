@@ -1,0 +1,11 @@
+# Linux-only PATH entries. Sourced from ~/.zshenv.
+export PATH="$HOME/pcap/hcxtools:$PATH"
+export PATH="$HOME/pcap/hcxdumptool:$PATH"
+
+# Tarball install of neovim, ahead of whatever apt ships
+[ -d /opt/nvim-linux64/bin ] && export PATH="/opt/nvim-linux64/bin:$PATH"
+
+export ANDROID_SDK_ROOT="$HOME/android/android-sdk/sdk_root"
+export ANDROID_AVD_HOME="$HOME/.android/avd"
+[ -d "$ANDROID_SDK_ROOT/platform-tools" ] && \
+  export PATH="$ANDROID_SDK_ROOT/platform-tools:$PATH"

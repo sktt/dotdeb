@@ -1,23 +1,24 @@
-MANPAGER=most
+#export MANPAGER="sh -c 'col -bx | bat --theme=base16 -p -lman'"
 ZSH_THEME="minimal"
-plugins=(git zsh-syntax-highlighting systemd pip)
-# plugins=(git zsh-syntax-highlighting zsh-autosuggestions)
-alias bat=batcat
+plugins=(git zsh-syntax-highlighting pip)
+# systemd plugin only makes sense on Linux
+[[ "$OSTYPE" == linux* ]] && plugins+=(systemd)
+# plugins+=(zsh-autosuggestions)
 alias gdb="gdb --quiet"
-# alias vim=nvim
-alias objdump="objdump --show-raw-insn --visualize-jumps=color --disassembler-color=color"
+alias vim=nvim # here we go again..
 
+DISABLE_UPDATE_PROMPT=true
 source $ZSH/oh-my-zsh.sh
 
 ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern)
 ZSH_HIGHLIGHT_STYLES[comment]='fg=#585858,bold'
 # ZSH_HIGHLIGHT_STYLES[cursor]='bg=default'
 
-BASE16_SHELL=$HOME/.config/base16-shell/
-
-[ -n "$PS1" ] && \
-  [ -s $BASE16_SHELL/profile_helper.sh ] && \
-  eval "$($BASE16_SHELL/profile_helper.sh)"
+#BASE16_SHELL=$HOME/.config/base16-shell/
+#
+#[ -n "$PS1" ] && \
+#  [ -s $BASE16_SHELL/profile_helper.sh ] && \
+#  eval "$($BASE16_SHELL/profile_helper.sh)"
 
 HISTFILE=~/.histfile
 HISTSIZE=10000
@@ -27,7 +28,7 @@ export ESCDELAY=0
 setopt autocd
 bindkey -e
 
-zstyle :compinstall filename '/home/jnes/.zshrc'
+zstyle :compinstall filename "$HOME/.zshrc"
 autoload -Uz compinit
 compinit
 # End of lines added by compinstall
@@ -37,9 +38,6 @@ compinit
 RPS1='%(?..%{$fg_no_bold[red]%}%? ↵%{$reset_color%})'
 
 alias gst="git status --short"
-alias xo="xdg-open"
-#alias clip="xclip -sel clipboard"
-alias clip="wl-copy"
 alias mutt=neomutt
 
 function pub_ip {
@@ -62,7 +60,6 @@ function _latest () {
 #unset ctrl-s
 stty -ixon
 
-. /usr/share/autojump/autojump.sh
 if which rbenv > /dev/null; then eval "$(rbenv init - zsh)"; fi
 
 export FZF_DEFAULT_COMMAND='fd --type f'
@@ -74,6 +71,14 @@ function hex2dec() {
 
 function hex2bin() {
   python3 -c "print(bin(int('$1', 16)))"
+}
+
+function hex2chr {
+  perl -pe 's/(..)/chr(hex($1))/ge'
+}
+
+function chr2hex {
+  perl -pe 's/(.)/sprintf("%02x", ord($1))/ge'
 }
 
 function bin2hex() {
@@ -99,4 +104,15 @@ function osc7 {
     print -n "\e]7;file://${HOSTNAME}${uri}\e\\"
 }
 
+autoload -Uz add-zsh-hook
 add-zsh-hook -Uz chpwd osc7
+
+export PS1='%n@%m %~ %# '
+
+[ -r "$HOME/.ghcup/env" ] && . "$HOME/.ghcup/env" # ghcup-env
+# opencode
+[ -d "$HOME/.opencode/bin" ] && export PATH="$HOME/.opencode/bin:$PATH"
+
+# Per-OS then per-machine overrides. Last so they win over anything above.
+[ -r "$HOME/.zshrc.$(uname -s)" ] && . "$HOME/.zshrc.$(uname -s)"
+[ -r "$HOME/.zshrc.local" ] && . "$HOME/.zshrc.local"

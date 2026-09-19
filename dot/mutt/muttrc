@@ -1,32 +1,30 @@
-
 # vim: syntax=neomuttrc
 
-set my_pass = "`pass mutt/kwikner`"
-# set imap_user        = kwikner
-# set imap_pass        = $my_pass
+set my_pass = "`pass mutt/jknr`"
 
 #set mbox_type = Maildir
 set mbox_type = mbox
-#set folder           = imaps://mail.ethz.ch/
-set folder           =  ~/Mail
-set spoolfile        = Inbox
+set folder           =  ~/Mail/gmail
+set spoolfile        = Unread
 set record           = +Sent
 set trash            = +Trash
 set postponed        = +Drafts
 
-virtual-mailboxes "Inbox"    "notmuch://?query=tag:inbox and not tag:trash"
-virtual-mailboxes "Unread"   "notmuch://?query=tag:inbox and tag:unread"
-mailboxes =Sent
+virtual-mailboxes "Inbox"    "notmuch://?query=tag:inbox and not tag:trash and not tag:archive"
+virtual-mailboxes "Unread"   "notmuch://?query=tag:inbox and tag:unread and not tag:trash"
+mailboxes +Sent
 virtual-mailboxes "Trash"    "notmuch://?query=tag:trash"
-mailboxes =Drafts
-virtual-mailboxes "Spam"     "notmuch://?query=tag:spam"
+virtual-mailboxes "Drafts"   "notmuch://?query=tag:drafts"
+virtual-mailboxes "All"      "notmuch://?query=tag:archive or tag:inbox or tag:spam or tag:spam and 1"
+virtual-mailboxes "Spam"     "notmuch://?query=tag:spam and 1"
 
 bind index L noop
 # macro index Lp "<pipe-message>gpg -d | git am"
 set pipe_split = yes
 macro index Lp "|gpg -d | sed -n '/^^Subject:.*/,$p' | git am\n"
 
-set smtp_url         = "smtp://kwikner@mail.ethz.ch:587"
+# set smime_default_key=0xB2C98453
+set smtp_url         = "smtp://postbudet@jknr.me:587"
 set smtp_pass        = $my_pass
 set ssl_starttls     = yes
 set ssl_force_tls    = yes
@@ -45,9 +43,11 @@ bind index,pager \Cn sidebar-next
 bind index,pager \Co sidebar-open
 
 bind index Enter display-message
+bind compose k attach-key
 
 #set collapse_all = yes
-set sort             = threads
+# set sort             = threads
+set use_threads      = yes
 set sort_aux         = reverse-last-date-received
 set date_format      = "%d %b %R"
 #set index_format="%4C %Z %D %-55.55L (%?l?%4l&%4c?) %s"
@@ -59,10 +59,10 @@ set abort_key = "<Esc>"
 set header_cache     = ~/.mutt/headercache
 set message_cachedir = ~/.mutt/messagecache
 
-set from             = 'kwikner@ethz.ch'
+set from             = 'johannes@jknr.me'
 set realname         = 'Johannes Wikner'
 unset signature
-set hostname         = ethz.ch
+set hostname         = jknr.me
 set query_command    = "lbdbq '%s'"
 
 set crypt_autosmime=yes
@@ -91,7 +91,7 @@ set sidebar_short_path = yes
 
 
 set menu_scroll
-set editor = 'nvim -c "set spell spelllang=en"'
+set editor = 'vim -c "set spell spelllang=en" -c "set tw=72"'
 
 #unset mbox
 
@@ -99,12 +99,15 @@ set implicit_autoview
 set pager_index_lines = 10
 set pager_stop = yes
 
+macro index,pager <F2> "<enter-command>set pager_index_lines=0<return><redraw-screen>" "Increase pager_index_lines"
+macro index,pager <F3> "<enter-command>set pager_index_lines=10<return><redraw-screen>" "Decrease pager_index_lines"
+
 alternative_order text/plain text/enriched text/html
 auto_view text/html
 
 source ~/.mutt/vim-keys.muttrc
 
-set nm_default_url = "notmuch:///home/jnes/Mail"
+set nm_default_url = "notmuch://`echo $HOME`/Mail/gmail"
 set nm_record = yes
 set nm_record_tags = sent
 macro index,pager gi "<change-folder>Inbox<enter>"   "go to inbox"
@@ -113,6 +116,20 @@ macro index,pager gd "<change-folder>=Drafts<enter>" "go to drafts"
 macro index,pager gt "<change-folder>Trash<enter>"   "go to trash"
 macro index,pager gu "<change-folder>Unread<enter>"  "go to unread"
 macro index,pager gS "<change-folder>Spam<enter>"    "go to spam"
+macro index,pager gA "<change-folder>All<enter>"     "go to all"
+
+unbind index b
+unbind pager b
+unbind generic b
+unbind generic <
+
+macro generic <mod+b> "<previous-word>" "Jump backward one word in prompt"
+macro generic <mod+f> "<next-word>" "Jump forward one word in prompt"
+
+# macro index <mod+b> "<previous-word>" "Jump backward one word"
+# macro index <mod+f> "<next-word>" "Jump forward one word"
+# macro pager <mod+b> "<previous-word>" "Jump backward one word"
+# macro pager <mod+f> "<next-word>" "Jump forward one word"
 
 bind index <Up>   previous-undeleted # Mouse wheel
 bind index <Down> next-undeleted     # Mouse wheel
@@ -120,7 +137,15 @@ bind pager <Up>   previous-line      # Mouse wheel
 bind pager <Down> next-line          # Mouse wheel
 
 #macro index \CG "<shell-escape>mbsync -V kwikner && notmuch new<enter>" "sync email"
+
+macro compose \Cg "<enter-command>unset wait_key<enter><shell-escape>read -p 'recip: ' x; gpg --export --armor \$x > /tmp/\$x.asc<enter><enter-command>set attach=<enter-command>echo /tmp/%s.asc<enter>" "get pubkey"
+
+# macro compose g "<enter-command>unset wait_key<enter><shell-escape>echo helloo %f<enter>" "test"
+macro compose \Cn "<enter-command>unset wait_key<enter><shell-escape-expand>read -p 'Enter your input: ' input && echo $input<enter><enter-command>unset wait_key<enter><shell-escape-expand>echo You entered: %s<enter>" "Prompt and Use Input"
+
+# macro compose g "<enter-command>unset wait_key<enter> <shell-escape>gpg --armor --export %f<enter> <enter-command>set wait_key=attach-pipe gpg --armor --export %f<enter> <enter-command>set attach=<enter-command>echo %s.asc<enter> <attach-message>Attaching GPG public key...<enter> <enter-command>set wait_key<enter>" "Attach GPG public key"
 macro index \CG "<sync-mailbox><enter-command>unset wait_key<enter><shell-escape>mailsync<enter><enter-command>set wait_key<enter>" "sync email"
+
 
 macro index \Cf "<enter-command>unset wait_key<enter><shell-escape>read -p 'Enter a search term to find with notmuch: ' x; echo \$x >~/.cache/mutt_terms<enter><limit>~i \"\`notmuch search --output=messages \$(cat ~/.cache/mutt_terms) | head -n 600 | perl -le '@a=<>;s/\^id:// for@a;$,=\"|\";print@a' | perl -le '@a=<>; chomp@a; s/\\+/\\\\+/ for@a;print@a' \`\"<enter>" "show only messages matching a notmuch pattern"
 
@@ -141,3 +166,4 @@ color   body    brightblue      default         @@.*
 color   body    brightwhite     default         ^(Signed-off-by).*
 color   body    brightwhite     default         ^(Reviewed-by).*
 color   body    brightwhite     default         ^(Cc)
+

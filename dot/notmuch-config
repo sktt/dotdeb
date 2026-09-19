@@ -1,13 +1,13 @@
 [database]
-path=/home/jnes/Mail
+path=Mail/gmail
 
 [user]
 name=Johannes Wikner
-primary_email=kwikner@ethz.ch
+primary_email=johannes@jknr.me
 
 [new]
 tags=new
-ignore=/.*/\.mbsyncstate$/;/.*/\.uidvalidity$/
+ignore=.mbsyncstate,.uidvalidity,.notmuch
 
 [search]
 exclude_tags=deleted;trash;spam;

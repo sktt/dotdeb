@@ -1,0 +1,19 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.Spotlight-V100
+.Trashes
+
+# Linux
+.directory
+.Trash-*
+.nfs*
+
+# editors
+*.swp
+*.swo
+*~
+.netrwhist
+tags
