@@ -1,19 +1,52 @@
-IMAPStore kwikner@ethz.ch-remote
-AuthMechs PLAIN
-Host imap.ethz.ch
-User kwikner
-PassCmd "pass mutt/kwikner"
-SSLType IMAPS
+# General settings
+Sync Pull
+Create Both
+Expunge Both
+Remove None
 
-MaildirStore kwikner@ethz.ch-local
-Path ~/Mail/
-Inbox ~/Mail/INBOX
+# Gmail IMAP account using pass
+IMAPAccount gmail
+Host imap.gmail.com
+User johannes.wikner@gmail.com
+PassCmd "pass show mutt/gmail"
+TLSType IMAPS
+
+IMAPStore gmail-remote
+Account gmail
+
+MaildirStore gmail-local
+Path ~/Mail/gmail/
+Inbox ~/Mail/gmail/INBOX
+Flatten .
 SubFolders Verbatim
 
-Channel kwikner
-Far :kwikner@ethz.ch-remote:
-Near :kwikner@ethz.ch-local:
-Patterns INBOX Sent Drafts Trash Sent\ Items
-Expunge Both
-Create Near
+# Gmail folders
+Channel gmail-inbox
+Far :gmail-remote:INBOX
+Near :gmail-local:INBOX
+Create Both
 SyncState *
+
+Channel gmail-sent
+Far :gmail-remote:"[Gmail]/Sent Mail"
+Near :gmail-local:Sent
+Create Both
+SyncState *
+
+Channel gmail-other
+Far :gmail-remote:
+Near :gmail-local:
+Pattern "[Gmail]/Spam" "[Gmail]/Trash" "[Gmail]/Drafts"
+Create Both
+SyncState *
+
+# Channel gmail-archive
+# Far :gmail-remote:"[Gmail]/All Mail"
+# Near :gmail-local:Archive
+# Create Both
+# SyncState *
+
+Group gmail
+Channel gmail-inbox
+Channel gmail-sent
+Channel gmail-other

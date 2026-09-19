@@ -1,0 +1,45 @@
+# Typical laptop setup, with wifi, brightness, battery etc, for
+# i3/Sway.
+
+# For X11/i3, you'll want to replace calls to swaymsg with i3-msg, and
+# the sway-xkb module with the xkb module.
+
+# fonts we'll be re-using here and there
+awesome: &awesome FontAwesome:style=Regular:pixelsize=14
+awesome_brands: &awesome_brands FontAwesome:style=Regular:pixelsize=14
+calendar: &calendar gnome-calendar
+#awesome6 : &awesome6 Font Awesome 6 Free:style=Regular:pixelsize=14
+
+#std_underline: &std_underline {underline: { size: 2, color: ff0000ff}}
+std_underline: &std_underline {underline: { size: 3, color: ab4542ff}}
+
+
+# This is THE bar configuration
+bar:
+  height: 26
+  location: top
+  spacing: 5
+  margin: 7
+
+  # Default font
+  font: PragmataPro Mono:style=Regular:pixelsize=13
+
+  foreground: d8d8d8ff
+  background: 181818f2
+
+  border:
+    width: 0
+    color: 18181800
+    margin: 0
+    top-margin: 0
+    left-margin: 0
+
+  center:
+    - clock:
+        time-format: "%H:%M:%S"
+        date-format: "%d %b"
+        content:
+          - string: {text: " ", font: *awesome, on-click: *calendar}
+          - string: {text: "{date}", right-margin: 5, on-click: *calendar}
+          - string: {text: , font: *awesome, on-click: *calendar}
+          - string: {text: "{time}", on-click: *calendar}
