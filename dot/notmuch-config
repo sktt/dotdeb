@@ -1,13 +1,14 @@
 [database]
-path=Mail/gmail
+path=Mail
 
 [user]
 name=Johannes Wikner
-primary_email=johannes@jknr.me
+primary_email=johannes.wikner@gmail.com
+other_email=johannes@jknr.me
 
 [new]
 tags=new
-ignore=.mbsyncstate,.uidvalidity,.notmuch
+ignore=/.*/\\.mbsyncstate$/;/.*/\\.uidvalidity$/;
 
 [search]
 exclude_tags=deleted;trash;spam;

@@ -1,29 +1,25 @@
 # vim: syntax=neomuttrc
 
 set my_pass = "`pass mutt/jknr`"
-
-#set mbox_type = Maildir
 set mbox_type = mbox
 set folder           =  ~/Mail/gmail
-set spoolfile        = Unread
-set record           = +Sent
-set trash            = +Trash
-set postponed        = +Drafts
+set spoolfile        = +INBOX
+set record           = "+[Gmail]/Sent Mail"
+set trash            = "+[Gmail]/Trash"
+set postponed        = "+[Gmail]/Drafts"
 
-virtual-mailboxes "Inbox"    "notmuch://?query=tag:inbox and not tag:trash and not tag:archive"
-virtual-mailboxes "Unread"   "notmuch://?query=tag:inbox and tag:unread and not tag:trash"
-mailboxes +Sent
+virtual-mailboxes "Inbox"    "notmuch://?query=tag:inbox and not tag:trash"
+virtual-mailboxes "Unread"   "notmuch://?query=tag:inbox and tag:unread"
+named-mailboxes "Sent" ="[Gmail]/Sent Mail"
 virtual-mailboxes "Trash"    "notmuch://?query=tag:trash"
-virtual-mailboxes "Drafts"   "notmuch://?query=tag:drafts"
-virtual-mailboxes "All"      "notmuch://?query=tag:archive or tag:inbox or tag:spam or tag:spam and 1"
-virtual-mailboxes "Spam"     "notmuch://?query=tag:spam and 1"
+mailboxes ="[Gmail]/Drafts"
+virtual-mailboxes "Spam"     "notmuch://?query=tag:spam"
 
 bind index L noop
 # macro index Lp "<pipe-message>gpg -d | git am"
 set pipe_split = yes
 macro index Lp "|gpg -d | sed -n '/^^Subject:.*/,$p' | git am\n"
 
-# set smime_default_key=0xB2C98453
 set smtp_url         = "smtp://postbudet@jknr.me:587"
 set smtp_pass        = $my_pass
 set ssl_starttls     = yes
@@ -70,6 +66,7 @@ set crypt_autopgp=no
 
 #  this breaks SMIME
 set crypt_use_gpgme=yes
+# set pgp_use_gpg_agent = no
 #unset crypt_use_gpgme
 set crypt_autosign=yes
 set crypt_verify_sig=yes
@@ -77,9 +74,8 @@ set crypt_replysign=yes
 set crypt_replyencrypt=yes
 set crypt_replysignencrypted=yes
 set crypt_autoencrypt = no
-set pgp_default_key="3ABD921A452FE3A410C5AC57BE39C1C922C09AF1"
+set pgp_default_key=3ABD921A452FE3A410C5AC57BE39C1C922C09AF1
 set pgp_check_gpg_decrypt_status_fd
-set pgp_use_gpg_agent = yes
 set pgp_self_encrypt = yes
 
 set sidebar_visible = no
@@ -91,7 +87,7 @@ set sidebar_short_path = yes
 
 
 set menu_scroll
-set editor = 'vim -c "set spell spelllang=en" -c "set tw=72"'
+set editor = 'nvim -c "set spell spelllang=en"'  # tw=72 comes from nvim's mail ftplugin
 
 #unset mbox
 
@@ -107,16 +103,15 @@ auto_view text/html
 
 source ~/.mutt/vim-keys.muttrc
 
-set nm_default_url = "notmuch://`echo $HOME`/Mail/gmail"
+set nm_default_url = "notmuch://`echo $HOME`/Mail"
 set nm_record = yes
 set nm_record_tags = sent
-macro index,pager gi "<change-folder>Inbox<enter>"   "go to inbox"
-macro index,pager gs "<change-folder>=Sent<enter>"   "go to sent"
-macro index,pager gd "<change-folder>=Drafts<enter>" "go to drafts"
+macro index,pager gi "<change-folder>=INBOX<enter>"   "go to inbox"
+macro index,pager gs "<change-folder>Sent<enter>"   "go to sent"
+macro index,pager gd "<change-folder>=[Gmail]/Drafts<enter>"      "go to drafts"
 macro index,pager gt "<change-folder>Trash<enter>"   "go to trash"
 macro index,pager gu "<change-folder>Unread<enter>"  "go to unread"
 macro index,pager gS "<change-folder>Spam<enter>"    "go to spam"
-macro index,pager gA "<change-folder>All<enter>"     "go to all"
 
 unbind index b
 unbind pager b

@@ -1,7 +1,11 @@
 dot/mutt/headercache
 dot/mutt/messagecache
+dot/mutt/msg.asc
 
 *.pid
+*.log
+.DS_Store
+/nerd-fonts/
 
 # Key material and certificates — never commit these
 *.p12
@@ -24,7 +28,6 @@ dot/zshrc.local
 dot/zshenv.local
 dot/gitconfig.local
 
-# tmux plugins fetched by `make tmux-plugins` / tpm, not vendored.
-# vim-tmux-navigator is checked in as real files and stays tracked.
-dot/tmux/plugins/tpm
-dot/tmux/plugins/tmux-sensible
+# tmux plugins: `make tmux-plugins` clones tpm, which installs the rest of
+# the @plugin list in dot/tmux.conf. None of it is vendored.
+dot/tmux/plugins/*

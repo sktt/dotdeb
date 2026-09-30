@@ -15,9 +15,14 @@ make fonts      # optional: M+ fonts
 
 `make shell` also runs `make zsh-plugins`, which clones the two oh-my-zsh
 plugins `dot/zshrc` names into `~/.oh-my-zsh/custom/plugins`. `make
-tmux-plugins` does the same for tpm and tmux-sensible under
-`dot/tmux/plugins` — both are cloned at install time and gitignored, unlike
-`vim-tmux-navigator`, which is checked in.
+tmux-plugins` clones tpm into `dot/tmux/plugins` and has it install the rest of
+the `@plugin` list in `tmux.conf`; nothing there is checked in. `make
+nvim-python` puts pynvim (for UltiSnips) in its own venv under
+`~/.local/share/nvim`.
+
+On macOS, `make launchagents` (opt-in, not part of `all`) installs the
+launchd jobs in `dot/launchagents` into `~/Library/LaunchAgents`, filling in
+`$HOME` since launchd needs absolute paths.
 
 `make all` runs the lot.
 
@@ -64,8 +69,9 @@ rather than separate files.
 
 - Secrets. Mail passwords come from [`pass`](https://www.passwordstore.org/)
   via `PassCmd`/backticks; `*.p12`, `*.pem`, `*.key` and `*.gpg` are gitignored.
-- `~/bin` helper scripts referenced by some configs (`mailcount`, `languagetool`,
-  `vale`, `fade-layer`).
-- The mail stack needs `pass`, `gnupg` and a `~/Mail/gmail` maildir before
-  neomutt/notmuch will do anything useful. `notmuch-config` uses a
-  `$HOME`-relative path so it works unchanged on both platforms.
+- `~/bin` helper scripts referenced by some configs (`mailsync`, `mailcount`,
+  `languagetool`, `fade-layer`).
+- The mail stack needs `pass` (entries `gmail/app-password` for mbsync and
+  `mutt/jknr` for SMTP), `gnupg` and a `~/Mail/gmail` maildir before
+  neomutt/notmuch will do anything useful. The notmuch database sits at
+  `~/Mail`, one level above the maildir.

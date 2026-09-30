@@ -6,10 +6,15 @@
 [push]
 	default = matching
 [core]
-	editor = vim
+	abbrev = 7
+	editor = nvim
 	excludesfile = ~/.gitignore_global
+	ignorecase = false
 [github]
 	user = sktt
+[log]
+    abbrevCommit = true
+
 [alias]
 	df = diff --color-words
   rl = reflog --pretty=format:\"%Cred%h%Creset %C(auto)%gd%Creset %C(auto)%gs%C(reset) %C(green)(%cr)%C(reset) %C(bold blue)<%an>%Creset\" --abbrev-commit

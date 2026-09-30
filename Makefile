@@ -3,7 +3,8 @@ UNAME_S := $(shell uname -s)
 # Wayland compositor, status bar and notification daemon. Linux only.
 LINUX_ONLY_CONF := dot/config/sway dot/config/mako dot/config/yambar
 
-DOTFILES := $(filter-out dot/config, $(wildcard dot/*))
+# launchagents is installed by its own target, not symlinked into ~.
+DOTFILES := $(filter-out dot/config dot/launchagents, $(wildcard dot/*))
 DOTCONF  := $(wildcard dot/config/*)
 
 ifeq ($(UNAME_S),Darwin)
@@ -95,15 +96,39 @@ zsh-plugins:
 		"$(CUSTOM)/zsh-autosuggestions"
 
 # tmux.conf's last line runs tpm, which manages the @plugin list above it.
-# Cloned rather than vendored; vim-tmux-navigator is checked in as real files.
+# Only tpm is cloned here; tpm installs the rest. Test for the script, not the
+# directory, so an empty leftover submodule dir doesn't count as installed.
 .PHONY: tmux-plugins
 tmux-plugins: TPLUG := $(CURDIR)/dot/tmux/plugins
 tmux-plugins:
-	@[ -d "$(TPLUG)/tpm" ] || git clone --depth=1 \
-		https://github.com/tmux-plugins/tpm.git "$(TPLUG)/tpm"
-	@[ -d "$(TPLUG)/tmux-sensible" ] || git clone --depth=1 \
-		https://github.com/tmux-plugins/tmux-sensible.git "$(TPLUG)/tmux-sensible"
+	@[ -x "$(TPLUG)/tpm/tpm" ] || { rm -rf "$(TPLUG)/tpm" && git clone --depth=1 \
+		https://github.com/tmux-plugins/tpm.git "$(TPLUG)/tpm"; }
+	@# install_plugins asks a running server for the config; use a throwaway one
+	tmux -L tpm-install -f "$(CURDIR)/dot/tmux.conf" new-session -d
+	tmux -L tpm-install run-shell "$(TPLUG)/tpm/bin/install_plugins"; \
+		rc=$$?; tmux -L tpm-install kill-server; exit $$rc
+
+# UltiSnips runs on nvim's python3 provider. A dedicated venv keeps pynvim
+# off the system python; init.lua uses it when present.
+.PHONY: nvim-python
+nvim-python: VENV := $(HOME)/.local/share/nvim/venv
+nvim-python:
+	[ -x "$(VENV)/bin/python3" ] || python3 -m venv "$(VENV)"
+	"$(VENV)/bin/pip" install -q --upgrade pynvim
+
+# macOS only, opt-in: launchd needs absolute paths and a real file, so fill
+# in $HOME and copy rather than symlink. The agents run scripts from ~/bin.
+.PHONY: launchagents
+launchagents: AGENTS := $(HOME)/Library/LaunchAgents
+launchagents:
+	@mkdir -p "$(AGENTS)"
+	@for f in dot/launchagents/*.plist; do \
+		dst="$(AGENTS)/$${f##*/}"; \
+		sed 's#@HOME@#$(HOME)#g' "$$f" > "$$dst" || exit 1; \
+		launchctl bootout gui/$$(id -u) "$$dst" 2>/dev/null; \
+		launchctl bootstrap gui/$$(id -u) "$$dst" && echo "loaded $$dst"; \
+	done
 
 .PHONY: all
 .DEFAULT: symlinks
-all: packages shell node ruby fonts tmux-plugins symlinks
+all: packages shell node ruby fonts tmux-plugins nvim-python symlinks
