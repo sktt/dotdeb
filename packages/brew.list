@@ -35,6 +35,9 @@ isync
 notmuch
 pass
 gnupg
+# GUI passphrase prompt; the launchagent mail sync has no tty for a
+# curses pinentry. See ~/.gnupg/gpg-agent.conf.
+pinentry-mac
 # lbdb has no formula; muttrc's query_command = lbdbq is a no-op without it
 
 # build / dev
