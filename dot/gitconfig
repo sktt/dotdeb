@@ -6,10 +6,14 @@
 [push]
 	default = matching
 [core]
-	editor = vim
+        abbrev = 7
+	editor = nvim
 	ignorecase = false
 [github]
 	user = sktt
+[log]
+    abbrevCommit = true
+
 [alias]
   rl = reflog --pretty=format:\"%Cred%h%Creset %C(auto)%gd%Creset %C(auto)%gs%C(reset) %C(green)(%cr)%C(reset) %C(bold blue)<%an>%Creset\" --abbrev-commit
   lg = log --graph --pretty=format:\"%Cred%h%Creset -%C(auto)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset\" --abbrev-commit

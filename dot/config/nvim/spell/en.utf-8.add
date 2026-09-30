@@ -45,3 +45,5 @@ SGX
 KVM
 multithreading
 backend
+microarchitectural
+hypervisor

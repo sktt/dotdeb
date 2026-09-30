@@ -1,24 +1,19 @@
 
 # vim: syntax=neomuttrc
 
-set my_pass = "`pass mutt/kwikner`"
-# set imap_user        = kwikner
-# set imap_pass        = $my_pass
-
-#set mbox_type = Maildir
+set my_pass = "`pass mutt/jknr`"
 set mbox_type = mbox
-#set folder           = imaps://mail.ethz.ch/
-set folder           =  ~/Mail
-set spoolfile        = +Inbox
-set record           = +Sent
-set trash            = +Trash
-set postponed        = +Drafts
+set folder           =  ~/Mail/gmail
+set spoolfile        = +INBOX
+set record           = "+[Gmail]/Sent Mail"
+set trash            = "+[Gmail]/Trash"
+set postponed        = "+[Gmail]/Drafts"
 
 virtual-mailboxes "Inbox"    "notmuch://?query=tag:inbox and not tag:trash"
 virtual-mailboxes "Unread"   "notmuch://?query=tag:inbox and tag:unread"
-mailboxes =Sent
+named-mailboxes "Sent" ="[Gmail]/Sent Mail"
 virtual-mailboxes "Trash"    "notmuch://?query=tag:trash"
-mailboxes =Drafts
+mailboxes ="[Gmail]/Drafts"
 virtual-mailboxes "Spam"     "notmuch://?query=tag:spam"
 
 bind index L noop
@@ -26,7 +21,7 @@ bind index L noop
 set pipe_split = yes
 macro index Lp "|gpg -d | sed -n '/^^Subject:.*/,$p' | git am\n"
 
-set smtp_url         = "smtp://kwikner@mail.ethz.ch:587"
+set smtp_url         = "smtp://postbudet@jknr.me:587"
 set smtp_pass        = $my_pass
 set ssl_starttls     = yes
 set ssl_force_tls    = yes
@@ -59,17 +54,18 @@ set abort_key = "<Esc>"
 set header_cache     = ~/.mutt/headercache
 set message_cachedir = ~/.mutt/messagecache
 
-set from             = 'kwikner@ethz.ch'
+set from             = 'johannes@jknr.me'
 set realname         = 'Johannes Wikner'
 unset signature
-set hostname         = ethz.ch
-set query_command    = "lbdbq '%s'"
+set hostname         = jknr.me
+# set query_command    = "lbdbq '%s'"
 
 set crypt_autosmime=yes
 set crypt_autopgp=no
 
 #  this breaks SMIME
 set crypt_use_gpgme=yes
+# set pgp_use_gpg_agent = no
 #unset crypt_use_gpgme
 set crypt_autosign=yes
 set crypt_verify_sig=yes
@@ -77,9 +73,8 @@ set crypt_replysign=yes
 set crypt_replyencrypt=yes
 set crypt_replysignencrypted=yes
 set crypt_autoencrypt = no
-set pgp_default_key="3ABD921A452FE3A410C5AC57BE39C1C922C09AF1"
+set pgp_default_key=3ABD921A452FE3A410C5AC57BE39C1C922C09AF1
 set pgp_check_gpg_decrypt_status_fd
-set pgp_use_gpg_agent = yes
 set pgp_self_encrypt = yes
 
 set sidebar_visible = no
@@ -107,9 +102,9 @@ source ~/.mutt/vim-keys.muttrc
 set nm_default_url = "notmuch:///Users/jnes/Mail"
 set nm_record = yes
 set nm_record_tags = sent
-macro index,pager gi "<change-folder>Inbox<enter>"   "go to inbox"
-macro index,pager gs "<change-folder>=Sent<enter>"   "go to sent"
-macro index,pager gd "<change-folder>=Drafts<enter>" "go to drafts"
+macro index,pager gi "<change-folder>=INBOX<enter>"   "go to inbox"
+macro index,pager gs "<change-folder>Sent<enter>"   "go to sent"
+macro index,pager gd "<change-folder>=[Gmail]/Drafts<enter>"      "go to drafts"
 macro index,pager gt "<change-folder>Trash<enter>"   "go to trash"
 macro index,pager gu "<change-folder>Unread<enter>"  "go to unread"
 macro index,pager gS "<change-folder>Spam<enter>"    "go to spam"

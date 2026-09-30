@@ -1,19 +1,21 @@
-IMAPStore kwikner@ethz.ch-remote
-AuthMechs PLAIN
-Host imap.ethz.ch
-User kwikner
-PassCmd "pass mutt/kwikner"
-SSLType IMAPS
+IMAPStore gmail-remote
+AuthMechs LOGIN
+Host imap.gmail.com
+User johannes.wikner@gmail.com
+PassCmd "/opt/homebrew/bin/pass gmail/app-password"
+TLSType IMAPS
 
-MaildirStore kwikner@ethz.ch-local
-Path ~/Mail/
-Inbox ~/Mail/INBOX
+MaildirStore gmail-local
+Path ~/Mail/gmail/
+Inbox ~/Mail/gmail/INBOX
 SubFolders Verbatim
 
-Channel kwikner
-Far :kwikner@ethz.ch-remote:
-Near :kwikner@ethz.ch-local:
-Patterns INBOX Sent Drafts Trash Sent\ Items
+Channel gmail
+Far :gmail-remote:
+Near :gmail-local:
+Patterns INBOX [Gmail]/Sent\ Mail [Gmail]/Drafts [Gmail]/Trash
+MaxMessages 500
+ExpireUnread yes
 Expunge Both
 Create Near
 SyncState *

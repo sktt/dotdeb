@@ -1,26 +1,30 @@
+zmodload zsh/zprof
 LC_CTYPE=en_US.UTF-8
 LC_ALL=en_US.UTF-8
 
-MANPAGER=most
 ZSH_THEME="minimal"
+export MANPAGER="sh -c 'col -bx | bat --theme=base16 -p -lman'"
 source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-plugins=(git systemd pip)
-# plugins=(git zsh-syntax-highlighting zsh-autosuggestions)
-alias bat=batcat
+plugins=(git pip)
 alias gdb="gdb --quiet"
 # alias vim=nvim
+function vim {
+  # vim plugs depend on these buy i didn't load them because zsh too slow
+  node -v >/dev/null
+  ruby -v >/dev/null
+  nvim $@
+}
 
+DISABLE_MAGIC_FUNCTIONS="true"
+# zstyle ':completion:*' rehash true
+# zstyle ':completion:*' verbose false
 source $ZSH/oh-my-zsh.sh
+#autoload -Uz compinit
+# compinit -C -d ~/.zcompdump
 
 ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern)
 ZSH_HIGHLIGHT_STYLES[comment]='fg=#585858,bold'
-# ZSH_HIGHLIGHT_STYLES[cursor]='bg=default'
-
-BASE16_SHELL=$HOME/.config/base16-shell/
-
-[ -n "$PS1" ] && \
-  [ -s $BASE16_SHELL/profile_helper.sh ] && \
-  eval "$($BASE16_SHELL/profile_helper.sh)"
+ZSH_HIGHLIGHT_STYLES[cursor]='bg=default'
 
 HISTFILE=~/.histfile
 HISTSIZE=10000
@@ -30,12 +34,21 @@ export ESCDELAY=0
 setopt autocd
 bindkey -e
 
-zstyle :compinstall filename "$HOME/.zshrc"
-autoload -Uz compinit
+lazy_nvm() {
+  unset -f node npm npx nvm
+  [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+}
+for cmd in node npm npx nvm; do
+  eval "$cmd() { lazy_nvm; $cmd \"\$@\"; }"
+done
 
-# End of lines added by compinstall
-
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+lazy_rbenv() {
+  unset -f ruby gem rbenv
+  if which rbenv > /dev/null; then eval "$(rbenv init - zsh)"; fi
+}
+for cmd in ruby gem rbenv; do
+  eval "$cmd() { lazy_rbenv; $cmd \"\$@\"; }"
+done
 
 RPS1='%(?..%{$fg_no_bold[red]%}%? ↵%{$reset_color%})'
 
@@ -47,10 +60,6 @@ alias mutt=neomutt
 
 function pub_ip {
   dig -4 TXT +short o-o.myaddr.l.google.com @ns1.google.com | sed 's/"//g'
-}
-
-function gcco {
-  gcc ${@:2} -o ${1/.c/} $1
 }
 
 function hex () {
@@ -68,20 +77,23 @@ stty -ixon
 [ -f /opt/homebrew/etc/profile.d/autojump.sh ] && . /opt/homebrew/etc/profile.d/autojump.sh
 #£££££££. /usr/share/autojump/autojump.sh
 
-if which rbenv > /dev/null; then eval "$(rbenv init - zsh)"; fi
 
 export FZF_DEFAULT_COMMAND='fd --type f'
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
-function osc7 {
-    setopt localoptions extendedglob
-    input=( ${(s::)PWD} )
-    uri=${(j::)input/(#b)([^A-Za-z0-9_.\!~*\'\(\)-\/])/%${(l:2::0:)$(([##16]#match))}}
-    print -n "\e]7;file://${HOSTNAME}${uri}\e\\"
-}
-
 export HOMEBREW_NO_ENV_HINTS=1
 
-add-zsh-hook -Uz chpwd osc7
-compinit
 eval "$(pyenv init -)"
+source ${HOME}/.ghcup/env
+
+# Added by LM Studio CLI (lms)
+export PATH="$PATH:/Users/jnes/.lmstudio/bin"
+# End of LM Studio CLI section
+#
+
+# Added by Antigravity
+export PATH="/Users/jnes/.antigravity/antigravity/bin:$PATH"
+
+export BRAVE_SEARCH_API_KEY="BSAjk-8gl0CoqMO3vgZuok16EyQA7bV"
+
+export PATH="/opt/homebrew/opt/binutils/bin:$PATH"

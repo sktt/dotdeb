@@ -3,11 +3,11 @@ path=Mail
 
 [user]
 name=Johannes Wikner
-primary_email=kwikner@ethz.ch
+primary_email=johannes.wikner@gmail.com
 
 [new]
 tags=new
-ignore=/.*/\.mbsyncstate$/;/.*/\.uidvalidity$/
+ignore=/.*/\\.mbsyncstate$/;/.*/\\.uidvalidity$/;
 
 [search]
 exclude_tags=deleted;trash;spam;

@@ -1,4 +1,12 @@
 dot/mutt/headercache
 dot/mutt/messagecache
+dot/mutt/msg.asc
+dot/mutt/neomutt-debug.log
+dot/mutt/neomutt-dtruss.log
+dot/tmux/plugins/tmux-sensible/
+dot/tmux/plugins/vim-tmux-navigator/
 
 *.pid
+*.log
+.DS_Store
+/nerd-fonts/
