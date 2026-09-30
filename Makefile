@@ -47,7 +47,8 @@ ifeq ($(UNAME_S),Darwin)
 packages:
 	@command -v brew > /dev/null || { echo "install homebrew first: https://brew.sh"; exit 1; }
 	brew install $$(grep -v '^\#' packages/brew.list | grep . | tr '\n' ' ')
-	brew install --cask $$(grep -v '^\#' packages/brew-cask.list | grep . | tr '\n' ' ')
+	@# --adopt: take over an app already in /Applications instead of erroring
+	brew install --cask --adopt $$(grep -v '^\#' packages/brew-cask.list | grep . | tr '\n' ' ')
 else
 packages:
 	sudo apt-get update
@@ -78,7 +79,31 @@ shell:
 	grep -qx "$$(command -v zsh)" /etc/shells || \
 		echo "$$(command -v zsh)" | sudo tee -a /etc/shells
 	chsh -s "$$(command -v zsh)"
+	@$(MAKE) --no-print-directory zsh-plugins
+
+# zshrc's plugins=(...) list names two plugins oh-my-zsh does not ship.
+# They live under $ZSH_CUSTOM/plugins, cloned rather than vendored here.
+.PHONY: zsh-plugins
+zsh-plugins: CUSTOM := $(HOME)/.oh-my-zsh/custom/plugins
+zsh-plugins:
+	@mkdir -p "$(CUSTOM)"
+	@[ -d "$(CUSTOM)/zsh-syntax-highlighting" ] || git clone --depth=1 \
+		https://github.com/zsh-users/zsh-syntax-highlighting.git \
+		"$(CUSTOM)/zsh-syntax-highlighting"
+	@[ -d "$(CUSTOM)/zsh-autosuggestions" ] || git clone --depth=1 \
+		https://github.com/zsh-users/zsh-autosuggestions.git \
+		"$(CUSTOM)/zsh-autosuggestions"
+
+# tmux.conf's last line runs tpm, which manages the @plugin list above it.
+# Cloned rather than vendored; vim-tmux-navigator is checked in as real files.
+.PHONY: tmux-plugins
+tmux-plugins: TPLUG := $(CURDIR)/dot/tmux/plugins
+tmux-plugins:
+	@[ -d "$(TPLUG)/tpm" ] || git clone --depth=1 \
+		https://github.com/tmux-plugins/tpm.git "$(TPLUG)/tpm"
+	@[ -d "$(TPLUG)/tmux-sensible" ] || git clone --depth=1 \
+		https://github.com/tmux-plugins/tmux-sensible.git "$(TPLUG)/tmux-sensible"
 
 .PHONY: all
 .DEFAULT: symlinks
-all: packages shell node ruby fonts symlinks
+all: packages shell node ruby fonts tmux-plugins symlinks

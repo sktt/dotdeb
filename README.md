@@ -13,6 +13,12 @@ make symlinks   # link everything into ~
 make fonts      # optional: M+ fonts
 ```
 
+`make shell` also runs `make zsh-plugins`, which clones the two oh-my-zsh
+plugins `dot/zshrc` names into `~/.oh-my-zsh/custom/plugins`. `make
+tmux-plugins` does the same for tpm and tmux-sensible under
+`dot/tmux/plugins` — both are cloned at install time and gitignored, unlike
+`vim-tmux-navigator`, which is checked in.
+
 `make all` runs the lot.
 
 ## Layout

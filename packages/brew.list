@@ -7,6 +7,8 @@ coreutils
 findutils
 gnu-sed
 gdb
+# gobjdump, for the objdump alias in dot/zshrc.Darwin
+binutils
 
 # shell
 zsh

@@ -4,11 +4,22 @@ alias xo="open"
 alias clip="pbcopy"
 alias pbp="pbpaste"
 
-# The system objdump is LLVM's and rejects the GNU flags. Homebrew's binutils
-# installs GNU objdump as gobjdump.
-if command -v gobjdump > /dev/null; then
-  alias objdump="gobjdump --show-raw-insn --visualize-jumps=color --disassembler-color=color"
+# oh-my-zsh assumes BSD ls here and aliases `ls -G`, which GNU coreutils reads
+# as --no-group. zshenv.Darwin puts gnubin first, so match that.
+if [ -x "$HOMEBREW_PREFIX/opt/coreutils/libexec/gnubin/ls" ]; then
+  alias ls="ls --color=auto"
 fi
+
+# The system objdump is LLVM's and rejects the GNU flags. Homebrew's binutils
+# installs GNU objdump as gobjdump, but the formula is keg-only, so it is not
+# on PATH -- fall back to the absolute path in the keg.
+_objdump_flags="--show-raw-insn --visualize-jumps=color --disassembler-color=color"
+if command -v gobjdump > /dev/null; then
+  alias objdump="gobjdump $_objdump_flags"
+elif [ -x "$HOMEBREW_PREFIX/opt/binutils/bin/gobjdump" ]; then
+  alias objdump="$HOMEBREW_PREFIX/opt/binutils/bin/gobjdump $_objdump_flags"
+fi
+unset _objdump_flags
 
 # lldb is the native debugger here; gdb needs codesigning to be useful.
 # whence -p ignores the `gdb --quiet` alias from ~/.zshrc and looks at $PATH.
