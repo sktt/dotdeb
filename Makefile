@@ -6,6 +6,7 @@ LINUX_ONLY_CONF := dot/config/sway dot/config/mako dot/config/yambar
 # launchagents is installed by its own target, not symlinked into ~.
 DOTFILES := $(filter-out dot/config dot/launchagents, $(wildcard dot/*))
 DOTCONF  := $(wildcard dot/config/*)
+BINFILES := $(wildcard bin/*)
 
 ifeq ($(UNAME_S),Darwin)
   DOTCONF := $(filter-out $(LINUX_ONLY_CONF), $(DOTCONF))
@@ -27,6 +28,11 @@ symlinks:
 	done
 	@for f in $(DOTCONF); do \
 		$(LN) "$(CURDIR)/$$f" "$(HOME)/.config/$${f#dot/config/}" || exit 1; \
+	done
+	@# helper scripts the configs shell out to (launchagent, muttrc)
+	@mkdir -p "$(HOME)/bin"
+	@for f in $(BINFILES); do \
+		$(LN) "$(CURDIR)/$$f" "$(HOME)/bin/$${f#bin/}" || exit 1; \
 	done
 	@# vim and nvim share one personal spelling wordlist
 	@$(LN) "$(CURDIR)/dot/config/nvim/spell/en.utf-8.add" "$(HOME)/.vim/spell/en.utf-8.add"
