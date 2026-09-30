@@ -1,0 +1,61 @@
+  TMUX — prefix is C-Space              [*] = custom, differs from stock tmux
+
+  SESSIONS
+    tmux new -s NAME       new session (from the shell — there is no key)
+    C-Space N              new session, prompts for a name              [*]
+    C-Space $              rename current session
+    C-Space s              session tree, switch between them
+    C-Space d              detach
+    C-Space (  )           previous / next session
+    C-M-j  C-M-k           previous / next session, no prefix           [*]
+    tmux ls                list sessions from the shell
+    tmux a -t NAME         attach
+
+  WINDOWS
+    C-Space c              new window (opens in ~, not cwd)             [*]
+    C-Space n              RENAME window  — not ',' , which moves panes [*]
+    C-Space &              kill window (asks first)
+    C-Space w              window tree
+    C-Space f              find window by name
+    C-Space 0-9            go to window by number
+    C-Space l              last window
+    C-Space p  /  C-n C-p  previous / next window
+    C-M-h  C-M-l           previous / next window, no prefix            [*]
+    C-Space <  >           move this window left / right in the list    [*]
+
+  PANES
+    C-Space "              split horizontally, keeps cwd                [*]
+    C-Space %              split vertically, keeps cwd                  [*]
+    C-h C-j C-k C-l        move between panes (also works in vim)       [*]
+    C-Space C-h/j/k/l      resize by 5                                  [*]
+    C-Space z              zoom pane in / out
+    C-Space x              kill pane (asks first)
+    C-Space q              show pane numbers
+    C-Space o              next pane
+    C-Space ;              last pane
+    C-Space !              break pane out into its own window
+    C-Space , / .          move pane to previous / next window          [*]
+    C-Space { }            swap pane up / down
+
+  LAYOUTS                                                              [*]
+    C-Space m              make this the main pane, main-vertical
+    C-Space M              main-horizontal
+    C-Space t              tiled
+    C-Space h              even-horizontal
+    C-Space v              even-vertical
+    C-Space Space          cycle layouts
+
+  COPY MODE (vi keys)
+    C-Space [              enter copy mode        (q or Esc to leave)
+    v                      start selection
+    y                      copy to macOS clipboard and exit             [*]
+    C-Space ]              paste
+    /  ?                   search forward / back
+    mouse drag             selects and copies
+
+  MISC
+    C-Space :              tmux command prompt
+    C-Space R              reload ~/.tmux.conf
+    C-Space I              install tpm plugins
+    C-Space ?              this cheatsheet
+    C-Space M-?            full generated key list (all 100 bindings)
