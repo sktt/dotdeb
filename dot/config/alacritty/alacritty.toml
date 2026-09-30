@@ -1,0 +1,8 @@
+[general]
+import = [
+  "~/.config/alacritty/base16-atelier-dune-256.toml",
+  "~/.config/alacritty/saucecodepro.toml"
+]
+[window]
+option_as_alt = "OnlyLeft"
+
