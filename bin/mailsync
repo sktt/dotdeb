@@ -1,0 +1,12 @@
+#!/bin/bash
+
+NOTMUCH=/opt/homebrew/bin/notmuch
+MBSYNC=/opt/homebrew/bin/mbsync
+
+$MBSYNC gmail
+
+$NOTMUCH new --quiet
+$NOTMUCH tag -new +spam           -- tag:new AND subject:'^{Spam?}'
+$NOTMUCH tag -new +inbox +unread  -- tag:new AND folder:INBOX
+$NOTMUCH tag -new -unread +trash  -- tag:new AND folder:Trash
+$NOTMUCH tag -new -unread +drafts -- tag:new AND folder:Drafts

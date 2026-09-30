@@ -2,6 +2,7 @@
 symlinks: DOTFILES := $(wildcard dot/*)
 symlinks: DOTFILES := $(filter-out dot/config, $(DOTFILES))
 symlinks: DOTCONF := $(wildcard dot/config/*)
+symlinks: BINFILES := $(wildcard bin/*)
 symlinks:
 	@for f in $(DOTFILES); do \
 		ln -fsh `pwd`/$$f ~/`echo $$f | sed s/dot\\\//./`; \
@@ -9,8 +10,13 @@ symlinks:
 	@for f in $(DOTCONF); do \
 		ln -fsh `pwd`/$$f ~/`echo $$f | sed s/dot\\\//./`; \
 	done;
+	@mkdir -p ~/bin
+	@for f in $(BINFILES); do \
+		ln -fsh `pwd`/$$f ~/$$f; \
+	done;
 	@ls -lG `find ~ -maxdepth 1 -type l -print`
 	@ls -lG `find ~/.config -maxdepth 1 -type l -print`
+	@ls -lG `find ~/bin -maxdepth 1 -type l -print`
 
 .PHONY: packages
 packages: PACKAGES := $(shell cat ./packages/apt.list)

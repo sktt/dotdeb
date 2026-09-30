@@ -1,0 +1,36 @@
+#!/usr/bin/env node
+
+const readline = require("readline");
+
+const DELAY = Number(process.argv[2]) || 200;
+
+console.error(`[${process.argv[1]}] DELAY = ${DELAY}ms`);
+
+const rl = readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+  terminal: false,
+});
+
+function debounce(f, t) {
+  to = null;
+  bufferedArgs = [];
+  return (...args) => {
+    bufferedArgs.push(args);
+    const emit = () => {
+      f(bufferedArgs);
+      bufferedArgs = [];
+    };
+
+    clearTimeout(to);
+
+    to = setTimeout(emit, t);
+  };
+}
+
+rl.on(
+  "line",
+  debounce((lns) => {
+    console.log(lns.flat().join("|||"));
+  }, DELAY)
+);
