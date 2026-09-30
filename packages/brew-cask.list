@@ -1,1 +1,13 @@
 keepassxc
+
+# Font for dot/config/alacritty/saucecodepro.toml, which alacritty.toml imports.
+font-sauce-code-pro-nerd-font
+
+# Alacritty is installed at /Applications/Alacritty.app (0.17.0) but is NOT
+# listed live: Homebrew disabled the cask on 2026-09-01 because it fails the
+# macOS Gatekeeper check, so `brew install --cask alacritty` errors out and
+# would fail `make packages` on every run. Uncomment once the cask returns.
+#alacritty
+
+# berkeleymono.toml wants BerkeleyMono Nerd Font, which is commercial and has
+# no cask -- install it by hand if you switch alacritty.toml's import to it.
