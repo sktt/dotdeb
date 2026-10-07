@@ -30,26 +30,14 @@ export ESCDELAY=0
 setopt autocd
 bindkey -e
 
-lazy_nvm() {
-  unset -f node npm npx nvm
-  [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-}
-for cmd in node npm npx nvm; do
-  eval "$cmd() { lazy_nvm; $cmd \"\$@\"; }"
-done
-
-lazy_rbenv() {
-  unset -f ruby gem rbenv
-  if which rbenv > /dev/null; then eval "$(rbenv init - zsh)"; fi
-}
-for cmd in ruby gem rbenv; do
-  eval "$cmd() { lazy_rbenv; $cmd \"\$@\"; }"
-done
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+(( $+commands[rbenv] )) && eval "$(rbenv init - zsh)"
 
 RPS1='%(?..%{$fg_no_bold[red]%}%? ↵%{$reset_color%})'
 
 alias gst="git status --short"
 alias mutt=neomutt
+alias vim=nvim
 
 function pub_ip {
   dig -4 TXT +short o-o.myaddr.l.google.com @ns1.google.com | sed 's/"//g'
@@ -108,13 +96,7 @@ export PS1='%n@%m %~ %# '
 [ -d "$HOME/.antigravity/antigravity/bin" ] && export PATH="$HOME/.antigravity/antigravity/bin:$PATH"
 [ -d "$HOME/.lmstudio/bin" ] && export PATH="$PATH:$HOME/.lmstudio/bin"
 
-# nvim plugins shell out to node and ruby, so load the lazy version managers
-# before starting it rather than letting a plugin find a missing binary.
-function vim {
-  (( $+functions[lazy_nvm] )) && lazy_nvm
-  (( $+functions[lazy_rbenv] )) && lazy_rbenv
-  nvim "$@"
-}
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 # Per-OS then per-machine overrides. Last so they win over anything above.
 [ -r "$HOME/.zshrc.$(uname -s)" ] && . "$HOME/.zshrc.$(uname -s)"
