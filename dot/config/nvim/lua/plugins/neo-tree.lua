@@ -58,7 +58,9 @@ return {
           ["ma"] = "add",
           ["md"] = "delete",
           ["mc"] = "copy",
-          ["mp"] = "paste",
+          -- "paste" is not a neo-tree command; the real name is longer.
+          -- Pairs with the default y (copy_to_clipboard) and x (cut_to_clipboard).
+          ["mp"] = "paste_from_clipboard",
           -- ["mr"] = "refresh",
         },
       },
