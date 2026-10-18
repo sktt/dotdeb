@@ -3,7 +3,6 @@ cat <<'EOF'
  tmux cheat sheet          prefix = C-Space
 
  SESSIONS
-  N          new session (prompts for name)
   $          rename session            (default)
   s          choose session            (default)
   d          detach                    (default)
@@ -17,6 +16,7 @@ cat <<'EOF'
 
  PANES
   " / %      split vertical / horizontal
+  N          break pane into its own new session (prompts for name)
   C-h/j/k/l  resize pane (repeatable)
   , / .      move pane left / right
   { / }      swap pane up / down
