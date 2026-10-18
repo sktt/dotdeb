@@ -11,6 +11,7 @@ cat <<'EOF'
  WINDOWS
   c          new window
   n          rename window
+  W          move window to session
   < / >      swap window left / right
   C-M-h/l    prev/next window          (no prefix)
 
