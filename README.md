@@ -54,6 +54,51 @@ idea for git.
 `tmux.conf` and `vimrc` use in-file conditionals (`if-shell`, `isdirectory()`)
 rather than separate files.
 
+## WeeChat + ZNC
+
+WeeChat talks to ZNC (on `yesbox`, 10.0.0.3) over **plaintext IRC inside
+WireGuard** — `10.0.0.3/6667`, `tls off`. WireGuard already encrypts the hop,
+so IRC-level TLS was redundant there. ZNC's *upstream* connections to the IRC
+networks keep TLS (`+6697`/`+7000`, `TrustPKI = true`) and are untouched.
+
+`red-dir` is a direct connection to `irc.scratch-network.net`, not a ZNC
+entry — it is deliberately left on its own settings.
+
+### Per-machine client-id
+
+Each machine identifies itself to ZNC with its hostname, so every device gets
+its own buffer playback position:
+
+    dot/zshenv:  export ZNC_CLIENTID="${ZNC_CLIENTID:-$(hostname -s)}"
+    irc.conf:    username = "jnes@${env:ZNC_CLIENTID}/<znc-network>"
+
+That is why one shared `irc.conf` works on every machine. Override
+`ZNC_CLIENTID` in `~/.zshenv.local` if a host needs a different name.
+
+### Secrets
+
+No password is in any tracked file. The ZNC password lives in WeeChat's
+`sec.conf` (AES-256), and `sec.conf`'s passphrase comes from `pass`:
+
+    sec.crypt.passphrase_command = "pass show weechat/secure"
+    irc.server.<name>.password   = "${sec.data.znc}"
+
+`sec.conf` itself is **gitignored** — it re-encrypts with a fresh salt on
+every save, so sharing it through git would churn and conflict. Recreate it
+once per machine (needs `pass` + the GPG key present):
+
+    /secure passphrase <paste: pass show weechat/secure>
+    /secure set znc <paste: pass show znc/jnes>
+    /set sec.crypt.passphrase_command "pass show weechat/secure"
+    /save
+
+`pass` entries used: `weechat/secure`, `znc/jnes`.
+
+### Logs
+
+`logger.file.path` points at `${env:HOME}/.local/share/weechat/logs/`, not
+`%h/logs`, to keep ~580MB of scrollback out of the repo.
+
 ## Not in this repo
 
 - Secrets. Mail passwords come from [`pass`](https://www.passwordstore.org/)

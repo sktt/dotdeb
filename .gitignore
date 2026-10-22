@@ -23,3 +23,16 @@ dot/config/nvim/spell/de.*
 dot/zshrc.local
 dot/zshenv.local
 dot/gitconfig.local
+
+# weechat: runtime state, logs and the machine-local secure store.
+# sec.conf holds the encrypted ZNC password and is re-created per machine
+# from `pass` (see README) — it re-encrypts with a fresh salt on every save,
+# so sharing it through git would churn and conflict.
+dot/weechat/sec.conf
+dot/weechat/logs/
+dot/weechat/weechat.log
+dot/weechat/weechat_fifo
+dot/weechat/xfer/
+dot/weechat/script/
+dot/weechat/*.upgrade
+dot/weechat/*.log
