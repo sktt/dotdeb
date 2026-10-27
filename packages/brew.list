@@ -33,6 +33,8 @@ tmux
 neomutt
 isync
 notmuch
+# html-to-text for neomutt's auto_view (see dot/mailcap)
+w3m
 pass
 gnupg
 # GUI passphrase prompt; the launchagent mail sync has no tty for a

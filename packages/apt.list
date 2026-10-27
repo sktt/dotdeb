@@ -25,6 +25,8 @@ bat
 ripgrep
 isync
 notmuch
+# html-to-text for neomutt's auto_view (see dot/mailcap)
+w3m
 pass
 gnupg
 lbdb

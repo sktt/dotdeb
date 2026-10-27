@@ -1,0 +1,17 @@
+# Used by neomutt's `auto_view text/html` (see dot/mutt/muttrc). Without a
+# copiousoutput entry here, auto_view has no converter and html-only mail
+# renders as "[-- text/html is unsupported --]".
+#
+# ~/.mailcap is first in neomutt's default mailcap_path, so no muttrc
+# setting is needed. w3m is in both packages/brew.list and packages/apt.list.
+#
+# -I %{charset}  honour the part's declared charset instead of guessing
+# -T text/html   treat stdin as html regardless of the filename
+# -dump          render once and exit, rather than going interactive
+# display_link_number  numbers links and appends a reference list, so URLs
+#                      in the mail are still reachable from the pager
+text/html; w3m -I %{charset} -T text/html -dump -o display_link_number=1 '%s'; copiousoutput; nametemplate=%s.html
+
+# 'v' then enter on the part opens it in a real browser instead.
+text/html; open '%s'; test=test "$(uname -s)" = Darwin; nametemplate=%s.html
+text/html; xdg-open '%s'; test=test "$(uname -s)" != Darwin; nametemplate=%s.html
