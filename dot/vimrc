@@ -45,7 +45,7 @@ call plug#begin('~/.vim/plugged')
 
   " Linting
   Plug 'dense-analysis/ale'
-  " Plug 'neoclide/coc.nvim', {'branch': 'release'}
+
   " UI Plugins
   Plug 'preservim/nerdtree'
   Plug 'ryanoasis/vim-devicons'
@@ -67,12 +67,6 @@ augroup qf
     autocmd!
     autocmd FileType qf set nobuflisted
 augroup END
-
-let g:coc_filetype_map = {
-      \ 'tex': 'latex',
-      \ 'plaintex': 'latex',
-      \ 'mail': 'latex'
-\}
 
 set clipboard=unnamed,unnamedplus
 
@@ -236,11 +230,6 @@ let g:bufExplorerDefaultHelp=0       " Do not show default help.
 " nnoremap <leader>jt :YcmCompleter GoToDeclaration<CR>
 " nnoremap <leader>jr :YcmCompleter GoToReferences<CR>
 " nnoremap <leader>fi :YcmCompleter FixIt<CR>
-
-nmap <silent> <leader>jd <Plug>(coc-definition)
-nmap <silent> <leader>jt <Plug>(coc-type-definition)
-nmap <silent> <leader>ji <Plug>(coc-implementation)
-nmap <silent> <leader>jr <Plug>(coc-references)
 
 " Makefiles need tabs
 autocmd FileType make setlocal noexpandtab

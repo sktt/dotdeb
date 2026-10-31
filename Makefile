@@ -5,6 +5,7 @@ LINUX_ONLY_CONF := dot/config/sway dot/config/mako dot/config/yambar
 
 DOTFILES := $(filter-out dot/config, $(wildcard dot/*))
 DOTCONF  := $(wildcard dot/config/*)
+BINFILES := $(wildcard bin/*)
 
 ifeq ($(UNAME_S),Darwin)
   DOTCONF := $(filter-out $(LINUX_ONLY_CONF), $(DOTCONF))
@@ -20,12 +21,15 @@ LN := ln -fsn
 
 .PHONY: symlinks
 symlinks:
-	@mkdir -p "$(HOME)/.config" "$(HOME)/.vim/spell"
+	@mkdir -p "$(HOME)/.config" "$(HOME)/.vim/spell" "$(HOME)/bin"
 	@for f in $(DOTFILES); do \
 		$(LN) "$(CURDIR)/$$f" "$(HOME)/.$${f#dot/}" || exit 1; \
 	done
 	@for f in $(DOTCONF); do \
 		$(LN) "$(CURDIR)/$$f" "$(HOME)/.config/$${f#dot/config/}" || exit 1; \
+	done
+	@for f in $(BINFILES); do \
+		$(LN) "$(CURDIR)/$$f" "$(HOME)/$$f" || exit 1; \
 	done
 	@# vim and nvim share one personal spelling wordlist
 	@$(LN) "$(CURDIR)/dot/config/nvim/spell/en.utf-8.add" "$(HOME)/.vim/spell/en.utf-8.add"
@@ -33,6 +37,7 @@ ifeq ($(UNAME_S),Darwin)
 	@echo "Darwin: skipped $(LINUX_ONLY_CONF)"
 endif
 	@ls -l "$(HOME)/.config"
+	@ls -l "$(HOME)/bin"
 
 .PHONY: fonts
 fonts:

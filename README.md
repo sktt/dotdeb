@@ -99,12 +99,37 @@ once per machine (needs `pass` + the GPG key present):
 `logger.file.path` points at `${env:HOME}/.local/share/weechat/logs/`, not
 `%h/logs`, to keep ~580MB of scrollback out of the repo.
 
+## Keyboard shortcuts cheat sheet
+
+Easy to forget these exist since they live in config, not in any UI.
+
+| Shortcut | Effect | Where it's configured |
+|---|---|---|
+| `Alt+f` / `Alt+b` | Jump forward/back one word in the shell | zsh default emacs keymap (`dot/zshrc`, `bindkey -e`) + `option_as_alt` in `dot/config/alacritty/alacritty.toml` so Option sends Meta/Esc |
+| `Alt+.` | Insert last word of previous command | Same as above (zsh built-in `insert-last-word`) |
+| `Caps Lock` | Remapped to `Escape` | Karabiner-Elements (`~/.config/karabiner/karabiner.json`, not tracked here — machine-local state Karabiner rewrites constantly) |
+| Volume up/down/mute | Runs `~/bin/ua_solo.sh volup`/`voldn`/`mute` instead of system volume | Karabiner-Elements complex modification |
+
+### tmux (prefix = `C-Space`)
+
+`prefix+H` opens a popup with the full list (`dot/tmux/cheatsheet.sh`). Highlights:
+
+| Key | Effect |
+|---|---|
+| `N` | Break the active pane into a brand-new session (prompts for name) |
+| `W` | Move the current window to another session, picked from a visual list |
+| `r` | Reload `tmux.conf` |
+| `n` | Rename window |
+| `m`/`M`/`t`/`h`/`v` | Layout: main-vertical / main-horizontal / tiled / even-horizontal / even-vertical |
+
 ## Not in this repo
 
 - Secrets. Mail passwords come from [`pass`](https://www.passwordstore.org/)
   via `PassCmd`/backticks; `*.p12`, `*.pem`, `*.key` and `*.gpg` are gitignored.
-- `~/bin` helper scripts referenced by some configs (`mailcount`, `languagetool`,
-  `vale`, `fade-layer`).
+- `~/bin` helper scripts referenced by some configs but not themselves useful
+  outside this machine's setup (`mailcount`, `languagetool`, `vale`,
+  `fade-layer`). `mailsync`, `debounce` and `ua_solo.sh` **are** tracked, in
+  `bin/`.
 - The mail stack needs `pass`, `gnupg` and a `~/Mail/gmail` maildir before
   neomutt/notmuch will do anything useful. `notmuch-config` uses a
   `$HOME`-relative path so it works unchanged on both platforms.
