@@ -6,6 +6,9 @@ cat <<'EOF'
   $          rename session            (default)
   s          choose session            (default)
   d          detach                    (default)
+  C-s        save all sessions/windows/panes (resurrect)
+  C-r        restore saved sessions/windows/panes (resurrect)
+             (auto-restores on tmux start, auto-saves every 15min)
 
  WINDOWS
   c          new window

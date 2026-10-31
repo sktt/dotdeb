@@ -121,6 +121,10 @@ Easy to forget these exist since they live in config, not in any UI.
 | `r` | Reload `tmux.conf` |
 | `n` | Rename window |
 | `m`/`M`/`t`/`h`/`v` | Layout: main-vertical / main-horizontal / tiled / even-horizontal / even-vertical |
+| `C-s` / `C-r` | Save / restore all sessions, windows and panes (tmux-resurrect) |
+
+tmux-continuum auto-saves every 15 minutes and auto-restores the last save on
+tmux start, so sessions survive a reboot without pressing `C-s` yourself.
 
 ## Not in this repo
 
